@@ -1,0 +1,33 @@
+{
+    "name": "nubeculabs/components",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andy Daniel Navarro Taño",
+            "email": "andaniel05@gmail.com"
+        },
+        {
+            "name": "NubecuLabs Community"
+        }
+    ],
+    "platform": {
+        "php": "^7.1"
+    },
+    "require": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.12",
+        "andaniel05/pyramidaltests": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "NubecuLabs\\Components\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NubecuLabs\\Components\\Tests\\": "tests/"
+        }
+    }
+}
