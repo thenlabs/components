@@ -12,4 +12,9 @@ use NubecuLabs\Components\ComponentTrait;
 class Component implements ComponentInterface
 {
     use ComponentTrait;
+
+    public function getDependencies(): array
+    {
+        return [];
+    }
 }

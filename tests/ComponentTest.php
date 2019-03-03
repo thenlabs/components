@@ -10,7 +10,7 @@ testCase('Component tests', function () {
         return new Component;
     });
 
-    useMacro('common tests');
+    useMacro('common tests for ComponentTrait and CompositeComponentTrait');
 
     test('the id is an unique string that starts with "component_"', function () {
         $id = $this->component->getId();

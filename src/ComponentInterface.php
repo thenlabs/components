@@ -8,4 +8,11 @@ namespace NubecuLabs\Components;
  */
 interface ComponentInterface
 {
+    public function getId(): string;
+
+    public function getParent(): ?CompositeComponentInterface;
+
+    public function setParent(?CompositeComponentInterface $parent): void;
+
+    public function getDependencies(): array;
 }

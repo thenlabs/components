@@ -10,6 +10,8 @@ Trait ComponentTrait
 {
     private $id;
 
+    protected $parent;
+
     public function getId(): string
     {
         if (! $this->id) {
@@ -20,5 +22,15 @@ Trait ComponentTrait
         }
 
         return $this->id;
+    }
+
+    public function getParent(): ?CompositeComponentInterface
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?CompositeComponentInterface $parent): void
+    {
+        $this->parent = $parent;
     }
 }
