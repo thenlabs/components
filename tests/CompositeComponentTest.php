@@ -10,12 +10,16 @@ testCase('CompositeComponent tests', function () {
         return new CompositeComponent;
     });
 
-    useMacro('common tests for ComponentTrait and CompositeComponentTrait');
+    testCase('create a new instance of ' . CompositeComponent::class, function () {
+        useMacro('common tests for ComponentTrait and CompositeComponentTrait');
 
-    test('the id is an unique string that starts with "compositecomponent_"', function () {
-        $id = $this->component->getId();
+        testCase('related tests with the unique identifier', function () {
+            test('the id is an unique string that starts with "compositecomponent_"', function () {
+                $id = $this->component->getId();
 
-        $this->assertGreaterThan(13, strlen($id));
-        $this->assertStringStartsWith('compositecomponent_', $id);
+                $this->assertGreaterThan(13, strlen($id));
+                $this->assertStringStartsWith('compositecomponent_', $id);
+            });
+        });
     });
 });

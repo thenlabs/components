@@ -8,9 +8,13 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
         $this->component = $this->getNewComponent();
     });
 
-    testCase('#getId()', function () {
-        test(function () {
-            $this->assertEquals($this->component->getId(), $this->component->getId());
+    testCase('related tests with the unique identifier', function () {
+        test('#getId() returns every the same value', function () {
+            $id = $this->component->getId();
+
+            $this->assertEquals($id, $this->component->getId());
+            $this->assertEquals($id, $this->component->getId());
+            $this->assertEquals($id, $this->component->getId());
         });
     });
 
