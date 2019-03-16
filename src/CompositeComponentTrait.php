@@ -6,7 +6,7 @@ namespace NubecuLabs\Components;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-Trait CompositeComponentTrait
+trait CompositeComponentTrait
 {
     use ComponentTrait;
 }

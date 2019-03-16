@@ -679,16 +679,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.6",
+            "version": "7.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "09c85e14994df92e5ff1f5ec0b481bdb7d3d3df9"
+                "reference": "eb343b86753d26de07ecba7868fa983104361948"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/09c85e14994df92e5ff1f5ec0b481bdb7d3d3df9",
-                "reference": "09c85e14994df92e5ff1f5ec0b481bdb7d3d3df9",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/eb343b86753d26de07ecba7868fa983104361948",
+                "reference": "eb343b86753d26de07ecba7868fa983104361948",
                 "shasum": ""
             },
             "require": {
@@ -706,7 +706,7 @@
                 "phpunit/php-code-coverage": "^6.0.7",
                 "phpunit/php-file-iterator": "^2.0.1",
                 "phpunit/php-text-template": "^1.2.1",
-                "phpunit/php-timer": "^2.0",
+                "phpunit/php-timer": "^2.1",
                 "sebastian/comparator": "^3.0",
                 "sebastian/diff": "^3.0",
                 "sebastian/environment": "^4.0",
@@ -759,7 +759,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-02-18T09:24:50+00:00"
+            "time": "2019-03-16T07:31:17+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1484,15 +1484,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/andaniel05/PyramidalTests.git",
-                "reference": "42b645ac881b6d88a70d4ec178520a26a7985e12"
+                "reference": "455831536a7448ce6c477a95e9c99484da3afe3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andaniel05/PyramidalTests/zipball/42b645ac881b6d88a70d4ec178520a26a7985e12",
-                "reference": "42b645ac881b6d88a70d4ec178520a26a7985e12",
+                "url": "https://api.github.com/repos/andaniel05/PyramidalTests/zipball/455831536a7448ce6c477a95e9c99484da3afe3f",
+                "reference": "455831536a7448ce6c477a95e9c99484da3afe3f",
                 "shasum": ""
             },
             "require": {
+                "myclabs/deep-copy": "^1.8",
                 "phpunit/phpunit": "^7.0"
             },
             "require-dev": {
@@ -1514,7 +1515,7 @@
                     "email": "andaniel05@gmail.com"
                 }
             ],
-            "time": "2019-03-03T22:31:18+00:00"
+            "time": "2019-03-16T17:26:32+00:00"
         },
         {
             "name": "composer/semver",

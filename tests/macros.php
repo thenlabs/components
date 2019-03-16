@@ -8,8 +8,8 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
         $this->component = $this->getNewComponent();
     });
 
-    testCase('related tests with the unique identifier', function () {
-        test('#getId() returns every the same value', function () {
+    testCase('$component->getId();', function () {
+        test('always returns the same value', function () {
             $id = $this->component->getId();
 
             $this->assertEquals($id, $this->component->getId());
@@ -18,17 +18,9 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
         });
     });
 
-    testCase('related tests with the parent', function () {
-        test('by default has not parent', function () {
+    testCase('$component->getParent();', function () {
+        test('returns null', function () {
             $this->assertNull($this->component->getParent());
-        });
-
-        test('tests relationship between #getParent() and #setParent()', function () {
-            $parent = $this->createMock(CompositeComponentInterface::class);
-
-            $this->component->setParent($parent);
-
-            $this->assertEquals($parent, $this->component->getParent());
         });
     });
 });

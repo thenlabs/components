@@ -6,7 +6,7 @@ namespace NubecuLabs\Components;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-Trait ComponentTrait
+trait ComponentTrait
 {
     private $id;
 
@@ -32,5 +32,10 @@ Trait ComponentTrait
     public function setParent(?CompositeComponentInterface $parent): void
     {
         $this->parent = $parent;
+    }
+
+    public function getDependencies(): array
+    {
+        return [];
     }
 }
