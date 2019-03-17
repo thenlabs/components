@@ -27,9 +27,13 @@ trait CompositeComponentTrait
         return false;
     }
 
-    public function addChild(ComponentInterface $child): void
+    public function addChild(ComponentInterface $child, $setParentInChild = true): void
     {
         $this->children[$child->getId()] = $child;
+
+        if ($setParentInChild) {
+            $child->setParent($this);
+        }
     }
 
     public function dropChild($child): void

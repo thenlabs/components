@@ -38,7 +38,7 @@ trait ComponentTrait
         $this->parent = $parent;
 
         if ($parent && $addChild) {
-            $this->parent->addChild($this);
+            $this->parent->addChild($this, false);
         }
     }
 
