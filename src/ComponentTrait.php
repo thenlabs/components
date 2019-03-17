@@ -31,7 +31,15 @@ trait ComponentTrait
 
     public function setParent(?CompositeComponentInterface $parent): void
     {
+        if ($this->parent instanceof CompositeComponentInterface) {
+            $this->parent->dropChild($this);
+        }
+
         $this->parent = $parent;
+
+        if ($parent) {
+            $this->parent->addChild($this);
+        }
     }
 
     public function getDependencies(): array

@@ -21,5 +21,10 @@ testCase('CompositeComponentTest.php', function () {
                 $this->assertStringStartsWith('compositecomponent_', $id);
             });
         });
+
+        $id = uniqid();
+        test("\$component->hasChild('$id') === false", function() use ($id) {
+            $this->assertFalse($this->component->hasChild($id));
+        });
     });
 });
