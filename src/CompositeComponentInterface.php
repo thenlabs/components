@@ -8,4 +8,9 @@ namespace NubecuLabs\Components;
  */
 interface CompositeComponentInterface extends ComponentInterface
 {
+    public function hasChild($child): bool;
+
+    public function addChild(ComponentInterface $child): void;
+
+    public function dropChild($child): void;
 }

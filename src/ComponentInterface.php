@@ -12,7 +12,7 @@ interface ComponentInterface
 
     public function getParent(): ?CompositeComponentInterface;
 
-    public function setParent(?CompositeComponentInterface $parent): void;
+    public function setParent(?CompositeComponentInterface $parent, bool $addChild = true): void;
 
     public function getDependencies(): array;
 }
