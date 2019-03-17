@@ -11,7 +11,7 @@ testCase('ComponentTest.php', function () {
     });
 
     testCase(sprintf("\$component = new \\%s;", Component::class), function () {
-        testCase('$component->getId()', function () {
+        testCase('$component->getId();', function () {
             test('returns an unique string that starts with "component_"', function () {
                 $id = $this->component->getId();
 
