@@ -29,7 +29,7 @@ trait ComponentTrait
         return $this->parent;
     }
 
-    public function setParent(?CompositeComponentInterface $parent, bool $addChild = true): void
+    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true): void
     {
         if ($this->parent instanceof CompositeComponentInterface) {
             $this->parent->dropChild($this);
@@ -37,7 +37,7 @@ trait ComponentTrait
 
         $this->parent = $parent;
 
-        if ($parent && $addChild) {
+        if ($parent && $addChildToParent) {
             $this->parent->addChild($this, false);
         }
     }

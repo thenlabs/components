@@ -38,6 +38,26 @@ trait CompositeComponentTrait
 
     public function dropChild($child): void
     {
-        $this->children = [];
+        $obj = null;
+
+        if (is_string($child)) {
+            $obj = $this->children[$child] ?? null;
+        }
+
+        if ($child instanceof ComponentInterface) {
+            $obj = $child;
+        }
+
+        if ($obj instanceof ComponentInterface &&
+            isset($this->children[$obj->getId()])
+        ) {
+            unset($this->children[$obj->getId()]);
+            $obj->setParent(null, false);
+        }
+    }
+
+    public function getChildren(): array
+    {
+        return $this->children;
     }
 }
