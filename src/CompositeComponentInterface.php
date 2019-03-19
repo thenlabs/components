@@ -14,7 +14,7 @@ interface CompositeComponentInterface extends ComponentInterface
 
     public function dropChild($child): void;
 
-    public function getChildren(): array;
+    public function getOwnChilds(): array;
 
     public function children(): iterable;
 }

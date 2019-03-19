@@ -71,9 +71,9 @@ testCase('CompositeComponentTest.php', function () {
                     $this->assertEquals($this->component, $this->child2->getParent());
                 });
 
-                testCase('$children = $component->getChildren();', function () {
+                testCase('$children = $component->getOwnChilds();', function () {
                     setUp(function () {
-                        $this->children = $this->component->getChildren();
+                        $this->children = $this->component->getOwnChilds();
                     });
 
                     test('count($children) == 2', function() {
@@ -101,9 +101,9 @@ testCase('CompositeComponentTest.php', function () {
                             $this->assertFalse($this->component->hasChild($this->child->getId()));
                         });
 
-                        testCase('$children = $component->getChildren();', function () {
+                        testCase('$children = $component->getOwnChilds();', function () {
                             setUp(function () {
-                                $this->children = $this->component->getChildren();
+                                $this->children = $this->component->getOwnChilds();
                             });
 
                             test('count($children) == 1', function() {
@@ -155,7 +155,7 @@ testCase('CompositeComponentTest.php', function () {
         });
     });
 
-    testCase('exists the tree of components defined in this file (see sources)', function () {
+    testCase('exists a tree of components (see sources)', function () {
         /**
          * $component
          *     |

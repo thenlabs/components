@@ -56,7 +56,7 @@ trait CompositeComponentTrait
         }
     }
 
-    public function getChildren(): array
+    public function getOwnChilds(): array
     {
         return $this->children;
     }
@@ -68,7 +68,7 @@ trait CompositeComponentTrait
                 yield $child;
 
                 if ($child instanceof CompositeComponentInterface) {
-                    yield from $generator($child->getChildren());
+                    yield from $generator($child->getOwnChilds());
                 }
             }
 
