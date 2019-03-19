@@ -9,7 +9,7 @@ use NubecuLabs\Components\CompositeComponentTrait;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class CompositeComponent implements CompositeComponentInterface
+class CompositeComponent extends Component implements CompositeComponentInterface
 {
     use CompositeComponentTrait;
 }

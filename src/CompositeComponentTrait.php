@@ -60,4 +60,21 @@ trait CompositeComponentTrait
     {
         return $this->children;
     }
+
+    public function children(): iterable
+    {
+        $generator = function (array $children) use (&$generator) {
+            foreach ($children as $child) {
+                yield $child;
+
+                if ($child instanceof CompositeComponentInterface) {
+                    yield from $generator($child->getChildren());
+                }
+            }
+
+            return;
+        };
+
+        return $generator($this->children);
+    }
 }
