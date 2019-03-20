@@ -14,7 +14,8 @@
         "php": "^7.1"
     },
     "require": {
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^7.0",
+        "composer/semver": "^1.5"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",
