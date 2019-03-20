@@ -1,7 +1,5 @@
 <?php
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\CompositeComponentInterface;
 use NubecuLabs\Components\Tests\CompositeComponent;
 
 createMacro('common tests for ComponentTrait and CompositeComponentTrait', function () {
@@ -9,7 +7,7 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
         $this->component = $this->getNewComponent();
     });
 
-    test('$component->getParent() === null', function() {
+    test('$component->getParent() === null', function () {
         $this->assertNull($this->component->getParent());
     });
 
@@ -24,7 +22,7 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
     });
 
     testCase('$component->setParent(null);', function () {
-        test('$component->getParent() === null', function() {
+        test('$component->getParent() === null', function () {
             $this->component->setParent(null);
 
             $this->assertNull($this->component->getParent());
@@ -37,11 +35,11 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
             $this->component->setParent($this->parent);
         });
 
-        test('$component->getParent() === $parent', function() {
+        test('$component->getParent() === $parent', function () {
             $this->assertEquals($this->parent, $this->component->getParent());
         });
 
-        test('$parent->hasChild($component) === true', function() {
+        test('$parent->hasChild($component) === true', function () {
             $this->assertTrue($this->parent->hasChild($this->component));
         });
 
@@ -50,11 +48,11 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
                 $this->component->setParent(null);
             });
 
-            test('$component->getParent() === null', function() {
+            test('$component->getParent() === null', function () {
                 $this->assertNull($this->component->getParent());
             });
 
-            test('$parent->hasChild($component) === false', function() {
+            test('$parent->hasChild($component) === false', function () {
                 $this->assertFalse($this->parent->hasChild($this->component));
             });
         });
@@ -65,15 +63,15 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
                 $this->component->setParent($this->parent2);
             });
 
-            test('$parent->hasChild($component) === false', function() {
+            test('$parent->hasChild($component) === false', function () {
                 $this->assertFalse($this->parent->hasChild($this->component));
             });
 
-            test('$parent2->hasChild($component) === true', function() {
+            test('$parent2->hasChild($component) === true', function () {
                 $this->assertTrue($this->parent2->hasChild($this->component));
             });
 
-            test('$component->getParent() === $parent2', function() {
+            test('$component->getParent() === $parent2', function () {
                 $this->assertEquals($this->parent2, $this->component->getParent());
             });
         });
@@ -85,11 +83,11 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
             $this->component->setParent($this->parent, false);
         });
 
-        test('$component->getParent() === $parent', function() {
+        test('$component->getParent() === $parent', function () {
             $this->assertEquals($this->parent, $this->component->getParent());
         });
 
-        test('$parent->hasChild($component) === false', function() {
+        test('$parent->hasChild($component) === false', function () {
             $this->assertFalse($this->parent->hasChild($this->component));
         });
     });
