@@ -14,7 +14,7 @@ class Component implements ComponentInterface
     use ComponentTrait;
 
     /**
-     * Permit assign the id with testing purpouses.
+     * Permit assign the id for testing purpouses.
      */
     public function __construct(?string $id = null)
     {
