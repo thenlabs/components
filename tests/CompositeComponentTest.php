@@ -26,6 +26,10 @@ testCase('CompositeComponentTest.php', function () {
             $this->assertFalse($this->component->hasChild($child));
         });
 
+        test("\$component->getChild('$id') === null", function() use ($id) {
+            $this->assertNull($this->component->getChild($id));
+        });
+
         testCase('$component->getId();', function () {
             test('returns an unique string that starts with "compositecomponent_"', function () {
                 $id = $this->component->getId();
@@ -51,6 +55,10 @@ testCase('CompositeComponentTest.php', function () {
 
             test('$child->getParent() === $component', function() {
                 $this->assertEquals($this->component, $this->child->getParent());
+            });
+
+            test('$component->getChild($child->getId()) === $child', function() {
+                $this->assertEquals($this->child, $this->component->getChild($this->child->getId()));
             });
 
             testCase(sprintf('$component->addChild($child2 = new %s);', Component::class), function () {

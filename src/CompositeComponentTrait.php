@@ -10,16 +10,16 @@ trait CompositeComponentTrait
 {
     use ComponentTrait;
 
-    protected $children = [];
+    protected $childs = [];
 
     public function hasChild($child): bool
     {
-        if (is_string($child) && isset($this->children[$child])) {
+        if (is_string($child) && isset($this->childs[$child])) {
             return true;
         }
 
         if ($child instanceof ComponentInterface &&
-            isset($this->children[$child->getId()])
+            isset($this->childs[$child->getId()])
         ) {
             return true;
         }
@@ -29,11 +29,16 @@ trait CompositeComponentTrait
 
     public function addChild(ComponentInterface $child, $setParentInChild = true): void
     {
-        $this->children[$child->getId()] = $child;
+        $this->childs[$child->getId()] = $child;
 
         if ($setParentInChild) {
             $child->setParent($this);
         }
+    }
+
+    public function getChild(string $id): ?ComponentInterface
+    {
+        return $this->childs[$id] ?? null;
     }
 
     public function dropChild($child): void
@@ -41,7 +46,7 @@ trait CompositeComponentTrait
         $obj = null;
 
         if (is_string($child)) {
-            $obj = $this->children[$child] ?? null;
+            $obj = $this->childs[$child] ?? null;
         }
 
         if ($child instanceof ComponentInterface) {
@@ -49,16 +54,16 @@ trait CompositeComponentTrait
         }
 
         if ($obj instanceof ComponentInterface &&
-            isset($this->children[$obj->getId()])
+            isset($this->childs[$obj->getId()])
         ) {
-            unset($this->children[$obj->getId()]);
+            unset($this->childs[$obj->getId()]);
             $obj->setParent(null, false);
         }
     }
 
     public function getOwnChilds(): array
     {
-        return $this->children;
+        return $this->childs;
     }
 
     public function children(): iterable
@@ -75,6 +80,6 @@ trait CompositeComponentTrait
             return;
         };
 
-        return $generator($this->children);
+        return $generator($this->childs);
     }
 }
