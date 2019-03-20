@@ -12,6 +12,8 @@ trait ComponentTrait
 
     protected $parent;
 
+    protected $dependencies = [];
+
     public function getId(): string
     {
         if (! $this->id) {
@@ -44,6 +46,11 @@ trait ComponentTrait
 
     public function getDependencies(): array
     {
-        return [];
+        return $this->dependencies;
+    }
+
+    public function getOwnDependencies(): array
+    {
+        return $this->dependencies;
     }
 }
