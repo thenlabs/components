@@ -23,4 +23,6 @@ interface CompositeComponentInterface extends ComponentInterface
     public function children(): iterable;
 
     public function getEventDispatcher(): EventDispatcherInterface;
+
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void;
 }

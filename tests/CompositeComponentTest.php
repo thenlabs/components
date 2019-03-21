@@ -51,6 +51,16 @@ testCase('CompositeComponentTest.php', function () {
                 $this->assertSame($dispatcher, $this->component->getEventDispatcher());
                 $this->assertSame($dispatcher, $this->component->getEventDispatcher());
             });
+
+            testCase('$component->setEventDispatcher($newDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher);', function () {
+                test('$component->getEventDispatcher() === $newDispatcher', function () {
+                    $newDispatcher = new EventDispatcher;
+
+                    $this->component->setEventDispatcher($newDispatcher);
+
+                    $this->assertSame($newDispatcher, $this->component->getEventDispatcher());
+                });
+            });
         });
 
         testCase(sprintf('$component->addChild($child = new %s);', Component::class), function () {

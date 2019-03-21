@@ -96,4 +96,9 @@ trait CompositeComponentTrait
 
         return $this->eventDispatcher;
     }
+
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 }
