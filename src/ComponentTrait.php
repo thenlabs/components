@@ -44,6 +44,11 @@ trait ComponentTrait
         }
     }
 
+    public function detach(): void
+    {
+        $this->setParent(null);
+    }
+
     public function getDependencies(): array
     {
         return $this->dependencies;

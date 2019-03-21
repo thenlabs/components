@@ -21,4 +21,16 @@ testCase('ComponentTraitTest.php', function () {
         $this->assertEquals($expectedData, $component->getDependencies());
         $this->assertEquals($expectedData, $component->getOwnDependencies());
     });
+
+    test('#detach() invoke to #setParent(null)', function () {
+        $mock = $this->getMockBuilder(ComponentTrait::class)
+            ->setMethods(['setParent'])
+            ->getMockForTrait();
+        $mock->expects($this->once())
+            ->method('setParent')
+            ->with($this->equalTo(false))
+        ;
+
+        $mock->detach();
+    });
 });

@@ -14,6 +14,8 @@ interface ComponentInterface
 
     public function setParent(?CompositeComponentInterface $parent, bool $addChild = true): void;
 
+    public function detach(): void;
+
     public function getDependencies(): array;
 
     public function getOwnDependencies(): array;

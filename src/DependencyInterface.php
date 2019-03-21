@@ -29,16 +29,11 @@ interface DependencyInterface
      */
     public function getVersion(): string;
 
-    /**
-     * Value of the semantic version of the project.
-     *
-     * @return string
-     */
-    public function getMinCompatibility(): string;
+    public function getMinUpgradeableVersion(): string;
 
-    public function getMaxCompatibility(): string;
+    public function getMaxUpgradeableVersion(): string;
 
-    public function getMinAbsoluteCompatibility(): string;
+    public function getMinIncompatibilityVersion(): string;
 
-    public function getMaxAbsoluteCompatibility(): string;
+    public function getMaxIncompatibilityVersion(): string;
 }
