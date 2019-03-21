@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
@@ -11,6 +14,8 @@ trait CompositeComponentTrait
     use ComponentTrait;
 
     protected $childs = [];
+
+    protected $eventDispatcher;
 
     public function hasChild($child): bool
     {
@@ -81,5 +86,14 @@ trait CompositeComponentTrait
         };
 
         return $generator($this->childs);
+    }
+
+    public function getEventDispatcher(): EventDispatcherInterface
+    {
+        if (! $this->eventDispatcher) {
+            $this->eventDispatcher = new EventDispatcher;
+        }
+
+        return $this->eventDispatcher;
     }
 }

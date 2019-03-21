@@ -3,6 +3,7 @@
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\Tests\Component;
 use NubecuLabs\Components\Tests\CompositeComponent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
@@ -36,6 +37,19 @@ testCase('CompositeComponentTest.php', function () {
 
                 $this->assertGreaterThan(13, strlen($id));
                 $this->assertStringStartsWith('compositecomponent_', $id);
+            });
+        });
+
+        testCase('$component->getEventDispatcher();', function () {
+            test('returns an instance of "Symfony\Component\EventDispatcher\EventDispatcher"', function () {
+                $this->assertInstanceOf(EventDispatcher::class, $this->component->getEventDispatcher());
+            });
+
+            test('returns always the same instance', function () {
+                $dispatcher = $this->component->getEventDispatcher();
+
+                $this->assertSame($dispatcher, $this->component->getEventDispatcher());
+                $this->assertSame($dispatcher, $this->component->getEventDispatcher());
             });
         });
 
