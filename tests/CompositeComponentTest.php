@@ -78,11 +78,11 @@ testCase('CompositeComponentTest.php', function () {
             });
 
             test('$child->getParent() === $component', function () {
-                $this->assertEquals($this->component, $this->child->getParent());
+                $this->assertSame($this->component, $this->child->getParent());
             });
 
             test('$component->getChild($child->getId()) === $child', function () {
-                $this->assertEquals($this->child, $this->component->getChild($this->child->getId()));
+                $this->assertSame($this->child, $this->component->getChild($this->child->getId()));
             });
 
             testCase(sprintf('$component->addChild($child2 = new %s);', Component::class), function () {
@@ -100,7 +100,7 @@ testCase('CompositeComponentTest.php', function () {
                 });
 
                 test('$child2->getParent() === $component', function () {
-                    $this->assertEquals($this->component, $this->child2->getParent());
+                    $this->assertSame($this->component, $this->child2->getParent());
                 });
 
                 testCase('$children = $component->getOwnChilds();', function () {
@@ -113,11 +113,11 @@ testCase('CompositeComponentTest.php', function () {
                     });
 
                     test('$children[$child->getId()] === $child', function () {
-                        $this->assertEquals($this->child, $this->children[$this->child->getId()]);
+                        $this->assertSame($this->child, $this->children[$this->child->getId()]);
                     });
 
                     test('$children[$child2->getId()] === $child2', function () {
-                        $this->assertEquals($this->child2, $this->children[$this->child2->getId()]);
+                        $this->assertSame($this->child2, $this->children[$this->child2->getId()]);
                     });
 
                     createMacro('drop child tests', function () {
@@ -143,7 +143,7 @@ testCase('CompositeComponentTest.php', function () {
                             });
 
                             test('$children[$child2->getId()] === $child2', function () {
-                                $this->assertEquals($this->child2, $this->children[$this->child2->getId()]);
+                                $this->assertSame($this->child2, $this->children[$this->child2->getId()]);
                             });
                         });
                     });
@@ -262,52 +262,52 @@ testCase('CompositeComponentTest.php', function () {
             });
 
             test('iteration #1: $iterator->current() === $child1', function () {
-                $this->assertEquals($this->child1, $this->iterator->current());
+                $this->assertSame($this->child1, $this->iterator->current());
                 $this->iterator->next();
             });
 
             test('iteration #2: $iterator->current() === $child2', function () {
-                $this->assertEquals($this->child2, $this->iterator->current());
+                $this->assertSame($this->child2, $this->iterator->current());
                 $this->iterator->next();
             });
 
             test('iteration #3: $iterator->current() === $child3', function () {
-                $this->assertEquals($this->child3, $this->iterator->current());
+                $this->assertSame($this->child3, $this->iterator->current());
                 $this->iterator->next();
             });
 
             test('iteration #4: $iterator->current() === $child4', function () {
-                $this->assertEquals($this->child4, $this->iterator->current());
+                $this->assertSame($this->child4, $this->iterator->current());
                 $this->iterator->next();
             });
 
             test('iteration #5: $iterator->current() === $child5', function () {
-                $this->assertEquals($this->child5, $this->iterator->current());
+                $this->assertSame($this->child5, $this->iterator->current());
                 $this->iterator->next();
             });
 
             test('iteration #6: $iterator->current() === $child6', function () {
-                $this->assertEquals($this->child6, $this->iterator->current());
+                $this->assertSame($this->child6, $this->iterator->current());
                 $this->iterator->next();
             });
 
             test('iteration #7: $iterator->current() === $child7', function () {
-                $this->assertEquals($this->child7, $this->iterator->current());
+                $this->assertSame($this->child7, $this->iterator->current());
                 $this->iterator->next();
             });
 
             test('iteration #8: $iterator->current() === $child8', function () {
-                $this->assertEquals($this->child8, $this->iterator->current());
+                $this->assertSame($this->child8, $this->iterator->current());
                 $this->iterator->next();
             });
 
             test('iteration #9: $iterator->current() === $child9', function () {
-                $this->assertEquals($this->child9, $this->iterator->current());
+                $this->assertSame($this->child9, $this->iterator->current());
                 $this->iterator->next();
             });
 
             test('iteration #10: $iterator->current() === $child10', function () {
-                $this->assertEquals($this->child10, $this->iterator->current());
+                $this->assertSame($this->child10, $this->iterator->current());
                 $this->iterator->next();
             });
         });
