@@ -101,4 +101,15 @@ trait CompositeComponentTrait
     {
         $this->eventDispatcher = $eventDispatcher;
     }
+
+    public function findOneChild(callable $callback, bool $recursive = true): ?ComponentInterface
+    {
+        foreach ($this->children($recursive) as $child) {
+            if ($callback($child)) {
+                return $child;
+            }
+        }
+
+        return null;
+    }
 }

@@ -25,4 +25,6 @@ interface CompositeComponentInterface extends ComponentInterface
     public function getEventDispatcher(): EventDispatcherInterface;
 
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void;
+
+    public function findOneChild(callable $callback, bool $recursive = true): ?ComponentInterface;
 }

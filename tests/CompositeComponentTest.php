@@ -189,22 +189,25 @@ testCase('CompositeComponentTest.php', function () {
 
     testCase('exists a tree of components (see sources)', function () {
         /**
+         * C:  Component
+         * CC: CompositeComponent
+         *
          * $component
          *     |
-         *     |____$child1
-         *     |____$child2
+         *     |____$child1 (C)
+         *     |____$child2 (CC)
          *     |       |
-         *     |       |____$child3
-         *     |       |____$child4
+         *     |       |____$child3 (CC)
+         *     |       |____$child4 (C)
          *     |
-         *     |____$child5
+         *     |____$child5 (CC)
          *     |       |
-         *     |       |____$child6
-         *     |               |____$child7
-         *     |               |       |____$child8
-         *     |               |       |____$child9
+         *     |       |____$child6 (CC)
+         *     |               |____$child7 (CC)
+         *     |               |       |____$child8 (CC)
+         *     |               |       |____$child9 (CC)
          *     |               |
-         *     |               |____$child10
+         *     |               |____$child10 (CC)
          */
         setUpBeforeClassOnce(function () {
             $child1 = new Component('child1');
@@ -306,9 +309,10 @@ testCase('CompositeComponentTest.php', function () {
                 $this->iterator->next();
             });
 
-            test('iteration #10: $iterator->current() === $child10', function () {
+            test('iteration #10 (End): $iterator->current() === $child10', function () {
                 $this->assertSame($this->child10, $this->iterator->current());
                 $this->iterator->next();
+                $this->assertNull($this->iterator->current());
             });
         });
 
@@ -328,9 +332,34 @@ testCase('CompositeComponentTest.php', function () {
                 $this->iterator->next();
             });
 
-            test('iteration #3: $iterator->current() === $child5', function () {
+            test('iteration #3 (End): $iterator->current() === $child5', function () {
                 $this->assertSame($this->child5, $this->iterator->current());
                 $this->iterator->next();
+                $this->assertNull($this->iterator->current());
+            });
+        });
+
+        testCase('$component->findOneChild($callback) cases', function () {
+            test('returns null when callback always returns false', function () {
+                $this->assertNull($this->component->findOneChild(function (ComponentInterface $child) {
+                    return false;
+                }));
+            });
+
+            test('returns the child for whom the return call returns true', function () {
+                $this->assertSame($this->child4, $this->component->findOneChild(function (ComponentInterface $child) {
+                    return $child->getId() == 'child4' ? true : false;
+                }));
+            });
+        });
+
+        testCase('$component->findOneChild($callback, false) cases', function () {
+            test('does not do a recursive search', function () {
+                $callback = function (ComponentInterface $child) {
+                    return $child->getId() == 'child4' ? true : false;
+                };
+
+                $this->assertNull($this->component->findOneChild($callback, false));
             });
         });
     });
