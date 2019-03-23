@@ -112,4 +112,24 @@ trait CompositeComponentTrait
 
         return null;
     }
+
+    public function findChilds(callable $callback, bool $recursive = true): array
+    {
+        $childs = [];
+
+        foreach ($this->children($recursive) as $child) {
+            if ($callback($child)) {
+                $childs[] = $child;
+            }
+        }
+
+        return $childs;
+    }
+
+    public function findChildById(string $id): ?ComponentInterface
+    {
+        return $this->findOneChild(function (ComponentInterface $child) use ($id) {
+            return $id == $child->getId() ? true : false;
+        });
+    }
 }

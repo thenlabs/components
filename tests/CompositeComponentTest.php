@@ -346,21 +346,61 @@ testCase('CompositeComponentTest.php', function () {
                 }));
             });
 
-            test('returns the child for whom the return call returns true', function () {
+            test('returns the child for whom the callback returns true', function () {
                 $this->assertSame($this->child4, $this->component->findOneChild(function (ComponentInterface $child) {
                     return $child->getId() == 'child4' ? true : false;
                 }));
             });
-        });
 
-        testCase('$component->findOneChild($callback, false) cases', function () {
-            test('does not do a recursive search', function () {
+            test('$component->findOneChild($callback, false) does not do a recursive search', function () {
                 $callback = function (ComponentInterface $child) {
                     return $child->getId() == 'child4' ? true : false;
                 };
 
                 $this->assertNull($this->component->findOneChild($callback, false));
             });
+        });
+
+        testCase('$component->findChilds($callback) cases', function () {
+            test('returns an empty array when callback always return false', function () {
+                $callback = function () {
+                    return false;
+                };
+
+                $this->assertEquals([], $this->component->findChilds($callback));
+            });
+
+            test('returns in an array the childs for whom the callback returns true', function () {
+                $callback = function (ComponentInterface $child) {
+                    return $child instanceof CompositeComponent ? false : true;
+                };
+
+                $childs = $this->component->findChilds($callback);
+
+                $this->assertCount(2, $childs);
+                $this->assertSame($this->child1, $childs[0]);
+                $this->assertSame($this->child4, $childs[1]);
+            });
+
+            test('$component->findChilds($callback, false) does not do a recursive search', function () {
+                $callback = function (ComponentInterface $child) {
+                    return $child instanceof CompositeComponent ? false : true;
+                };
+
+                $childs = $this->component->findChilds($callback, false);
+
+                $this->assertCount(1, $childs);
+                $this->assertSame($this->child1, $childs[0]);
+            });
+        });
+
+        $id = uniqid('comp');
+        test("\$component->findChildById('$id') === null", function () use ($id) {
+            $this->assertNull($this->component->findChildById($id));
+        });
+
+        test('$component->findChildById("child4") === $child4', function () {
+            $this->assertSame($this->child4, $this->component->findChildById('child4'));
         });
     });
 });
