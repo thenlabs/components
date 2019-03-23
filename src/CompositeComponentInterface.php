@@ -18,9 +18,9 @@ interface CompositeComponentInterface extends ComponentInterface
 
     public function dropChild($child): void;
 
-    public function getOwnChilds(): array;
+    public function getChilds(): array;
 
-    public function children(): iterable;
+    public function children(bool $recursive = true): iterable;
 
     public function getEventDispatcher(): EventDispatcherInterface;
 

@@ -66,19 +66,19 @@ trait CompositeComponentTrait
         }
     }
 
-    public function getOwnChilds(): array
+    public function getChilds(): array
     {
         return $this->childs;
     }
 
-    public function children(): iterable
+    public function children(bool $recursive = true): iterable
     {
-        $generator = function (array $children) use (&$generator) {
+        $generator = function (array $children) use (&$generator, $recursive) {
             foreach ($children as $child) {
                 yield $child;
 
-                if ($child instanceof CompositeComponentInterface) {
-                    yield from $generator($child->getOwnChilds());
+                if ($recursive && $child instanceof CompositeComponentInterface) {
+                    yield from $generator($child->getChilds());
                 }
             }
 

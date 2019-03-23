@@ -103,9 +103,9 @@ testCase('CompositeComponentTest.php', function () {
                     $this->assertSame($this->component, $this->child2->getParent());
                 });
 
-                testCase('$children = $component->getOwnChilds();', function () {
+                testCase('$children = $component->getChilds();', function () {
                     setUp(function () {
-                        $this->children = $this->component->getOwnChilds();
+                        $this->children = $this->component->getChilds();
                     });
 
                     test('count($children) == 2', function () {
@@ -133,9 +133,9 @@ testCase('CompositeComponentTest.php', function () {
                             $this->assertFalse($this->component->hasChild($this->child->getId()));
                         });
 
-                        testCase('$children = $component->getOwnChilds();', function () {
+                        testCase('$children = $component->getChilds();', function () {
                             setUp(function () {
-                                $this->children = $this->component->getOwnChilds();
+                                $this->children = $this->component->getChilds();
                             });
 
                             test('count($children) == 1', function () {
@@ -308,6 +308,28 @@ testCase('CompositeComponentTest.php', function () {
 
             test('iteration #10: $iterator->current() === $child10', function () {
                 $this->assertSame($this->child10, $this->iterator->current());
+                $this->iterator->next();
+            });
+        });
+
+        testCase('$iterator = $component->children(false);', function () {
+            setUpBeforeClassOnce(function () {
+                $component = static::getVar('component');
+                static::setVar('iterator', $component->children(false));
+            });
+
+            test('iteration #1: $iterator->current() === $child1', function () {
+                $this->assertSame($this->child1, $this->iterator->current());
+                $this->iterator->next();
+            });
+
+            test('iteration #2: $iterator->current() === $child2', function () {
+                $this->assertSame($this->child2, $this->iterator->current());
+                $this->iterator->next();
+            });
+
+            test('iteration #3: $iterator->current() === $child5', function () {
+                $this->assertSame($this->child5, $this->iterator->current());
                 $this->iterator->next();
             });
         });
