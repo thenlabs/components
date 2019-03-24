@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -32,7 +33,9 @@ interface CompositeComponentInterface extends ComponentInterface
 
     public function findChildById(string $id): ?ComponentInterface;
 
-    public function on(string $eventName, callable $listener): void;
+    public function on(string $eventName, callable $listener, bool $capture = false): void;
+
+    public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void;
 
     public function getOwnDependencies(): array;
 }

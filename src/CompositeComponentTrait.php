@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -133,8 +134,12 @@ trait CompositeComponentTrait
         });
     }
 
-    public function on(string $eventName, callable $listener): void
+    public function on(string $eventName, callable $listener, bool $capture = false): void
     {
         $this->getEventDispatcher()->addListener($eventName, $listener);
+    }
+
+    public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
+    {
     }
 }
