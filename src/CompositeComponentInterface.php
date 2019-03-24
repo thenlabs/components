@@ -31,4 +31,6 @@ interface CompositeComponentInterface extends ComponentInterface
     public function findChilds(callable $callback, bool $recursive = true): array;
 
     public function findChildById(string $id): ?ComponentInterface;
+
+    public function on(string $eventName, callable $listener): void;
 }

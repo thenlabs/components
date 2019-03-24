@@ -132,4 +132,9 @@ trait CompositeComponentTrait
             return $id == $child->getId() ? true : false;
         });
     }
+
+    public function on(string $eventName, callable $listener): void
+    {
+        $this->getEventDispatcher()->addListener($eventName, $listener);
+    }
 }
