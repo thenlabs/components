@@ -258,6 +258,15 @@ testCase('CompositeComponentTest.php', function () {
             $this->injectVars();
         });
 
+        $id = uniqid('comp');
+        test("\$component->findChildById('$id') === null", function () use ($id) {
+            $this->assertNull($this->component->findChildById($id));
+        });
+
+        test('$component->findChildById("child4") === $child4', function () {
+            $this->assertSame($this->child4, $this->component->findChildById('child4'));
+        });
+
         testCase('$iterator = $component->children();', function () {
             setUpBeforeClassOnce(function () {
                 $component = static::getVar('component');
@@ -394,13 +403,44 @@ testCase('CompositeComponentTest.php', function () {
             });
         });
 
-        $id = uniqid('comp');
-        test("\$component->findChildById('$id') === null", function () use ($id) {
-            $this->assertNull($this->component->findChildById($id));
+        testCase('$parents = $child1->getParents();', function () {
+            setUp(function () {
+                $this->parents = $this->child1->getParents();
+            });
+
+            test('count($parents) == 1', function () {
+                $this->assertCount(1, $this->parents);
+            });
+
+            test('$parents[0] === $component', function () {
+                $this->assertSame($this->component, $this->parents[0]);
+            });
         });
 
-        test('$component->findChildById("child4") === $child4', function () {
-            $this->assertSame($this->child4, $this->component->findChildById('child4'));
+        testCase('$parents = $child8->getParents();', function () {
+            setUp(function () {
+                $this->parents = $this->child8->getParents();
+            });
+
+            test('count($parents) == 4', function () {
+                $this->assertCount(4, $this->parents);
+            });
+
+            test('$parents[0] === $child7', function () {
+                $this->assertSame($this->child7, $this->parents[0]);
+            });
+
+            test('$parents[1] === $child6', function () {
+                $this->assertSame($this->child6, $this->parents[1]);
+            });
+
+            test('$parents[2] === $child5', function () {
+                $this->assertSame($this->child5, $this->parents[2]);
+            });
+
+            test('$parents[3] === $component', function () {
+                $this->assertSame($this->component, $this->parents[3]);
+            });
         });
     });
 });

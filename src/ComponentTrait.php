@@ -31,6 +31,23 @@ trait ComponentTrait
         return $this->parent;
     }
 
+    public function getParents(): array
+    {
+        $result = [];
+
+        $node = $this;
+        while ($node) {
+            $parent = $node->getParent();
+            if ($parent) {
+                $result[] = $parent;
+            }
+
+            $node = $parent;
+        }
+
+        return $result;
+    }
+
     public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true): void
     {
         if ($this->parent instanceof CompositeComponentInterface) {
