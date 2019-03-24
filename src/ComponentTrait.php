@@ -70,9 +70,4 @@ trait ComponentTrait
     {
         return $this->dependencies;
     }
-
-    public function getOwnDependencies(): array
-    {
-        return $this->dependencies;
-    }
 }

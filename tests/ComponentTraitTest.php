@@ -13,13 +13,12 @@ testCase('ComponentTraitTest.php', function () {
         $this->assertEquals([], $trait->getDependencies());
     });
 
-    test('#getDependencies() and #getOwnDependencies() returns the #dependencies data', function () {
+    test('#getDependencies() returns the #dependencies data', function () {
         $expectedData = range(1, mt_rand(1, 10)); // random array
         $component = new Component;
         $component->setDependencies($expectedData);
 
         $this->assertEquals($expectedData, $component->getDependencies());
-        $this->assertEquals($expectedData, $component->getOwnDependencies());
     });
 
     test('#detach() invoke to #setParent(null)', function () {

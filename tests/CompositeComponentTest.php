@@ -348,25 +348,25 @@ testCase('CompositeComponentTest.php', function () {
             });
         });
 
-        testCase('$component->findOneChild($callback) cases', function () {
+        testCase('$component->findChild($callback) cases', function () {
             test('returns null when callback always returns false', function () {
-                $this->assertNull($this->component->findOneChild(function (ComponentInterface $child) {
+                $this->assertNull($this->component->findChild(function (ComponentInterface $child) {
                     return false;
                 }));
             });
 
             test('returns the child for whom the callback returns true', function () {
-                $this->assertSame($this->child4, $this->component->findOneChild(function (ComponentInterface $child) {
+                $this->assertSame($this->child4, $this->component->findChild(function (ComponentInterface $child) {
                     return $child->getId() == 'child4' ? true : false;
                 }));
             });
 
-            test('$component->findOneChild($callback, false) does not do a recursive search', function () {
+            test('$component->findChild($callback, false) does not do a recursive search', function () {
                 $callback = function (ComponentInterface $child) {
                     return $child->getId() == 'child4' ? true : false;
                 };
 
-                $this->assertNull($this->component->findOneChild($callback, false));
+                $this->assertNull($this->component->findChild($callback, false));
             });
         });
 

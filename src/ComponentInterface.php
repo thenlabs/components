@@ -19,6 +19,4 @@ interface ComponentInterface
     public function detach(): void;
 
     public function getDependencies(): array;
-
-    public function getOwnDependencies(): array;
 }

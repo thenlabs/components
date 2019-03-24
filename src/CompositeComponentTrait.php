@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 trait CompositeComponentTrait
 {
-    use ComponentTrait;
+    use ComponentTrait { getDependencies as getOwnDependencies; }
 
     protected $childs = [];
 
@@ -102,7 +102,7 @@ trait CompositeComponentTrait
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function findOneChild(callable $callback, bool $recursive = true): ?ComponentInterface
+    public function findChild(callable $callback, bool $recursive = true): ?ComponentInterface
     {
         foreach ($this->children($recursive) as $child) {
             if ($callback($child)) {
@@ -128,7 +128,7 @@ trait CompositeComponentTrait
 
     public function findChildById(string $id): ?ComponentInterface
     {
-        return $this->findOneChild(function (ComponentInterface $child) use ($id) {
+        return $this->findChild(function (ComponentInterface $child) use ($id) {
             return $id == $child->getId() ? true : false;
         });
     }
