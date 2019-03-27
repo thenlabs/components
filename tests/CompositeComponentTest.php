@@ -453,32 +453,32 @@ testCase('CompositeComponentTest.php', function () {
             $this->momentBubble1 = null;
             $this->momentBubble2 = null;
 
-            // $this->component->on($this->eventName, function () {
-            //     $this->momentCapture1 = microtime(true);
-            // }, true);
+            $this->component->on($this->eventName, function () {
+                $this->momentCapture1 = microtime(true);
+            }, true);
 
-            // $this->child2->on($this->eventName, function () {
-            //     $this->momentCapture2 = microtime(true);
-            // }, true);
+            $this->child2->on($this->eventName, function () {
+                $this->momentCapture2 = microtime(true);
+            }, true);
 
             $this->child4->on($this->eventName, function () {
                 $this->moment = microtime(true);
             });
 
-            // $this->child2->on($this->eventName, function () {
-            //     $this->momentBubble1 = microtime(true);
-            // });
+            $this->child2->on($this->eventName, function () {
+                $this->momentBubble1 = microtime(true);
+            });
 
-            // $this->component->on($this->eventName, function () {
-            //     $this->momentBubble2 = microtime(true);
-            // });
+            $this->component->on($this->eventName, function () {
+                $this->momentBubble2 = microtime(true);
+            });
 
             $this->child4->dispatch($this->eventName, $this->event);
 
-            // $this->assertLessThan($this->momentCapture2, $this->momentCapture1);
-            // $this->assertLessThan($this->momentCapture1, $this->moment);
-            $this->assertLessThan($this->moment, $this->momentBubble1);
-            // $this->assertLessThan($this->momentBubble1, $this->momentBubble2);
+            $this->assertGreaterThan($this->momentCapture1, $this->momentCapture2);
+            $this->assertGreaterThan($this->momentCapture2, $this->moment);
+            $this->assertGreaterThan($this->moment, $this->momentBubble1);
+            $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
         });
     });
 });

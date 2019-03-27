@@ -103,15 +103,15 @@ trait ComponentTrait
 
     public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
     {
-        $parents = [];
+        $parents = $this->getParents();
 
-        foreach ($parents as $parent) {
+        foreach (array_reverse($parents) as $parent) {
             $parent->getCaptureEventDispatcher()->dispatch($eventName, $event);
         }
 
         $this->getEventDispatcher()->dispatch($eventName, $event);
 
-        foreach (array_reverse($parents) as $parent) {
+        foreach ($parents as $parent) {
             $parent->getEventDispatcher()->dispatch($eventName, $event);
         }
     }
