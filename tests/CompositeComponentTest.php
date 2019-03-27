@@ -3,6 +3,7 @@
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\Tests\Component;
 use NubecuLabs\Components\Tests\CompositeComponent;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
@@ -441,6 +442,43 @@ testCase('CompositeComponentTest.php', function () {
             test('$parents[3] === $component', function () {
                 $this->assertSame($this->component, $this->parents[3]);
             });
+        });
+
+        test('testing order of event propagation', function () {
+            $this->eventName = uniqid('event');
+            $this->event = new Event;
+            $this->momentCapture1 = null;
+            $this->momentCapture2 = null;
+            $this->moment = null;
+            $this->momentBubble1 = null;
+            $this->momentBubble2 = null;
+
+            // $this->component->on($this->eventName, function () {
+            //     $this->momentCapture1 = microtime(true);
+            // }, true);
+
+            // $this->child2->on($this->eventName, function () {
+            //     $this->momentCapture2 = microtime(true);
+            // }, true);
+
+            $this->child4->on($this->eventName, function () {
+                $this->moment = microtime(true);
+            });
+
+            // $this->child2->on($this->eventName, function () {
+            //     $this->momentBubble1 = microtime(true);
+            // });
+
+            // $this->component->on($this->eventName, function () {
+            //     $this->momentBubble2 = microtime(true);
+            // });
+
+            $this->child4->dispatch($this->eventName, $this->event);
+
+            // $this->assertLessThan($this->momentCapture2, $this->momentCapture1);
+            // $this->assertLessThan($this->momentCapture1, $this->moment);
+            $this->assertLessThan($this->moment, $this->momentBubble1);
+            // $this->assertLessThan($this->momentBubble1, $this->momentBubble2);
         });
     });
 });

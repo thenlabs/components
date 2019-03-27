@@ -135,7 +135,11 @@ trait CompositeComponentTrait
 
     public function on(string $eventName, callable $listener, bool $capture = false): void
     {
-        $this->getEventDispatcher()->addListener($eventName, $listener);
+        if ($capture) {
+            $this->getCaptureEventDispatcher()->addListener($eventName, $listener);
+        } else {
+            $this->getEventDispatcher()->addListener($eventName, $listener);
+        }
     }
 
     public function off(string $eventName, callable $listener, bool $capture = false): void
