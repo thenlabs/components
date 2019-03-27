@@ -44,11 +44,7 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
             $this->assertTrue($this->parent->hasChild($this->component));
         });
 
-        testCase('$component->setParent(null);', function () {
-            setUp(function () {
-                $this->component->setParent(null);
-            });
-
+        createMacro('remove the parent tests', function () {
             test('$component->getParent() === null', function () {
                 $this->assertNull($this->component->getParent());
             });
@@ -56,6 +52,22 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
             test('$parent->hasChild($component) === false', function () {
                 $this->assertFalse($this->parent->hasChild($this->component));
             });
+        });
+
+        testCase('$component->setParent(null);', function () {
+            setUp(function () {
+                $this->component->setParent(null);
+            });
+
+            useMacro('remove the parent tests');
+        });
+
+        testCase('$component->detach();', function () {
+            setUp(function () {
+                $this->component->detach();
+            });
+
+            useMacro('remove the parent tests');
         });
 
         testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\CompositeComponent);', function () {

@@ -23,7 +23,9 @@ interface DependencyInterface
     public function getName(): string;
 
     /**
-     * Value of the semantic version of the project. Example "1.11.1".
+     * Value of the semantic version of the project.
+     *
+     * Should be an exactly version. Example "1.11.1".
      *
      * @return string
      */
