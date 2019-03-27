@@ -5,8 +5,9 @@ namespace NubecuLabs\Components\Event;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
+ * @abstract
  */
-class CancellableTreeEvent extends TreeEvent
+abstract class AbstractCancellableTreeEvent extends TreeEvent
 {
     protected $cancelled = false;
 

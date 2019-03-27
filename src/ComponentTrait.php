@@ -103,5 +103,6 @@ trait ComponentTrait
 
     public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
     {
+        $this->getEventDispatcher()->dispatch($eventName, $event);
     }
 }

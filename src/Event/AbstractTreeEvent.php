@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components\Event;
 
+use Symfony\Component\EventDispatcher\Event;
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\CompositeComponentInterface;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
+ * @abstract
  */
-class TreeEvent extends Event
+abstract class AbstractTreeEvent extends Event
 {
     public const BEFORE_INSERTION = 'tree.before_insertion';
 

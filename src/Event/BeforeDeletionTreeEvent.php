@@ -6,6 +6,6 @@ namespace NubecuLabs\Components\Event;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class BeforeDeletionTreeEvent extends CancellableTreeEvent
+class BeforeDeletionTreeEvent extends AbstractCancellableTreeEvent
 {
 }
