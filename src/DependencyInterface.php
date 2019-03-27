@@ -31,13 +31,5 @@ interface DependencyInterface
 
     public function getUpgradeableVersionsList(): array;
 
-    public function getMinUpgradeableVersion(): string;
-
-    public function getMaxUpgradeableVersion(): string;
-
     public function getIncompatibilityVersionsList(): array;
-
-    public function getMinIncompatibilityVersion(): string;
-
-    public function getMaxIncompatibilityVersion(): string;
 }
