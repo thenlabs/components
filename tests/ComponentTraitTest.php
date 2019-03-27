@@ -2,7 +2,6 @@
 
 use NubecuLabs\Components\ComponentTrait;
 use NubecuLabs\Components\Tests\Component;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');

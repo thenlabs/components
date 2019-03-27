@@ -9,9 +9,8 @@ use NubecuLabs\Components\CompositeComponentInterface;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
- * @abstract
  */
-abstract class AbstractTreeEvent extends Event
+class TreeEvent extends Event
 {
     public const BEFORE_INSERTION = 'tree.before_insertion';
 
