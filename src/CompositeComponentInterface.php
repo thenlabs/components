@@ -35,4 +35,6 @@ interface CompositeComponentInterface extends ComponentInterface
     public function setCaptureEventDispatcher(EventDispatcherInterface $eventDispatcher): void;
 
     public function on(string $eventName, callable $listener, bool $capture = false): void;
+
+    public function off(string $eventName, callable $listener, bool $capture = false): void;
 }

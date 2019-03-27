@@ -96,6 +96,11 @@ trait ComponentTrait
         $this->getEventDispatcher()->addListener($eventName, $listener);
     }
 
+    public function off(string $eventName, callable $listener): void
+    {
+        $this->getEventDispatcher()->removeListener($eventName, $listener);
+    }
+
     public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
     {
     }

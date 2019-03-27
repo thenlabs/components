@@ -11,6 +11,14 @@ use NubecuLabs\Components\CompositeComponentInterface;
  */
 class TreeEvent
 {
+    public const BEFORE_INSERTION = 'tree.before_insertion';
+
+    public const AFTER_INSERTION = 'tree.after_insertion';
+
+    public const BEFORE_DELETION = 'tree.before_deletion';
+
+    public const AFTER_DELETION = 'tree.after_deletion';
+
     protected $child;
 
     protected $parent;

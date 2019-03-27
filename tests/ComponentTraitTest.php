@@ -55,4 +55,26 @@ testCase('ComponentTraitTest.php', function () {
 
         $trait->on($eventName, $listener); // Act
     });
+
+    test('#off($eventName, $listener) invoke to #eventDispatcher->removeListener($eventName, $listener)', function () {
+        $eventName = uniqid('eventName');
+        $listener = function () {
+        };
+
+        $dispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
+            ->setMethods(['removeListener'])
+            ->getMockForAbstractClass();
+        $dispatcher->expects($this->once())
+            ->method('removeListener')
+            ->with(
+                $this->equalTo($eventName),
+                $this->equalTo($listener)
+            )
+        ;
+
+        $trait = $this->getMockForTrait(ComponentTrait::class);
+        $trait->setEventDispatcher($dispatcher);
+
+        $trait->off($eventName, $listener); // Act
+    });
 });

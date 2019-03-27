@@ -29,5 +29,7 @@ interface ComponentInterface
 
     public function on(string $eventName, callable $listener): void;
 
+    public function off(string $eventName, callable $listener): void;
+
     public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void;
 }

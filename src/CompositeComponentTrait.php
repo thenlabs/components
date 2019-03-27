@@ -136,4 +136,8 @@ trait CompositeComponentTrait
     public function on(string $eventName, callable $listener, bool $capture = false): void
     {
     }
+
+    public function off(string $eventName, callable $listener, bool $capture = false): void
+    {
+    }
 }
