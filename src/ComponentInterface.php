@@ -27,7 +27,7 @@ interface ComponentInterface
 
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void;
 
-    public function on(string $eventName, callable $listener, bool $capture = false): void;
+    public function on(string $eventName, callable $listener): void;
 
     public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void;
 }

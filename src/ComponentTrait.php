@@ -91,7 +91,7 @@ trait ComponentTrait
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function on(string $eventName, callable $listener, bool $capture = false): void
+    public function on(string $eventName, callable $listener): void
     {
         $this->getEventDispatcher()->addListener($eventName, $listener);
     }

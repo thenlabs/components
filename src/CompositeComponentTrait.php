@@ -132,4 +132,8 @@ trait CompositeComponentTrait
     {
         $this->captureEventDispatcher = $captureEventDispatcher;
     }
+
+    public function on(string $eventName, callable $listener, bool $capture = false): void
+    {
+    }
 }
