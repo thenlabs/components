@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
@@ -15,8 +11,6 @@ trait CompositeComponentTrait
     use ComponentTrait { getDependencies as getOwnDependencies; }
 
     protected $childs = [];
-
-    protected $eventDispatcher;
 
     public function hasChild($child): bool
     {
@@ -89,20 +83,6 @@ trait CompositeComponentTrait
         return $generator($this->childs);
     }
 
-    public function getEventDispatcher(): EventDispatcherInterface
-    {
-        if (! $this->eventDispatcher) {
-            $this->eventDispatcher = new EventDispatcher;
-        }
-
-        return $this->eventDispatcher;
-    }
-
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
     public function findChild(callable $callback, bool $recursive = true): ?ComponentInterface
     {
         foreach ($this->children($recursive) as $child) {
@@ -132,14 +112,5 @@ trait CompositeComponentTrait
         return $this->findChild(function (ComponentInterface $child) use ($id) {
             return $id == $child->getId() ? true : false;
         });
-    }
-
-    public function on(string $eventName, callable $listener, bool $capture = false): void
-    {
-        $this->getEventDispatcher()->addListener($eventName, $listener);
-    }
-
-    public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
-    {
     }
 }

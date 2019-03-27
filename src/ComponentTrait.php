@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
@@ -13,6 +17,8 @@ trait ComponentTrait
     protected $parent;
 
     protected $dependencies = [];
+
+    protected $eventDispatcher;
 
     public function getId(): string
     {
@@ -69,5 +75,28 @@ trait ComponentTrait
     public function getDependencies(): array
     {
         return $this->dependencies;
+    }
+
+    public function getEventDispatcher(): EventDispatcherInterface
+    {
+        if (! $this->eventDispatcher) {
+            $this->eventDispatcher = new EventDispatcher;
+        }
+
+        return $this->eventDispatcher;
+    }
+
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function on(string $eventName, callable $listener, bool $capture = false): void
+    {
+        $this->getEventDispatcher()->addListener($eventName, $listener);
+    }
+
+    public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
+    {
     }
 }

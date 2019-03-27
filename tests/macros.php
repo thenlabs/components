@@ -1,6 +1,7 @@
 <?php
 
 use NubecuLabs\Components\Tests\CompositeComponent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 createMacro('common tests for ComponentTrait and CompositeComponentTrait', function () {
     setUp(function () {
@@ -89,6 +90,29 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
 
         test('$parent->hasChild($component) === false', function () {
             $this->assertFalse($this->parent->hasChild($this->component));
+        });
+    });
+
+    testCase('$component->getEventDispatcher();', function () {
+        test('returns an instance of "Symfony\Component\EventDispatcher\EventDispatcher"', function () {
+            $this->assertInstanceOf(EventDispatcher::class, $this->component->getEventDispatcher());
+        });
+
+        test('returns always the same instance', function () {
+            $dispatcher = $this->component->getEventDispatcher();
+
+            $this->assertSame($dispatcher, $this->component->getEventDispatcher());
+            $this->assertSame($dispatcher, $this->component->getEventDispatcher());
+        });
+
+        testCase('$component->setEventDispatcher($newDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher);', function () {
+            test('$component->getEventDispatcher() === $newDispatcher', function () {
+                $newDispatcher = new EventDispatcher;
+
+                $this->component->setEventDispatcher($newDispatcher);
+
+                $this->assertSame($newDispatcher, $this->component->getEventDispatcher());
+            });
         });
     });
 });

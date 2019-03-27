@@ -2,6 +2,7 @@
 
 use NubecuLabs\Components\ComponentTrait;
 use NubecuLabs\Components\Tests\Component;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
@@ -31,5 +32,27 @@ testCase('ComponentTraitTest.php', function () {
         ;
 
         $mock->detach();
+    });
+
+    test('#on($eventName, $listener) invoke to #eventDispatcher->addListener($eventName, $listener)', function () {
+        $eventName = uniqid('eventName');
+        $listener = function () {
+        };
+
+        $dispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
+            ->setMethods(['addListener'])
+            ->getMockForAbstractClass();
+        $dispatcher->expects($this->once())
+            ->method('addListener')
+            ->with(
+                $this->equalTo($eventName),
+                $this->equalTo($listener)
+            )
+        ;
+
+        $trait = $this->getMockForTrait(ComponentTrait::class);
+        $trait->setEventDispatcher($dispatcher);
+
+        $trait->on($eventName, $listener); // Act
     });
 });
