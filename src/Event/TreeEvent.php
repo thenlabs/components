@@ -9,7 +9,7 @@ use NubecuLabs\Components\CompositeComponentInterface;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class TreeEvent
+class TreeEvent extends Event
 {
     public const BEFORE_INSERTION = 'tree.before_insertion';
 
@@ -23,8 +23,10 @@ class TreeEvent
 
     protected $parent;
 
-    public function __construct(ComponentInterface $child, CompositeComponentInterface $parent)
+    public function __construct(ComponentInterface $source, ComponentInterface $child, CompositeComponentInterface $parent)
     {
+        parent::__construct($source);
+
         $this->child = $child;
         $this->parent = $parent;
     }
