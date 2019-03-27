@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
@@ -27,4 +29,8 @@ interface CompositeComponentInterface extends ComponentInterface
     public function findChildById(string $id): ?ComponentInterface;
 
     public function getOwnDependencies(): array;
+
+    public function getCaptureEventDispatcher(): EventDispatcherInterface;
+
+    public function setCaptureEventDispatcher(EventDispatcherInterface $eventDispatcher): void;
 }

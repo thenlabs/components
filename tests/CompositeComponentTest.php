@@ -3,6 +3,7 @@
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\Tests\Component;
 use NubecuLabs\Components\Tests\CompositeComponent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
@@ -159,6 +160,29 @@ testCase('CompositeComponentTest.php', function () {
 
             test('$child->getParent() === null', function () {
                 $this->assertNull($this->child->getParent());
+            });
+        });
+
+        testCase('$component->getCaptureEventDispatcher();', function () {
+            test('returns an instance of "Symfony\Component\EventDispatcher\EventDispatcher"', function () {
+                $this->assertInstanceOf(EventDispatcher::class, $this->component->getCaptureEventDispatcher());
+            });
+
+            test('returns always the same instance', function () {
+                $dispatcher = $this->component->getCaptureEventDispatcher();
+
+                $this->assertSame($dispatcher, $this->component->getCaptureEventDispatcher());
+                $this->assertSame($dispatcher, $this->component->getCaptureEventDispatcher());
+            });
+
+            testCase('$component->setCaptureEventDispatcher($newDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher);', function () {
+                test('$component->getCaptureEventDispatcher() === $newDispatcher', function () {
+                    $newDispatcher = new EventDispatcher;
+
+                    $this->component->setCaptureEventDispatcher($newDispatcher);
+
+                    $this->assertSame($newDispatcher, $this->component->getCaptureEventDispatcher());
+                });
             });
         });
     });
