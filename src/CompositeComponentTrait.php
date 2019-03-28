@@ -34,6 +34,12 @@ trait CompositeComponentTrait
 
     public function addChild(ComponentInterface $child, $setParentInChild = true): void
     {
+        if (! $this->validateChild($child)) {
+            throw new Exception\InvalidChildException(
+                "Invalid child with id equal to '{$child->getId()}'."
+            );
+        }
+
         $this->childs[$child->getId()] = $child;
 
         if ($setParentInChild) {
@@ -149,5 +155,10 @@ trait CompositeComponentTrait
         } else {
             $this->getEventDispatcher()->removeListener($eventName, $listener);
         }
+    }
+
+    public function validateChild(ComponentInterface $child): bool
+    {
+        return true;
     }
 }
