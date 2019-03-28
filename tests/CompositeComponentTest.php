@@ -454,11 +454,11 @@ testCase('CompositeComponentTest.php', function () {
                 $this->momentBubble1 = null;
                 $this->momentBubble2 = null;
 
-                $this->component->on($this->eventName, function () {
+                $this->component->on($this->eventName, $this->listenerCapture1 = function () {
                     $this->momentCapture1 = microtime(true);
                 }, true);
 
-                $this->child2->on($this->eventName, function () {
+                $this->child2->on($this->eventName, $this->listenerCapture2 = function () {
                     $this->momentCapture2 = microtime(true);
                 }, true);
 
@@ -510,6 +510,18 @@ testCase('CompositeComponentTest.php', function () {
                 $this->assertInternalType('float', $this->moment);
                 $this->assertNull($this->momentBubble1);
                 $this->assertNull($this->momentBubble2);
+            });
+
+            test('removing listeners of capture ', function () {
+                $this->component->off($this->eventName, $this->listenerCapture1, true);
+                $this->child2->off($this->eventName, $this->listenerCapture2, true);
+
+                $this->child4->dispatch($this->eventName, $this->event);
+
+                $this->assertNull($this->momentCapture1);
+                $this->assertNull($this->momentCapture2);
+                $this->assertGreaterThan($this->moment, $this->momentBubble1);
+                $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
             });
         });
     });

@@ -144,6 +144,10 @@ trait CompositeComponentTrait
 
     public function off(string $eventName, callable $listener, bool $capture = false): void
     {
-        $this->getEventDispatcher()->removeListener($eventName, $listener);
+        if ($capture) {
+            $this->getCaptureEventDispatcher()->removeListener($eventName, $listener);
+        } else {
+            $this->getEventDispatcher()->removeListener($eventName, $listener);
+        }
     }
 }
