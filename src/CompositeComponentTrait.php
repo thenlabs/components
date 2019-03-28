@@ -45,6 +45,10 @@ trait CompositeComponentTrait
         $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
         $this->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
+        if ($beforeInsertionEvent->isCancelled()) {
+            return;
+        }
+
         $this->childs[$child->getId()] = $child;
 
         if ($setParentInChild) {
