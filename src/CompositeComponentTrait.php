@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
+use NubecuLabs\Components\Event\TreeEvent;
+use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -39,6 +41,9 @@ trait CompositeComponentTrait
                 "Invalid child with id equal to '{$child->getId()}'."
             );
         }
+
+        $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
+        $this->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
         $this->childs[$child->getId()] = $child;
 

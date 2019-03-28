@@ -24,10 +24,8 @@ class TreeEvent extends Event
 
     protected $parent;
 
-    public function __construct(ComponentInterface $source, ComponentInterface $child, CompositeComponentInterface $parent)
+    public function __construct(ComponentInterface $child, CompositeComponentInterface $parent)
     {
-        parent::__construct($source);
-
         $this->child = $child;
         $this->parent = $parent;
     }
