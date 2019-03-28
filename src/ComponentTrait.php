@@ -105,14 +105,18 @@ trait ComponentTrait
     {
         $parents = $this->getParents();
 
-        foreach (array_reverse($parents) as $parent) {
-            $parent->getCaptureEventDispatcher()->dispatch($eventName, $event);
+        if ($capture) {
+            foreach (array_reverse($parents) as $parent) {
+                $parent->getCaptureEventDispatcher()->dispatch($eventName, $event);
+            }
         }
 
         $this->getEventDispatcher()->dispatch($eventName, $event);
 
-        foreach ($parents as $parent) {
-            $parent->getEventDispatcher()->dispatch($eventName, $event);
+        if ($bubbles) {
+            foreach ($parents as $parent) {
+                $parent->getEventDispatcher()->dispatch($eventName, $event);
+            }
         }
     }
 }

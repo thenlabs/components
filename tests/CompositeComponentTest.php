@@ -444,41 +444,73 @@ testCase('CompositeComponentTest.php', function () {
             });
         });
 
-        test('testing order of event propagation', function () {
-            $this->eventName = uniqid('event');
-            $this->event = new Event;
-            $this->momentCapture1 = null;
-            $this->momentCapture2 = null;
-            $this->moment = null;
-            $this->momentBubble1 = null;
-            $this->momentBubble2 = null;
+        testCase('exists a subtree listening for an event (see sources)', function () {
+            setUp(function () {
+                $this->eventName = uniqid('event');
+                $this->event = new Event;
+                $this->momentCapture1 = null;
+                $this->momentCapture2 = null;
+                $this->moment = null;
+                $this->momentBubble1 = null;
+                $this->momentBubble2 = null;
 
-            $this->component->on($this->eventName, function () {
-                $this->momentCapture1 = microtime(true);
-            }, true);
+                $this->component->on($this->eventName, function () {
+                    $this->momentCapture1 = microtime(true);
+                }, true);
 
-            $this->child2->on($this->eventName, function () {
-                $this->momentCapture2 = microtime(true);
-            }, true);
+                $this->child2->on($this->eventName, function () {
+                    $this->momentCapture2 = microtime(true);
+                }, true);
 
-            $this->child4->on($this->eventName, function () {
-                $this->moment = microtime(true);
+                $this->child4->on($this->eventName, function () {
+                    $this->moment = microtime(true);
+                });
+
+                $this->child2->on($this->eventName, function () {
+                    $this->momentBubble1 = microtime(true);
+                });
+
+                $this->component->on($this->eventName, function () {
+                    $this->momentBubble2 = microtime(true);
+                });
             });
 
-            $this->child2->on($this->eventName, function () {
-                $this->momentBubble1 = microtime(true);
+            test('testing order of event propagation from capture to bubbling', function () {
+                $this->child4->dispatch($this->eventName, $this->event);
+
+                $this->assertGreaterThan($this->momentCapture1, $this->momentCapture2);
+                $this->assertGreaterThan($this->momentCapture2, $this->moment);
+                $this->assertGreaterThan($this->moment, $this->momentBubble1);
+                $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
             });
 
-            $this->component->on($this->eventName, function () {
-                $this->momentBubble2 = microtime(true);
+            test('testing order of event propagation when capture is disabled', function () {
+                $this->child4->dispatch($this->eventName, $this->event, false);
+
+                $this->assertNull($this->momentCapture1);
+                $this->assertNull($this->momentCapture2);
+                $this->assertGreaterThan($this->moment, $this->momentBubble1);
+                $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
             });
 
-            $this->child4->dispatch($this->eventName, $this->event);
+            test('testing order of event propagation when bubbling is disabled', function () {
+                $this->child4->dispatch($this->eventName, $this->event, true, false);
 
-            $this->assertGreaterThan($this->momentCapture1, $this->momentCapture2);
-            $this->assertGreaterThan($this->momentCapture2, $this->moment);
-            $this->assertGreaterThan($this->moment, $this->momentBubble1);
-            $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
+                $this->assertGreaterThan($this->momentCapture1, $this->momentCapture2);
+                $this->assertGreaterThan($this->momentCapture2, $this->moment);
+                $this->assertNull($this->momentBubble1);
+                $this->assertNull($this->momentBubble2);
+            });
+
+            test('testing order of event propagation when capture and bubbling are disabled', function () {
+                $this->child4->dispatch($this->eventName, $this->event, false, false);
+
+                $this->assertNull($this->momentCapture1);
+                $this->assertNull($this->momentCapture2);
+                $this->assertInternalType('float', $this->moment);
+                $this->assertNull($this->momentBubble1);
+                $this->assertNull($this->momentBubble2);
+            });
         });
     });
 });
