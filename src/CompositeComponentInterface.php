@@ -12,7 +12,7 @@ interface CompositeComponentInterface extends ComponentInterface
 {
     public function hasChild($child): bool;
 
-    public function addChild(ComponentInterface $child): void;
+    public function addChild(ComponentInterface $child, $setParentInChild = true, array $eventsConfig = []): void;
 
     public function getChild(string $id): ?ComponentInterface;
 

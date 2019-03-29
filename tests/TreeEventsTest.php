@@ -28,7 +28,6 @@ testCase('TreeEventsTest.php', function () {
 
         $this->beforeInsertionListener2 = function (BeforeInsertionTreeEvent $event) {
             $this->executedListenerBeforeInsertion2++;
-            // $this->beforeInsertionListener1->call($this, $event); // reusing asserts
 
             $this->assertSame($this->parent, $event->getParent());
             $this->assertSame($this->child, $event->getChild());
@@ -68,25 +67,25 @@ testCase('TreeEventsTest.php', function () {
             });
         });
 
-        // testCase('the event can cancel the insertion', function () {
-        //     setUp(function () {
-        //         $this->parent->on(TreeEvent::BEFORE_INSERTION, $this->beforeInsertionListener2);
-        //     });
+        testCase('the event can cancel the insertion', function () {
+            setUp(function () {
+                $this->parent->on(TreeEvent::BEFORE_INSERTION, $this->beforeInsertionListener2);
+            });
 
-        //     test('when $parent->addChild($child);', function () {
-        //         $this->parent->addChild($this->child); // Act
+            test('when $parent->addChild($child);', function () {
+                $this->parent->addChild($this->child); // Act
 
-        //         $this->assertTrue($this->executedListenerBeforeInsertion2);
-        //         $this->assertFalse($this->parent->hasChild($this->child));
-        //     });
+                $this->assertEquals(1, $this->executedListenerBeforeInsertion2);
+                $this->assertFalse($this->parent->hasChild($this->child));
+            });
 
-        //     test('when $child->setParent($parent);', function () {
-        //         $this->child->setParent($this->parent); // Act
+            test('when $child->setParent($parent);', function () {
+                $this->child->setParent($this->parent); // Act
 
-        //         $this->assertTrue($this->executedListenerBeforeInsertion2);
-        //         $this->assertFalse($this->parent->hasChild($this->child));
-        //     });
-        // });
+                $this->assertEquals(1, $this->executedListenerBeforeInsertion2);
+                $this->assertFalse($this->parent->hasChild($this->child));
+            });
+        });
     });
 
     // testCase('testing the after insertion event', function () {
