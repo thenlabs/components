@@ -59,12 +59,12 @@ trait ComponentTrait
 
     public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, array $eventsConfig = []): void
     {
-        $eventsConfigDefault = [
+        $eventsConfigDefaults = [
             'before_insertion' => true,
             'after_insertion' => true,
         ];
 
-        $eventsConfig = array_merge($eventsConfigDefault, $eventsConfig);
+        $eventsConfig = array_merge($eventsConfigDefaults, $eventsConfig);
 
         if ($parent && $eventsConfig['before_insertion']) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
