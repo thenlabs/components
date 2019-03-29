@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace NubecuLabs\Components;
 
 use NubecuLabs\Components\Event\TreeEvent;
+use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -60,14 +61,12 @@ trait ComponentTrait
     {
         $eventsConfigDefault = [
             'before_insertion' => true,
+            'after_insertion' => true,
         ];
 
         $eventsConfig = array_merge($eventsConfigDefault, $eventsConfig);
 
-        if ($parent &&
-            isset($eventsConfig['before_insertion']) &&
-            $eventsConfig['before_insertion'] === true
-        ){
+        if ($parent && $eventsConfig['before_insertion']) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
             $parent->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
@@ -83,7 +82,15 @@ trait ComponentTrait
         $this->parent = $parent;
 
         if ($parent && $addChildToParent) {
-            $this->parent->addChild($this, false, ['before_insertion' => false]);
+            $this->parent->addChild($this, false, [
+                'before_insertion' => false,
+                'after_insertion' => false,
+            ]);
+        }
+
+        if ($parent && $eventsConfig['after_insertion']) {
+            $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
+            $parent->getEventDispatcher()->dispatch(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
         }
     }
 

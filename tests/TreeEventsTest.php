@@ -57,6 +57,7 @@ testCase('TreeEventsTest.php', function () {
 
                 $this->assertEquals(1, $this->executedListenerBeforeInsertion1);
                 $this->assertTrue($this->parent->hasChild($this->child));
+                $this->assertSame($this->parent, $this->child->getParent());
             });
 
             test('when $child->setParent($parent);', function () {
@@ -64,6 +65,7 @@ testCase('TreeEventsTest.php', function () {
 
                 $this->assertEquals(1, $this->executedListenerBeforeInsertion1);
                 $this->assertTrue($this->parent->hasChild($this->child));
+                $this->assertSame($this->parent, $this->child->getParent());
             });
         });
 
@@ -76,6 +78,7 @@ testCase('TreeEventsTest.php', function () {
                 $this->parent->addChild($this->child); // Act
 
                 $this->assertEquals(1, $this->executedListenerBeforeInsertion2);
+                $this->assertNull($this->child->getParent());
                 $this->assertFalse($this->parent->hasChild($this->child));
             });
 
@@ -83,30 +86,33 @@ testCase('TreeEventsTest.php', function () {
                 $this->child->setParent($this->parent); // Act
 
                 $this->assertEquals(1, $this->executedListenerBeforeInsertion2);
+                $this->assertNull($this->child->getParent());
                 $this->assertFalse($this->parent->hasChild($this->child));
             });
         });
     });
 
-    // testCase('testing the after insertion event', function () {
-    //     testCase('the event is dispatched', function () {
-    //         setUp(function () {
-    //             $this->parent->on(TreeEvent::AFTER_INSERTION, $this->afterInsertionListener);
-    //         });
+    testCase('testing the after insertion event', function () {
+        testCase('the event is dispatched', function () {
+            setUp(function () {
+                $this->parent->on(TreeEvent::AFTER_INSERTION, $this->afterInsertionListener);
+            });
 
-    //         test('when $parent->addChild($child);', function () {
-    //             $this->parent->addChild($this->child); // Act
+            test('when $parent->addChild($child);', function () {
+                $this->parent->addChild($this->child); // Act
 
-    //             $this->assertTrue($this->executedListenerAfterInsertion);
-    //             $this->assertTrue($this->parent->hasChild($this->child));
-    //         });
+                $this->assertEquals(1, $this->executedListenerAfterInsertion);
+                $this->assertTrue($this->parent->hasChild($this->child));
+                $this->assertSame($this->parent, $this->child->getParent());
+            });
 
-    //         test('when $child->setParent($parent);', function () {
-    //             $this->child->setParent($this->parent); // Act
+            test('when $child->setParent($parent);', function () {
+                $this->child->setParent($this->parent); // Act
 
-    //             $this->assertTrue($this->executedListenerAfterInsertion);
-    //             $this->assertTrue($this->parent->hasChild($this->child));
-    //         });
-    //     });
-    // });
+                $this->assertEquals(1, $this->executedListenerAfterInsertion);
+                $this->assertTrue($this->parent->hasChild($this->child));
+                $this->assertSame($this->parent, $this->child->getParent());
+            });
+        });
+    });
 });
