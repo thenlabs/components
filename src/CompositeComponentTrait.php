@@ -5,6 +5,7 @@ namespace NubecuLabs\Components;
 
 use NubecuLabs\Components\Event\TreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
+use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -69,8 +70,14 @@ trait CompositeComponentTrait
         return $this->childs[$id] ?? null;
     }
 
-    public function dropChild($child): void
+    public function dropChild($child, $eventsConfig = []): void
     {
+        $eventsConfigDefault = [
+            'before_deletion' => true,
+        ];
+
+        $eventsConfig = array_merge($eventsConfigDefault, $eventsConfig);
+
         $obj = null;
 
         if (is_string($child)) {
@@ -84,6 +91,13 @@ trait CompositeComponentTrait
         if ($obj instanceof ComponentInterface &&
             isset($this->childs[$obj->getId()])
         ) {
+            $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
+            $this->getEventDispatcher()->dispatch(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
+
+            if ($beforeDeletionEvent->isCancelled()) {
+                return;
+            }
+
             unset($this->childs[$obj->getId()]);
             $obj->setParent(null, false);
         }
