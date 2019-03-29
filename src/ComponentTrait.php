@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
+use NubecuLabs\Components\Event\TreeEvent;
+use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -54,8 +56,26 @@ trait ComponentTrait
         return $result;
     }
 
-    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true): void
+    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, array $eventsConfig = []): void
     {
+        $eventsConfigDefault = [
+            'before_insertion' => true,
+        ];
+
+        $eventsConfig = array_merge($eventsConfigDefault, $eventsConfig);
+
+        if ($parent &&
+            isset($eventsConfig['before_insertion']) &&
+            $eventsConfig['before_insertion'] === true
+        ){
+            $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
+            $parent->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
+
+            if ($beforeInsertionEvent->isCancelled()) {
+                return;
+            }
+        }
+
         if ($this->parent instanceof CompositeComponentInterface) {
             $this->parent->dropChild($this);
         }
@@ -63,7 +83,7 @@ trait ComponentTrait
         $this->parent = $parent;
 
         if ($parent && $addChildToParent) {
-            $this->parent->addChild($this, false);
+            $this->parent->addChild($this, false, ['before_insertion' => false]);
         }
     }
 

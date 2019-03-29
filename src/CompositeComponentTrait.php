@@ -34,25 +34,33 @@ trait CompositeComponentTrait
         return false;
     }
 
-    public function addChild(ComponentInterface $child, $setParentInChild = true): void
+    public function addChild(ComponentInterface $child, $setParentInChild = true, array $eventsConfig = []): void
     {
+        $eventsConfigDefault = [
+            'before_insertion' => true,
+        ];
+
+        $eventsConfig = array_merge($eventsConfigDefault, $eventsConfig);
+
         if (! $this->validateChild($child)) {
             throw new Exception\InvalidChildException(
                 "Invalid child with id equal to '{$child->getId()}'."
             );
         }
 
-        $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
-        $this->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
+        if ($eventsConfig['before_insertion']) {
+            $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
+            $this->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
-        if ($beforeInsertionEvent->isCancelled()) {
-            return;
+            if ($beforeInsertionEvent->isCancelled()) {
+                return;
+            }
         }
 
         $this->childs[$child->getId()] = $child;
 
         if ($setParentInChild) {
-            $child->setParent($this);
+            $child->setParent($this, false, ['before_insertion' => false]);
         }
     }
 

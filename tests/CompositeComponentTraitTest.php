@@ -27,9 +27,9 @@ testCase('CompositeComponentTraitTest.php', function () {
         });
     });
 
-    testCase('#validateChild()', function () {
-        test(function () {
-            $parent = new class implements CompositeComponentInterface {
+    testCase('it is triggered a "NubecuLabs\Components\Exception\InvalidChildException" when #validateChild() returns false', function () {
+        setUp(function () {
+            $this->parent = new class implements CompositeComponentInterface {
                 use CompositeComponentTrait;
 
                 public function validateChild(ComponentInterface $child): bool
@@ -38,11 +38,17 @@ testCase('CompositeComponentTraitTest.php', function () {
                 }
             };
 
-            $child = new Component;
+            $this->child = new Component;
             $this->expectException(InvalidChildException::class);
-            $this->expectExceptionMessage("Invalid child with id equal to '{$child->getId()}'.");
+            $this->expectExceptionMessage("Invalid child with id equal to '{$this->child->getId()}'.");
+        });
 
-            $parent->addChild($child);
+        test('case: $parent->addChild($child);', function () {
+            $this->parent->addChild($this->child);
+        });
+
+        test('case: $child->setParent($parent);', function () {
+            $this->child->setParent($this->parent);
         });
     });
 });
