@@ -17,7 +17,7 @@ interface ComponentInterface
 
     public function getParents(): array;
 
-    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, array $eventsConfig = []): void;
+    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true): void;
 
     public function detach(): void;
 

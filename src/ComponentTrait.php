@@ -57,16 +57,9 @@ trait ComponentTrait
         return $result;
     }
 
-    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, array $eventsConfig = []): void
+    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true): void
     {
-        $eventsConfigDefaults = [
-            'before_insertion' => true,
-            'after_insertion' => true,
-        ];
-
-        $eventsConfig = array_merge($eventsConfigDefaults, $eventsConfig);
-
-        if ($parent && $eventsConfig['before_insertion']) {
+        if ($parent && $dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
             $parent->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
@@ -82,13 +75,10 @@ trait ComponentTrait
         $this->parent = $parent;
 
         if ($parent && $addChildToParent) {
-            $this->parent->addChild($this, false, [
-                'before_insertion' => false,
-                'after_insertion' => false,
-            ]);
+            $this->parent->addChild($this, false, false);
         }
 
-        if ($parent && $eventsConfig['after_insertion']) {
+        if ($parent && $dispatchEvents) {
             $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
             $parent->getEventDispatcher()->dispatch(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
         }

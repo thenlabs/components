@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace NubecuLabs\Components;
 
 use NubecuLabs\Components\Event\TreeEvent;
+use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -35,21 +36,15 @@ trait CompositeComponentTrait
         return false;
     }
 
-    public function addChild(ComponentInterface $child, $setParentInChild = true, array $eventsConfig = []): void
+    public function addChild(ComponentInterface $child, $setParentInChild = true, bool $dispatchEvents = true): void
     {
-        $eventsConfigDefault = [
-            'before_insertion' => true,
-        ];
-
-        $eventsConfig = array_merge($eventsConfigDefault, $eventsConfig);
-
         if (! $this->validateChild($child)) {
             throw new Exception\InvalidChildException(
                 "Invalid child with id equal to '{$child->getId()}'."
             );
         }
 
-        if ($eventsConfig['before_insertion']) {
+        if ($dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
             $this->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
@@ -61,7 +56,12 @@ trait CompositeComponentTrait
         $this->childs[$child->getId()] = $child;
 
         if ($setParentInChild) {
-            $child->setParent($this, false, ['before_insertion' => false]);
+            $child->setParent($this, false, false);
+        }
+
+        if ($dispatchEvents) {
+            $afterInsertionEvent = new AfterInsertionTreeEvent($child, $this);
+            $this->getEventDispatcher()->dispatch(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
         }
     }
 
@@ -70,14 +70,8 @@ trait CompositeComponentTrait
         return $this->childs[$id] ?? null;
     }
 
-    public function dropChild($child, $eventsConfig = []): void
+    public function dropChild($child, bool $dispatchEvents = true): void
     {
-        $eventsConfigDefault = [
-            'before_deletion' => true,
-        ];
-
-        $eventsConfig = array_merge($eventsConfigDefault, $eventsConfig);
-
         $obj = null;
 
         if (is_string($child)) {

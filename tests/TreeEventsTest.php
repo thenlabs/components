@@ -43,7 +43,7 @@ testCase('TreeEventsTest.php', function () {
         };
 
         $this->afterInsertionListener = function (AfterInsertionTreeEvent $event) {
-            $this->executedListenerAfterInsertion = true;
+            $this->executedListenerAfterInsertion++;
             $this->assertSame($this->parent, $event->getParent());
             $this->assertSame($this->child, $event->getChild());
         };
