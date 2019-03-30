@@ -68,11 +68,9 @@ trait ComponentTrait
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;
                 }
-
-                $this->parent->dropChild($this, false);
-            } else {
-                $this->parent->dropChild($this);
             }
+
+            $this->parent->dropChild($this, false);
         }
 
         if ($parent && $dispatchEvents) {
