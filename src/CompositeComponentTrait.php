@@ -85,15 +85,17 @@ trait CompositeComponentTrait
         if ($obj instanceof ComponentInterface &&
             isset($this->childs[$obj->getId()])
         ) {
-            $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
-            $this->getEventDispatcher()->dispatch(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
+            if ($dispatchEvents) {
+                $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
+                $this->getEventDispatcher()->dispatch(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
 
-            if ($beforeDeletionEvent->isCancelled()) {
-                return;
+                if ($beforeDeletionEvent->isCancelled()) {
+                    return;
+                }
             }
 
             unset($this->childs[$obj->getId()]);
-            $obj->setParent(null, false);
+            $obj->setParent(null, false, false);
         }
     }
 

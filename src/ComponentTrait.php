@@ -6,6 +6,7 @@ namespace NubecuLabs\Components;
 use NubecuLabs\Components\Event\TreeEvent;
 use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
+use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -59,6 +60,21 @@ trait ComponentTrait
 
     public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true): void
     {
+        if ($this->parent instanceof CompositeComponentInterface) {
+            if ($dispatchEvents) {
+                $beforeDeletionEvent = new BeforeDeletionTreeEvent($this, $this->parent);
+                $this->parent->getEventDispatcher()->dispatch(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
+
+                if ($beforeDeletionEvent->isCancelled()) {
+                    return;
+                }
+
+                $this->parent->dropChild($this, false);
+            } else {
+                $this->parent->dropChild($this);
+            }
+        }
+
         if ($parent && $dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
             $parent->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
@@ -66,10 +82,6 @@ trait ComponentTrait
             if ($beforeInsertionEvent->isCancelled()) {
                 return;
             }
-        }
-
-        if ($this->parent instanceof CompositeComponentInterface) {
-            $this->parent->dropChild($this);
         }
 
         $this->parent = $parent;
