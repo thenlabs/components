@@ -5,6 +5,7 @@ namespace NubecuLabs\Components;
 
 use NubecuLabs\Components\Event\TreeEvent;
 use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
+use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -96,6 +97,11 @@ trait CompositeComponentTrait
 
             unset($this->childs[$obj->getId()]);
             $obj->setParent(null, false, false);
+
+            if ($dispatchEvents) {
+                $afterDeletionEvent = new AfterDeletionTreeEvent($obj, $this);
+                $this->getEventDispatcher()->dispatch(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
+            }
         }
     }
 

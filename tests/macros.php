@@ -63,14 +63,6 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
             useMacro('remove the parent tests');
         });
 
-        testCase('$component->detach();', function () {
-            setUp(function () {
-                $this->component->detach();
-            });
-
-            useMacro('remove the parent tests');
-        });
-
         testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\CompositeComponent);', function () {
             setUp(function () {
                 $this->parent2 = new CompositeComponent;

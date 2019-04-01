@@ -5,6 +5,7 @@ namespace NubecuLabs\Components;
 
 use NubecuLabs\Components\Event\TreeEvent;
 use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
+use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
 use Symfony\Component\EventDispatcher\Event;
@@ -70,7 +71,13 @@ trait ComponentTrait
                 }
             }
 
-            $this->parent->dropChild($this, false);
+            $oldParent = $this->parent;
+            $this->parent->dropChild($this, false, false);
+
+            if ($dispatchEvents) {
+                $afterDeletionEvent = new AfterDeletionTreeEvent($this, $oldParent);
+                $oldParent->getEventDispatcher()->dispatch(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
+            }
         }
 
         if ($parent && $dispatchEvents) {
@@ -92,11 +99,6 @@ trait ComponentTrait
             $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
             $parent->getEventDispatcher()->dispatch(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
         }
-    }
-
-    public function detach(): void
-    {
-        $this->setParent(null);
     }
 
     public function getDependencies(): array

@@ -2,6 +2,7 @@
 
 use NubecuLabs\Components\Event\TreeEvent;
 use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
+use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
 use NubecuLabs\Components\Tests\Component;
@@ -17,6 +18,7 @@ testCase('TreeEventsTest.php', function () {
         $this->executedListenerBeforeDeletion1 = 0;
         $this->executedListenerBeforeDeletion2 = 0;
         $this->executedListenerAfterInsertion = 0;
+        $this->executedListenerAfterDeletion = 0;
         $this->child = new Component;
         $this->parent = new CompositeComponent;
 
@@ -46,6 +48,9 @@ testCase('TreeEventsTest.php', function () {
             $this->executedListenerAfterInsertion++;
             $this->assertSame($this->parent, $event->getParent());
             $this->assertSame($this->child, $event->getChild());
+            $this->assertSame($this->parent, $this->child->getParent());
+            $this->assertTrue($this->parent->hasChild($this->child));
+            $this->assertTrue($this->parent->hasChild($this->child->getId()));
         };
 
         $this->beforeDeletionListener1 = function (BeforeDeletionTreeEvent $event) {
@@ -66,6 +71,15 @@ testCase('TreeEventsTest.php', function () {
 
             $event->cancel();
             $this->assertTrue($event->isCancelled());
+        };
+
+        $this->afterDeletionListener = function (AfterDeletionTreeEvent $event) {
+            $this->executedListenerAfterDeletion++;
+            $this->assertSame($this->parent, $event->getParent());
+            $this->assertSame($this->child, $event->getChild());
+            $this->assertNull($this->child->getParent());
+            $this->assertFalse($this->parent->hasChild($this->child));
+            $this->assertFalse($this->parent->hasChild($this->child->getId()));
         };
     });
 
@@ -125,20 +139,22 @@ testCase('TreeEventsTest.php', function () {
                 $this->parent->on(TreeEvent::AFTER_INSERTION, $this->afterInsertionListener);
             });
 
-            test('when $parent->addChild($child);', function () {
-                $this->parent->addChild($this->child); // Act
-
+            createMethod('checkAsserts', function () {
                 $this->assertEquals(1, $this->executedListenerAfterInsertion);
                 $this->assertTrue($this->parent->hasChild($this->child));
                 $this->assertSame($this->parent, $this->child->getParent());
             });
 
+            test('when $parent->addChild($child);', function () {
+                $this->parent->addChild($this->child); // Act
+
+                $this->checkAsserts();
+            });
+
             test('when $child->setParent($parent);', function () {
                 $this->child->setParent($this->parent); // Act
 
-                $this->assertEquals(1, $this->executedListenerAfterInsertion);
-                $this->assertTrue($this->parent->hasChild($this->child));
-                $this->assertSame($this->parent, $this->child->getParent());
+                $this->checkAsserts();
             });
         });
     });
@@ -179,6 +195,34 @@ testCase('TreeEventsTest.php', function () {
                 $this->assertEquals(1, $this->executedListenerBeforeDeletion2);
                 $this->assertTrue($this->parent->hasChild($this->child));
                 $this->assertSame($this->parent, $this->child->getParent());
+            });
+
+            test('when $parent->dropChild($child);', function () {
+                $this->parent->dropChild($this->child); // Act
+
+                $this->checkAsserts();
+            });
+
+            test('when $child->setParent(null);', function () {
+                $this->child->setParent(null); // Act
+
+                $this->checkAsserts();
+            });
+        });
+    });
+
+    testCase('testing the after deletion event', function () {
+        testCase('the event is dispatched', function () {
+            setUp(function () {
+                $this->parent->addChild($this->child);
+                $this->parent->on(TreeEvent::AFTER_DELETION, $this->afterDeletionListener);
+            });
+
+            createMethod('checkAsserts', function () {
+                $this->assertEquals(1, $this->executedListenerAfterDeletion);
+                $this->assertFalse($this->parent->hasChild($this->child));
+                $this->assertFalse($this->parent->hasChild($this->child->getId()));
+                $this->assertNull($this->child->getParent());
             });
 
             test('when $parent->dropChild($child);', function () {
