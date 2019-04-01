@@ -89,7 +89,7 @@ testCase('TreeEventsTest.php', function () {
                 $this->parent->on(TreeEvent::BEFORE_INSERTION, $this->beforeInsertionListener1);
             });
 
-            createMethod('checkAsserts', function () {
+            tearDown(function () {
                 $this->assertEquals(1, $this->executedListenerBeforeInsertion1);
                 $this->assertTrue($this->parent->hasChild($this->child));
                 $this->assertSame($this->parent, $this->child->getParent());
@@ -97,14 +97,10 @@ testCase('TreeEventsTest.php', function () {
 
             test('when $parent->addChild($child);', function () {
                 $this->parent->addChild($this->child); // Act
-
-                $this->checkAsserts();
             });
 
             test('when $child->setParent($parent);', function () {
                 $this->child->setParent($this->parent); // Act
-
-                $this->checkAsserts();
             });
         });
 
@@ -113,7 +109,7 @@ testCase('TreeEventsTest.php', function () {
                 $this->parent->on(TreeEvent::BEFORE_INSERTION, $this->beforeInsertionListener2);
             });
 
-            createMethod('checkAsserts', function () {
+            tearDown(function () {
                 $this->assertEquals(1, $this->executedListenerBeforeInsertion2);
                 $this->assertNull($this->child->getParent());
                 $this->assertFalse($this->parent->hasChild($this->child));
@@ -121,14 +117,10 @@ testCase('TreeEventsTest.php', function () {
 
             test('when $parent->addChild($child);', function () {
                 $this->parent->addChild($this->child); // Act
-
-                $this->checkAsserts();
             });
 
             test('when $child->setParent($parent);', function () {
                 $this->child->setParent($this->parent); // Act
-
-                $this->checkAsserts();
             });
         });
     });
@@ -139,7 +131,7 @@ testCase('TreeEventsTest.php', function () {
                 $this->parent->on(TreeEvent::AFTER_INSERTION, $this->afterInsertionListener);
             });
 
-            createMethod('checkAsserts', function () {
+            tearDown(function () {
                 $this->assertEquals(1, $this->executedListenerAfterInsertion);
                 $this->assertTrue($this->parent->hasChild($this->child));
                 $this->assertSame($this->parent, $this->child->getParent());
@@ -147,14 +139,10 @@ testCase('TreeEventsTest.php', function () {
 
             test('when $parent->addChild($child);', function () {
                 $this->parent->addChild($this->child); // Act
-
-                $this->checkAsserts();
             });
 
             test('when $child->setParent($parent);', function () {
                 $this->child->setParent($this->parent); // Act
-
-                $this->checkAsserts();
             });
         });
     });
@@ -166,7 +154,7 @@ testCase('TreeEventsTest.php', function () {
                 $this->parent->on(TreeEvent::BEFORE_DELETION, $this->beforeDeletionListener1);
             });
 
-            createMethod('checkAsserts', function () {
+            tearDown(function () {
                 $this->assertEquals(1, $this->executedListenerBeforeDeletion1);
                 $this->assertFalse($this->parent->hasChild($this->child));
                 $this->assertNull($this->child->getParent());
@@ -174,14 +162,10 @@ testCase('TreeEventsTest.php', function () {
 
             test('when $parent->dropChild($child);', function () {
                 $this->parent->dropChild($this->child); // Act
-
-                $this->checkAsserts();
             });
 
             test('when $child->setParent(null);', function () {
                 $this->child->setParent(null); // Act
-
-                $this->checkAsserts();
             });
         });
 
@@ -191,7 +175,7 @@ testCase('TreeEventsTest.php', function () {
                 $this->parent->on(TreeEvent::BEFORE_DELETION, $this->beforeDeletionListener2);
             });
 
-            createMethod('checkAsserts', function () {
+            tearDown(function () {
                 $this->assertEquals(1, $this->executedListenerBeforeDeletion2);
                 $this->assertTrue($this->parent->hasChild($this->child));
                 $this->assertSame($this->parent, $this->child->getParent());
@@ -199,14 +183,10 @@ testCase('TreeEventsTest.php', function () {
 
             test('when $parent->dropChild($child);', function () {
                 $this->parent->dropChild($this->child); // Act
-
-                $this->checkAsserts();
             });
 
             test('when $child->setParent(null);', function () {
                 $this->child->setParent(null); // Act
-
-                $this->checkAsserts();
             });
         });
     });
@@ -218,7 +198,7 @@ testCase('TreeEventsTest.php', function () {
                 $this->parent->on(TreeEvent::AFTER_DELETION, $this->afterDeletionListener);
             });
 
-            createMethod('checkAsserts', function () {
+            tearDown(function () {
                 $this->assertEquals(1, $this->executedListenerAfterDeletion);
                 $this->assertFalse($this->parent->hasChild($this->child));
                 $this->assertFalse($this->parent->hasChild($this->child->getId()));
@@ -227,14 +207,10 @@ testCase('TreeEventsTest.php', function () {
 
             test('when $parent->dropChild($child);', function () {
                 $this->parent->dropChild($this->child); // Act
-
-                $this->checkAsserts();
             });
 
             test('when $child->setParent(null);', function () {
                 $this->child->setParent(null); // Act
-
-                $this->checkAsserts();
             });
         });
     });
