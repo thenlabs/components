@@ -96,11 +96,11 @@ testCase('TreeEventsTest.php', function () {
             });
 
             test('when $parent->addChild($child);', function () {
-                $this->parent->addChild($this->child); // Act
+                $this->parent->addChild($this->child);
             });
 
             test('when $child->setParent($parent);', function () {
-                $this->child->setParent($this->parent); // Act
+                $this->child->setParent($this->parent);
             });
         });
 
@@ -116,11 +116,11 @@ testCase('TreeEventsTest.php', function () {
             });
 
             test('when $parent->addChild($child);', function () {
-                $this->parent->addChild($this->child); // Act
+                $this->parent->addChild($this->child);
             });
 
             test('when $child->setParent($parent);', function () {
-                $this->child->setParent($this->parent); // Act
+                $this->child->setParent($this->parent);
             });
         });
     });
@@ -138,12 +138,27 @@ testCase('TreeEventsTest.php', function () {
             });
 
             test('when $parent->addChild($child);', function () {
-                $this->parent->addChild($this->child); // Act
+                $this->parent->addChild($this->child);
             });
 
             test('when $child->setParent($parent);', function () {
-                $this->child->setParent($this->parent); // Act
+                $this->child->setParent($this->parent);
             });
+        });
+    });
+
+    createMacro('deletion tests', function () {
+        test('when $parent->dropChild($child);', function () {
+            $this->parent->dropChild($this->child);
+        });
+
+        test('when $child->setParent(null);', function () {
+            $this->child->setParent(null);
+        });
+
+        test('when $child->setParent($parent2 = new CompositeComponent);', function () {
+            $this->newParent = new CompositeComponent;
+            $this->child->setParent($this->newParent);
         });
     });
 
@@ -157,16 +172,9 @@ testCase('TreeEventsTest.php', function () {
             tearDown(function () {
                 $this->assertEquals(1, $this->executedListenerBeforeDeletion1);
                 $this->assertFalse($this->parent->hasChild($this->child));
-                $this->assertNull($this->child->getParent());
             });
 
-            test('when $parent->dropChild($child);', function () {
-                $this->parent->dropChild($this->child); // Act
-            });
-
-            test('when $child->setParent(null);', function () {
-                $this->child->setParent(null); // Act
-            });
+            useMacro('deletion tests');
         });
 
         testCase('the event can cancel the deletion', function () {
@@ -181,13 +189,7 @@ testCase('TreeEventsTest.php', function () {
                 $this->assertSame($this->parent, $this->child->getParent());
             });
 
-            test('when $parent->dropChild($child);', function () {
-                $this->parent->dropChild($this->child); // Act
-            });
-
-            test('when $child->setParent(null);', function () {
-                $this->child->setParent(null); // Act
-            });
+            useMacro('deletion tests');
         });
     });
 
@@ -202,16 +204,9 @@ testCase('TreeEventsTest.php', function () {
                 $this->assertEquals(1, $this->executedListenerAfterDeletion);
                 $this->assertFalse($this->parent->hasChild($this->child));
                 $this->assertFalse($this->parent->hasChild($this->child->getId()));
-                $this->assertNull($this->child->getParent());
             });
 
-            test('when $parent->dropChild($child);', function () {
-                $this->parent->dropChild($this->child); // Act
-            });
-
-            test('when $child->setParent(null);', function () {
-                $this->child->setParent(null); // Act
-            });
+            useMacro('deletion tests');
         });
     });
 });

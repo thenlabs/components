@@ -64,7 +64,9 @@ trait ComponentTrait
         if ($this->parent instanceof CompositeComponentInterface) {
             if ($dispatchEvents) {
                 $beforeDeletionEvent = new BeforeDeletionTreeEvent($this, $this->parent);
-                $this->parent->getEventDispatcher()->dispatch(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
+                $this->parent->getEventDispatcher()->dispatch(
+                    TreeEvent::BEFORE_DELETION, $beforeDeletionEvent
+                );
 
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;
@@ -76,13 +78,17 @@ trait ComponentTrait
 
             if ($dispatchEvents) {
                 $afterDeletionEvent = new AfterDeletionTreeEvent($this, $oldParent);
-                $oldParent->getEventDispatcher()->dispatch(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
+                $oldParent->getEventDispatcher()->dispatch(
+                    TreeEvent::AFTER_DELETION, $afterDeletionEvent
+                );
             }
         }
 
         if ($parent && $dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
-            $parent->getEventDispatcher()->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
+            $parent->getEventDispatcher()->dispatch(
+                TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent
+            );
 
             if ($beforeInsertionEvent->isCancelled()) {
                 return;
@@ -93,11 +99,13 @@ trait ComponentTrait
 
         if ($parent && $addChildToParent) {
             $this->parent->addChild($this, false, false);
-        }
 
-        if ($parent && $dispatchEvents) {
-            $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
-            $parent->getEventDispatcher()->dispatch(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
+            if ($dispatchEvents) {
+                $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
+                $parent->getEventDispatcher()->dispatch(
+                    TreeEvent::AFTER_INSERTION, $afterInsertionEvent
+                );
+            }
         }
     }
 
