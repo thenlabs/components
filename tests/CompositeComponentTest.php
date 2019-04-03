@@ -356,9 +356,19 @@ testCase('CompositeComponentTest.php', function () {
                 }));
             });
 
-            test('returns the child for whom the callback returns true', function () {
+            test('returns null when the callback not returns nothing', function () {
+                $this->assertNull($this->component->findChild(function (ComponentInterface $child) {}));
+            });
+
+            test('returns the child for whom the callback returns a value', function () {
                 $this->assertSame($this->child4, $this->component->findChild(function (ComponentInterface $child) {
                     return $child->getId() == 'child4' ? true : false;
+                }));
+
+                $this->assertSame($this->child4, $this->component->findChild(function (ComponentInterface $child) {
+                    if ($child->getId() == 'child4') {
+                        return $child;
+                    }
                 }));
             });
 
@@ -380,9 +390,31 @@ testCase('CompositeComponentTest.php', function () {
                 $this->assertEquals([], $this->component->findChilds($callback));
             });
 
+            test('returns an empty array when callback not returns nothing', function () {
+                $callback = function () {
+                    return false;
+                };
+
+                $this->assertEquals([], $this->component->findChilds($callback));
+            });
+
             test('returns in an array the childs for whom the callback returns true', function () {
                 $callback = function (ComponentInterface $child) {
                     return $child instanceof CompositeComponent ? false : true;
+                };
+
+                $childs = $this->component->findChilds($callback);
+
+                $this->assertCount(2, $childs);
+                $this->assertSame($this->child1, $childs[0]);
+                $this->assertSame($this->child4, $childs[1]);
+            });
+
+            test('returns in an array the childs for whom the callback returns a value', function () {
+                $callback = function (ComponentInterface $child) {
+                    if (! $child instanceof CompositeComponent) {
+                        return $child;
+                    }
                 };
 
                 $childs = $this->component->findChilds($callback);
