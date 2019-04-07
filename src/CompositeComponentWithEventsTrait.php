@@ -16,7 +16,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 trait CompositeComponentWithEventsTrait
 {
-    use CompositeComponentTrait;
+    use CompositeComponentTrait, ComponentWithEventsTrait {
+        ComponentWithEventsTrait::getId insteadof CompositeComponentTrait;
+        ComponentWithEventsTrait::getParent insteadof CompositeComponentTrait;
+        ComponentWithEventsTrait::getParents insteadof CompositeComponentTrait;
+        ComponentWithEventsTrait::getDependencies insteadof CompositeComponentTrait;
+        ComponentWithEventsTrait::setParent insteadof CompositeComponentTrait;
+    }
 
     protected $childs = [];
 

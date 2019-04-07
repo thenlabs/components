@@ -1,6 +1,7 @@
 <?php
 
 use NubecuLabs\Components\Tests\Entity\ComponentWithEvents;
+use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
@@ -8,6 +9,10 @@ setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
 testCase('ComponentWithEventsTest.php', function () {
     createMethod('getNewComponent', function () {
         return new ComponentWithEvents;
+    });
+
+    createMethod('getNewParentComponent', function () {
+        return new CompositeComponentWithEvents;
     });
 
     testCase(sprintf("\$component = new \\%s;", ComponentWithEvents::class), function () {

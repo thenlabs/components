@@ -33,7 +33,7 @@ createMacro('common tests', function () {
 
     testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
         setUp(function () {
-            $this->parent = new CompositeComponent;
+            $this->parent = $this->getNewParentComponent();
             $this->component->setParent($this->parent);
         });
 
@@ -65,7 +65,7 @@ createMacro('common tests', function () {
 
         testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
             setUp(function () {
-                $this->parent2 = new CompositeComponent;
+                $this->parent2 = $this->getNewParentComponent();
                 $this->component->setParent($this->parent2);
             });
 
@@ -85,7 +85,7 @@ createMacro('common tests', function () {
 
     testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent, false);', function () {
         setUp(function () {
-            $this->parent = new CompositeComponent;
+            $this->parent = $this->getNewParentComponent();
             $this->component->setParent($this->parent, false);
         });
 

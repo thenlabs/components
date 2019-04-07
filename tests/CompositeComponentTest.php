@@ -14,6 +14,10 @@ testCase('CompositeComponentTest.php', function () {
         return new CompositeComponent;
     });
 
+    createMethod('getNewParentComponent', function () {
+        return new CompositeComponent;
+    });
+
     testCase(sprintf('$component = new \\%s;', CompositeComponent::class), function () {
         useMacro('common tests');
 
