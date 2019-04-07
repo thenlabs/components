@@ -1,10 +1,10 @@
 <?php
 
 use Symfony\Component\EventDispatcher\Event;
-use NubecuLabs\Components\Tests\CompositeComponent;
+use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-createMacro('common tests for ComponentTrait and CompositeComponentTrait', function () {
+createMacro('common tests', function () {
     setUp(function () {
         $this->component = $this->getNewComponent();
     });
@@ -31,7 +31,7 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
         });
     });
 
-    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\CompositeComponent);', function () {
+    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
         setUp(function () {
             $this->parent = new CompositeComponent;
             $this->component->setParent($this->parent);
@@ -63,7 +63,7 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
             useMacro('remove the parent tests');
         });
 
-        testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\CompositeComponent);', function () {
+        testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
             setUp(function () {
                 $this->parent2 = new CompositeComponent;
                 $this->component->setParent($this->parent2);
@@ -83,7 +83,7 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
         });
     });
 
-    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\CompositeComponent, false);', function () {
+    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent, false);', function () {
         setUp(function () {
             $this->parent = new CompositeComponent;
             $this->component->setParent($this->parent, false);
@@ -97,7 +97,9 @@ createMacro('common tests for ComponentTrait and CompositeComponentTrait', funct
             $this->assertFalse($this->parent->hasChild($this->component));
         });
     });
+});
 
+createMacro('common event tests', function () {
     testCase('$component->getEventDispatcher();', function () {
         test('returns an instance of "Symfony\Component\EventDispatcher\EventDispatcher"', function () {
             $this->assertInstanceOf(EventDispatcher::class, $this->component->getEventDispatcher());

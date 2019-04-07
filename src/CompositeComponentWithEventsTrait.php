@@ -14,9 +14,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-trait CompositeComponentTrait
+trait CompositeComponentWithEventsTrait
 {
-    use ComponentTrait { getDependencies as getOwnDependencies; }
+    use CompositeComponentTrait;
 
     protected $childs = [];
 
@@ -37,7 +37,7 @@ trait CompositeComponentTrait
         return false;
     }
 
-    public function addChild(ComponentInterface $child, $setParentInChild = true/*, bool $dispatchEvents = true*/): void
+    public function addChild(ComponentInterface $child, $setParentInChild = true, bool $dispatchEvents = true): void
     {
         if (! $this->validateChild($child)) {
             throw new Exception\InvalidChildException(
@@ -45,16 +45,17 @@ trait CompositeComponentTrait
             );
         }
 
-        // if ($dispatchEvents) {
-        //     $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
-        //     $this->getEventDispatcher()->dispatch(
-        //         TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent
-        //     );
+        if ($dispatchEvents) {
+            $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
+            $this->getEventDispatcher()->dispatch(
+                TreeEvent::BEFORE_INSERTION,
+                $beforeInsertionEvent
+            );
 
-        //     if ($beforeInsertionEvent->isCancelled()) {
-        //         return;
-        //     }
-        // }
+            if ($beforeInsertionEvent->isCancelled()) {
+                return;
+            }
+        }
 
         $this->childs[$child->getId()] = $child;
 
@@ -62,12 +63,13 @@ trait CompositeComponentTrait
             $child->setParent($this, false, false);
         }
 
-        // if ($dispatchEvents) {
-        //     $afterInsertionEvent = new AfterInsertionTreeEvent($child, $this);
-        //     $this->getEventDispatcher()->dispatch(
-        //         TreeEvent::AFTER_INSERTION, $afterInsertionEvent
-        //     );
-        // }
+        if ($dispatchEvents) {
+            $afterInsertionEvent = new AfterInsertionTreeEvent($child, $this);
+            $this->getEventDispatcher()->dispatch(
+                TreeEvent::AFTER_INSERTION,
+                $afterInsertionEvent
+            );
+        }
     }
 
     public function getChild(string $id): ?ComponentInterface
@@ -75,7 +77,7 @@ trait CompositeComponentTrait
         return $this->childs[$id] ?? null;
     }
 
-    public function dropChild($child/*, bool $dispatchEvents = true*/): void
+    public function dropChild($child, bool $dispatchEvents = true): void
     {
         $obj = null;
 
@@ -90,26 +92,28 @@ trait CompositeComponentTrait
         if ($obj instanceof ComponentInterface &&
             isset($this->childs[$obj->getId()])
         ) {
-            // if ($dispatchEvents) {
-            //     $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
-            //     $this->getEventDispatcher()->dispatch(
-            //         TreeEvent::BEFORE_DELETION, $beforeDeletionEvent
-            //     );
+            if ($dispatchEvents) {
+                $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
+                $this->getEventDispatcher()->dispatch(
+                    TreeEvent::BEFORE_DELETION,
+                    $beforeDeletionEvent
+                );
 
-            //     if ($beforeDeletionEvent->isCancelled()) {
-            //         return;
-            //     }
-            // }
+                if ($beforeDeletionEvent->isCancelled()) {
+                    return;
+                }
+            }
 
             unset($this->childs[$obj->getId()]);
             $obj->setParent(null, false, false);
 
-            // if ($dispatchEvents) {
-            //     $afterDeletionEvent = new AfterDeletionTreeEvent($obj, $this);
-            //     $this->getEventDispatcher()->dispatch(
-            //         TreeEvent::AFTER_DELETION, $afterDeletionEvent
-            //     );
-            // }
+            if ($dispatchEvents) {
+                $afterDeletionEvent = new AfterDeletionTreeEvent($obj, $this);
+                $this->getEventDispatcher()->dispatch(
+                    TreeEvent::AFTER_DELETION,
+                    $afterDeletionEvent
+                );
+            }
         }
     }
 

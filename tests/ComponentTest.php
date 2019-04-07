@@ -1,6 +1,6 @@
 <?php
 
-use NubecuLabs\Components\Tests\Component;
+use NubecuLabs\Components\Tests\Entity\Component;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
@@ -20,6 +20,6 @@ testCase('ComponentTest.php', function () {
             });
         });
 
-        useMacro('common tests for ComponentTrait and CompositeComponentTrait');
+        useMacro('common tests');
     });
 });

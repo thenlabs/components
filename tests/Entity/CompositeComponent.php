@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Tests;
+namespace NubecuLabs\Components\Tests\Entity;
 
 use NubecuLabs\Components\CompositeComponentInterface;
 use NubecuLabs\Components\CompositeComponentTrait;

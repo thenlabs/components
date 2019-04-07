@@ -1,18 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Tests;
-
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\ComponentTrait;
+namespace NubecuLabs\Components\Tests\Entity;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class Component implements ComponentInterface
+trait CommonTrait
 {
-    use ComponentTrait;
-
     /**
      * Permit assign the id for testing purpouses.
      */
