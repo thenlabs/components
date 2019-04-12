@@ -168,28 +168,28 @@ testCase('CompositeComponentTest.php', function () {
             });
         });
 
-        testCase('$component->getCaptureEventDispatcher();', function () {
-            test('returns an instance of "Symfony\Component\EventDispatcher\EventDispatcher"', function () {
-                $this->assertInstanceOf(EventDispatcher::class, $this->component->getCaptureEventDispatcher());
-            });
+        // testCase('$component->getCaptureEventDispatcher();', function () {
+        //     test('returns an instance of "Symfony\Component\EventDispatcher\EventDispatcher"', function () {
+        //         $this->assertInstanceOf(EventDispatcher::class, $this->component->getCaptureEventDispatcher());
+        //     });
 
-            test('returns always the same instance', function () {
-                $dispatcher = $this->component->getCaptureEventDispatcher();
+        //     test('returns always the same instance', function () {
+        //         $dispatcher = $this->component->getCaptureEventDispatcher();
 
-                $this->assertSame($dispatcher, $this->component->getCaptureEventDispatcher());
-                $this->assertSame($dispatcher, $this->component->getCaptureEventDispatcher());
-            });
+        //         $this->assertSame($dispatcher, $this->component->getCaptureEventDispatcher());
+        //         $this->assertSame($dispatcher, $this->component->getCaptureEventDispatcher());
+        //     });
 
-            testCase('$component->setCaptureEventDispatcher($newDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher);', function () {
-                test('$component->getCaptureEventDispatcher() === $newDispatcher', function () {
-                    $newDispatcher = new EventDispatcher;
+        //     testCase('$component->setCaptureEventDispatcher($newDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher);', function () {
+        //         test('$component->getCaptureEventDispatcher() === $newDispatcher', function () {
+        //             $newDispatcher = new EventDispatcher;
 
-                    $this->component->setCaptureEventDispatcher($newDispatcher);
+        //             $this->component->setCaptureEventDispatcher($newDispatcher);
 
-                    $this->assertSame($newDispatcher, $this->component->getCaptureEventDispatcher());
-                });
-            });
-        });
+        //             $this->assertSame($newDispatcher, $this->component->getCaptureEventDispatcher());
+        //         });
+        //     });
+        // });
     });
 
     testCase('exists a tree of components (see sources)', function () {

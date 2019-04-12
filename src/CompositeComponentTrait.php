@@ -166,37 +166,37 @@ trait CompositeComponentTrait
         });
     }
 
-    public function getCaptureEventDispatcher(): EventDispatcherInterface
-    {
-        if (! $this->captureEventDispatcher) {
-            $this->captureEventDispatcher = new EventDispatcher;
-        }
+    // public function getCaptureEventDispatcher(): EventDispatcherInterface
+    // {
+    //     if (! $this->captureEventDispatcher) {
+    //         $this->captureEventDispatcher = new EventDispatcher;
+    //     }
 
-        return $this->captureEventDispatcher;
-    }
+    //     return $this->captureEventDispatcher;
+    // }
 
-    public function setCaptureEventDispatcher(EventDispatcherInterface $captureEventDispatcher): void
-    {
-        $this->captureEventDispatcher = $captureEventDispatcher;
-    }
+    // public function setCaptureEventDispatcher(EventDispatcherInterface $captureEventDispatcher): void
+    // {
+    //     $this->captureEventDispatcher = $captureEventDispatcher;
+    // }
 
-    public function on(string $eventName, callable $listener, bool $capture = false): void
-    {
-        if ($capture) {
-            $this->getCaptureEventDispatcher()->addListener($eventName, $listener);
-        } else {
-            $this->getEventDispatcher()->addListener($eventName, $listener);
-        }
-    }
+    // public function on(string $eventName, callable $listener, bool $capture = false): void
+    // {
+    //     if ($capture) {
+    //         $this->getCaptureEventDispatcher()->addListener($eventName, $listener);
+    //     } else {
+    //         $this->getEventDispatcher()->addListener($eventName, $listener);
+    //     }
+    // }
 
-    public function off(string $eventName, callable $listener, bool $capture = false): void
-    {
-        if ($capture) {
-            $this->getCaptureEventDispatcher()->removeListener($eventName, $listener);
-        } else {
-            $this->getEventDispatcher()->removeListener($eventName, $listener);
-        }
-    }
+    // public function off(string $eventName, callable $listener, bool $capture = false): void
+    // {
+    //     if ($capture) {
+    //         $this->getCaptureEventDispatcher()->removeListener($eventName, $listener);
+    //     } else {
+    //         $this->getEventDispatcher()->removeListener($eventName, $listener);
+    //     }
+    // }
 
     public function validateChild(ComponentInterface $child): bool
     {
