@@ -21,8 +21,8 @@ trait CommonTrait
     /**
      * Permit assign the dependencies for testing purpouses.
      */
-    public function setDependencies(array $dependencies): void
-    {
-        $this->dependencies = $dependencies;
-    }
+    // public function setDependencies(array $dependencies): void
+    // {
+    //     $this->dependencies = $dependencies;
+    // }
 }

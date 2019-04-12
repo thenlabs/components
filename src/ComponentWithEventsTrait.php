@@ -48,7 +48,7 @@ trait ComponentWithEventsTrait
             }
         }
 
-        if ($parent && $dispatchEvents) {
+        if ($parent instanceof CompositeComopnentWithEventsInterface && $dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
             $parent->getEventDispatcher()->dispatch(
                 TreeEvent::BEFORE_INSERTION,
