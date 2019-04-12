@@ -30,12 +30,7 @@ createMacro('commons', function () {
         });
     });
 
-    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
-        setUp(function () {
-            $this->parent = new CompositeComponent;
-            $this->component->setParent($this->parent);
-        });
-
+    createMacro('tests for when the parent is assigned', function () {
         test('$component->getParent() === $parent', function () {
             $this->assertEquals($this->parent, $this->component->getParent());
         });
@@ -62,12 +57,7 @@ createMacro('commons', function () {
             useMacro('remove the parent tests');
         });
 
-        testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
-            setUp(function () {
-                $this->parent2 = new CompositeComponent;
-                $this->component->setParent($this->parent2);
-            });
-
+        createMacro('tests for when a new parent is assigned', function () {
             test('$parent->hasChild($component) === false', function () {
                 $this->assertFalse($this->parent->hasChild($this->component));
             });
@@ -80,6 +70,42 @@ createMacro('commons', function () {
                 $this->assertEquals($this->parent2, $this->component->getParent());
             });
         });
+
+        testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
+            setUp(function () {
+                $this->parent2 = new CompositeComponent;
+                $this->component->setParent($this->parent2);
+            });
+
+            useMacro('tests for when a new parent is assigned');
+        });
+
+        testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents);', function () {
+            setUp(function () {
+                $this->parent2 = new CompositeComponentWithEvents;
+                $this->component->setParent($this->parent2);
+            });
+
+            useMacro('tests for when a new parent is assigned');
+        });
+    });
+
+    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
+        setUp(function () {
+            $this->parent = new CompositeComponent;
+            $this->component->setParent($this->parent);
+        });
+
+        useMacro('tests for when the parent is assigned');
+    });
+
+    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents);', function () {
+        setUp(function () {
+            $this->parent = new CompositeComponentWithEvents;
+            $this->component->setParent($this->parent);
+        });
+
+        useMacro('tests for when the parent is assigned');
     });
 
     createMacro('tests for when the parent is assigned without add the child in the parent', function () {
