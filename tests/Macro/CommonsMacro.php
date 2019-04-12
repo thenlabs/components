@@ -1,6 +1,7 @@
 <?php
 
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
+use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
 
 createMacro('commons', function () {
     setUp(function () {
@@ -81,12 +82,7 @@ createMacro('commons', function () {
         });
     });
 
-    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent, false);', function () {
-        setUp(function () {
-            $this->parent = new CompositeComponent;
-            $this->component->setParent($this->parent, false);
-        });
-
+    createMacro('tests for when the parent is assigned without add the child in the parent', function () {
         test('$component->getParent() === $parent', function () {
             $this->assertEquals($this->parent, $this->component->getParent());
         });
@@ -94,5 +90,23 @@ createMacro('commons', function () {
         test('$parent->hasChild($component) === false', function () {
             $this->assertFalse($this->parent->hasChild($this->component));
         });
+    });
+
+    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent, false);', function () {
+        setUp(function () {
+            $this->parent = new CompositeComponent;
+            $this->component->setParent($this->parent, false);
+        });
+
+        useMacro('tests for when the parent is assigned without add the child in the parent');
+    });
+
+    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeWithEventsComponent, false);', function () {
+        setUp(function () {
+            $this->parent = new CompositeComponentWithEvents;
+            $this->component->setParent($this->parent, false);
+        });
+
+        useMacro('tests for when the parent is assigned without add the child in the parent');
     });
 });
