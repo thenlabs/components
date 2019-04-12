@@ -11,6 +11,8 @@ testCase('ComponentWithEventsTest.php', function () {
     });
 
     testCase(sprintf("\$component = new \\%s;", ComponentWithEvents::class), function () {
+        useMacro('commons');
+
         useMacro('common macro for Component and ComponentWithEvents');
 
         testCase('$component->getId();', function () {

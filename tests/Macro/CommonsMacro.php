@@ -29,57 +29,57 @@ createMacro('commons', function () {
         });
     });
 
-    // testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
-    //     setUp(function () {
-    //         $this->parent = $this->getNewParentComponent();
-    //         $this->component->setParent($this->parent);
-    //     });
+    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
+        setUp(function () {
+            $this->parent = new CompositeComponent;
+            $this->component->setParent($this->parent);
+        });
 
-    //     test('$component->getParent() === $parent', function () {
-    //         $this->assertEquals($this->parent, $this->component->getParent());
-    //     });
+        test('$component->getParent() === $parent', function () {
+            $this->assertEquals($this->parent, $this->component->getParent());
+        });
 
-    //     test('$parent->hasChild($component) === true', function () {
-    //         $this->assertTrue($this->parent->hasChild($this->component));
-    //     });
+        test('$parent->hasChild($component) === true', function () {
+            $this->assertTrue($this->parent->hasChild($this->component));
+        });
 
-    //     createMacro('remove the parent tests', function () {
-    //         test('$component->getParent() === null', function () {
-    //             $this->assertNull($this->component->getParent());
-    //         });
+        createMacro('remove the parent tests', function () {
+            test('$component->getParent() === null', function () {
+                $this->assertNull($this->component->getParent());
+            });
 
-    //         test('$parent->hasChild($component) === false', function () {
-    //             $this->assertFalse($this->parent->hasChild($this->component));
-    //         });
-    //     });
+            test('$parent->hasChild($component) === false', function () {
+                $this->assertFalse($this->parent->hasChild($this->component));
+            });
+        });
 
-    //     testCase('$component->setParent(null);', function () {
-    //         setUp(function () {
-    //             $this->component->setParent(null);
-    //         });
+        testCase('$component->setParent(null);', function () {
+            setUp(function () {
+                $this->component->setParent(null);
+            });
 
-    //         useMacro('remove the parent tests');
-    //     });
+            useMacro('remove the parent tests');
+        });
 
-    //     testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
-    //         setUp(function () {
-    //             $this->parent2 = $this->getNewParentComponent();
-    //             $this->component->setParent($this->parent2);
-    //         });
+        testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
+            setUp(function () {
+                $this->parent2 = new CompositeComponent;
+                $this->component->setParent($this->parent2);
+            });
 
-    //         test('$parent->hasChild($component) === false', function () {
-    //             $this->assertFalse($this->parent->hasChild($this->component));
-    //         });
+            test('$parent->hasChild($component) === false', function () {
+                $this->assertFalse($this->parent->hasChild($this->component));
+            });
 
-    //         test('$parent2->hasChild($component) === true', function () {
-    //             $this->assertTrue($this->parent2->hasChild($this->component));
-    //         });
+            test('$parent2->hasChild($component) === true', function () {
+                $this->assertTrue($this->parent2->hasChild($this->component));
+            });
 
-    //         test('$component->getParent() === $parent2', function () {
-    //             $this->assertEquals($this->parent2, $this->component->getParent());
-    //         });
-    //     });
-    // });
+            test('$component->getParent() === $parent2', function () {
+                $this->assertEquals($this->parent2, $this->component->getParent());
+            });
+        });
+    });
 
     testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent, false);', function () {
         setUp(function () {

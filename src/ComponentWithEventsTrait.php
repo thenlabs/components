@@ -24,7 +24,7 @@ trait ComponentWithEventsTrait
     public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true): void
     {
         if ($this->parent instanceof CompositeComponentInterface) {
-            if ($dispatchEvents) {
+            if ($this->parent instanceof CompositeComopnentWithEventsInterface && $dispatchEvents) {
                 $beforeDeletionEvent = new BeforeDeletionTreeEvent($this, $this->parent);
                 $this->parent->getEventDispatcher()->dispatch(
                     TreeEvent::BEFORE_DELETION,
@@ -39,7 +39,7 @@ trait ComponentWithEventsTrait
             $oldParent = $this->parent;
             $this->parent->dropChild($this, false, false);
 
-            if ($dispatchEvents) {
+            if ($this->parent instanceof CompositeComopnentWithEventsInterface && $dispatchEvents) {
                 $afterDeletionEvent = new AfterDeletionTreeEvent($this, $oldParent);
                 $oldParent->getEventDispatcher()->dispatch(
                     TreeEvent::AFTER_DELETION,
@@ -65,7 +65,7 @@ trait ComponentWithEventsTrait
         if ($parent && $addChildToParent) {
             $this->parent->addChild($this, false, false);
 
-            if ($dispatchEvents) {
+            if ($parent instanceof CompositeComopnentWithEventsInterface && $dispatchEvents) {
                 $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
                 $parent->getEventDispatcher()->dispatch(
                     TreeEvent::AFTER_INSERTION,
