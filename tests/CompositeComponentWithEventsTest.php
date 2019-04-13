@@ -2,6 +2,8 @@
 
 use NubecuLabs\Components\Tests\Entity\Component;
 use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
@@ -24,6 +26,29 @@ testCase('CompositeComponentWithEventsTest.php', function () {
 
                 $this->assertGreaterThan(13, strlen($id));
                 $this->assertStringStartsWith('compositecomponentwithevents_', $id);
+            });
+        });
+
+        testCase('$component->getCaptureEventDispatcher();', function () {
+            test('returns an instance of "Symfony\Component\EventDispatcher\EventDispatcher"', function () {
+                $this->assertInstanceOf(EventDispatcher::class, $this->component->getCaptureEventDispatcher());
+            });
+
+            test('returns always the same instance', function () {
+                $dispatcher = $this->component->getCaptureEventDispatcher();
+
+                $this->assertSame($dispatcher, $this->component->getCaptureEventDispatcher());
+                $this->assertSame($dispatcher, $this->component->getCaptureEventDispatcher());
+            });
+
+            testCase('$component->setCaptureEventDispatcher($newDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher);', function () {
+                test('$component->getCaptureEventDispatcher() === $newDispatcher', function () {
+                    $newDispatcher = new EventDispatcher;
+
+                    $this->component->setCaptureEventDispatcher($newDispatcher);
+
+                    $this->assertSame($newDispatcher, $this->component->getCaptureEventDispatcher());
+                });
             });
         });
     });
