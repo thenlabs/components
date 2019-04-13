@@ -5,6 +5,7 @@ namespace NubecuLabs\Components\Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Andaniel05\PyramidalTests\Utils\StaticVarsInjectionTrait;
+use NubecuLabs\Components\ComponentInterface;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -12,4 +13,9 @@ use Andaniel05\PyramidalTests\Utils\StaticVarsInjectionTrait;
 class TestCase extends PHPUnitTestCase
 {
     use StaticVarsInjectionTrait;
+
+    public function getNewComponent(): ComponentInterface
+    {
+        return new $this->componentClass;
+    }
 }

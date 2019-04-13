@@ -6,8 +6,8 @@ setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
 
 testCase('ComponentWithEventsTest.php', function () {
-    createMethod('getNewComponent', function () {
-        return new ComponentWithEvents;
+    setUp(function () {
+        $this->componentClass = ComponentWithEvents::class;
     });
 
     testCase(sprintf("\$component = new \\%s;", ComponentWithEvents::class), function () {

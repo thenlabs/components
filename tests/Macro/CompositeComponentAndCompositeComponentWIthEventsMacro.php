@@ -237,4 +237,48 @@ createMacro('commons of CompositeComponent and CompositeComponentWithEvents', fu
 
         useMacro('commons for when the component adds a child without assign the parent');
     });
+
+    testCase('exists four components', function () {
+        setUp(function () {
+            $this->child1 = new Component;
+            $this->child2 = new ComponentWithEvents;
+            $this->child3 = new CompositeComponent;
+            $this->child4 = new CompositeComponentWithEvents;
+        });
+
+        testCase('$component->addChilds($child1, $child2, $child3, $child4);', function () {
+            setUp(function () {
+                $component = $this->getMockBuilder($this->componentClass)
+                    ->setMethods(['addChild'])
+                    ->getMock();
+                $component->expects($this->exactly(4))
+                    ->method('addChild')
+                    ->withConsecutive(
+                        [$this->child1],
+                        [$this->child2],
+                        [$this->child3],
+                        [$this->child4]
+                    )
+                ;
+
+                $component->addChilds($this->child1, $this->child2, $this->child3, $this->child4);
+            });
+
+            test('invoke to $component->addChild($child1) at the first time', function () {
+                $this->assertTrue(true);
+            });
+
+            test('invoke to $component->addChild($child2) at the second time', function () {
+                $this->assertTrue(true);
+            });
+
+            test('invoke to $component->addChild($child3) at the third time', function () {
+                $this->assertTrue(true);
+            });
+
+            test('invoke to $component->addChild($child4) at the fourth time', function () {
+                $this->assertTrue(true);
+            });
+        });
+    });
 });

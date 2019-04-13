@@ -1,14 +1,13 @@
 <?php
 
-use NubecuLabs\Components\Tests\Entity\Component;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
 
 testCase('CompositeComponentTest.php', function () {
-    createMethod('getNewComponent', function () {
-        return new CompositeComponent;
+    setUp(function () {
+        $this->componentClass = CompositeComponent::class;
     });
 
     testCase(sprintf("\$component = new \\%s;", CompositeComponent::class), function () {

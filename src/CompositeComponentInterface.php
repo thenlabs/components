@@ -12,6 +12,8 @@ interface CompositeComponentInterface extends ComponentInterface
 
     public function addChild(ComponentInterface $child, $setParentInChild = true): void;
 
+    public function addChilds(ComponentInterface ...$childs): void;
+
     public function getChild(string $id): ?ComponentInterface;
 
     public function dropChild($child): void;

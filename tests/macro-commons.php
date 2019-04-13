@@ -1,7 +1,6 @@
 <?php
 
 use Symfony\Component\EventDispatcher\Event;
-use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 createMacro('common tests', function () {

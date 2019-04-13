@@ -1,16 +1,14 @@
 <?php
 
-use NubecuLabs\Components\Tests\Entity\Component;
 use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
 
 testCase('CompositeComponentWithEventsTest.php', function () {
-    createMethod('getNewComponent', function () {
-        return new CompositeComponentWithEvents;
+    setUp(function () {
+        $this->componentClass = CompositeComponentWithEvents::class;
     });
 
     testCase(sprintf("\$component = new \\%s;", CompositeComponentWithEvents::class), function () {

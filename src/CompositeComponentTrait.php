@@ -70,6 +70,13 @@ trait CompositeComponentTrait
         // }
     }
 
+    public function addChilds(ComponentInterface ...$childs): void
+    {
+        foreach ($childs as $child) {
+            $this->addChild($child);
+        }
+    }
+
     public function getChild(string $id): ?ComponentInterface
     {
         return $this->childs[$id] ?? null;

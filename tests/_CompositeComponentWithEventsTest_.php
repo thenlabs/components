@@ -1,6 +1,5 @@
 <?php
 
-use NubecuLabs\Components\Tests\Entity\ComponentWithEvents;
 use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
