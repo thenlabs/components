@@ -39,19 +39,13 @@ trait ComponentTrait
 
     public function getParents(): array
     {
-        $result = [];
+        $parents = [];
 
-        $node = $this;
-        while ($node) {
-            $parent = $node->getParent();
-            if ($parent) {
-                $result[] = $parent;
-            }
-
-            $node = $parent;
+        foreach ($this->parents() as $parent) {
+            $parents[] = $parent;
         }
 
-        return $result;
+        return $parents;
     }
 
     public function parents(): iterable
@@ -60,7 +54,12 @@ trait ComponentTrait
 
         while ($node) {
             $parent = $node->getParent();
-            yield $parent;
+
+            if ($parent) {
+                yield $parent;
+            } else {
+                return;
+            }
 
             $node = $parent;
         }
