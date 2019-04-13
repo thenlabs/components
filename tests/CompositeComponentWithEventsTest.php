@@ -14,7 +14,9 @@ testCase('CompositeComponentWithEventsTest.php', function () {
     testCase(sprintf("\$component = new \\%s;", CompositeComponentWithEvents::class), function () {
         useMacro('commons');
 
-        useMacro('commons for CompositeComponent and CompositeComponentWithEvents');
+        useMacro('commons of ComponentWithEvents and CompositeComponentWithEvents');
+
+        useMacro('commons of CompositeComponent and CompositeComponentWithEvents');
 
         testCase('$component->getId();', function () {
             test('returns an unique string that starts with "compositecomponentwithevents_"', function () {
