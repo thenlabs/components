@@ -39,12 +39,7 @@ createMacro('commons of CompositeComponent and CompositeComponentWithEvents', fu
             $this->assertSame($this->child, $this->component->getChild($this->child->getId()));
         });
 
-        testCase(sprintf('$component->addChild($child2 = new %s);', Component::class), function () {
-            setUp(function () {
-                $this->child2 = new Component;
-                $this->component->addChild($this->child2);
-            });
-
+        createMacro('tests for when the component adds other child', function () {
             test('$component->hasChild($child2) === true', function () {
                 $this->assertTrue($this->component->hasChild($this->child2));
             });
@@ -118,6 +113,42 @@ createMacro('commons of CompositeComponent and CompositeComponentWithEvents', fu
                     useMacro('drop child tests');
                 });
             });
+        });
+
+        testCase(sprintf('$component->addChild($child2 = new %s);', Component::class), function () {
+            setUp(function () {
+                $this->child2 = new Component;
+                $this->component->addChild($this->child2);
+            });
+
+            useMacro('tests for when the component adds other child');
+        });
+
+        testCase(sprintf('$component->addChild($child2 = new %s);', ComponentWithEvents::class), function () {
+            setUp(function () {
+                $this->child2 = new ComponentWithEvents;
+                $this->component->addChild($this->child2);
+            });
+
+            useMacro('tests for when the component adds other child');
+        });
+
+        testCase(sprintf('$component->addChild($child2 = new %s);', CompositeComponent::class), function () {
+            setUp(function () {
+                $this->child2 = new CompositeComponent;
+                $this->component->addChild($this->child2);
+            });
+
+            useMacro('tests for when the component adds other child');
+        });
+
+        testCase(sprintf('$component->addChild($child2 = new %s);', CompositeComponentWithEvents::class), function () {
+            setUp(function () {
+                $this->child2 = new CompositeComponentWithEvents;
+                $this->component->addChild($this->child2);
+            });
+
+            useMacro('tests for when the component adds other child');
         });
     });
 
