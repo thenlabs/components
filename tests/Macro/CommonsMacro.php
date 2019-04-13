@@ -135,4 +135,12 @@ createMacro('commons', function () {
 
         useMacro('tests for when the parent is assigned without add the child in the parent');
     });
+
+    testCase('$iterator = $component->parents();', function () {
+        test('the iterator is empty', function () {
+            $iterator = $this->component->parents();
+
+            $this->assertNull($iterator->current());
+        });
+    });
 });

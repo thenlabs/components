@@ -14,6 +14,8 @@ interface ComponentInterface
 
     public function getParents(): array;
 
+    public function parents(): iterable;
+
     public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true): void;
 
     public function getDependencies(): array;

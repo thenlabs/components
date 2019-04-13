@@ -54,6 +54,18 @@ trait ComponentTrait
         return $result;
     }
 
+    public function parents(): iterable
+    {
+        $node = $this;
+
+        while ($node) {
+            $parent = $node->getParent();
+            yield $parent;
+
+            $node = $parent;
+        }
+    }
+
     public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true/*, bool $dispatchEvents = true*/): void
     {
         if ($this->parent instanceof CompositeComponentInterface) {

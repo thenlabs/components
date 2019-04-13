@@ -308,6 +308,47 @@ testCase('ExistsAComponentsTree.php', function () {
             });
         });
 
+        testCase('$iterator = $child32->parents();', function () {
+            setUpBeforeClassOnce(function () {
+                $child32 = static::getVar('child32');
+                static::setVar('iterator', $child32->parents());
+            });
+
+            test('iteration #1: $iterator->current() === $child3', function () {
+                $this->assertSame($this->child3, $this->iterator->current());
+                $this->iterator->next();
+            });
+
+            test('iteration #2: $iterator->current() === $component', function () {
+                $this->assertSame($this->component, $this->iterator->current());
+                $this->iterator->next();
+                $this->assertNull($this->iterator->current());
+            });
+        });
+
+        testCase('$iterator = $child412->parents();', function () {
+            setUpBeforeClassOnce(function () {
+                $child412 = static::getVar('child412');
+                static::setVar('iterator', $child412->parents());
+            });
+
+            test('iteration #1: $iterator->current() === $child41', function () {
+                $this->assertSame($this->child41, $this->iterator->current());
+                $this->iterator->next();
+            });
+
+            test('iteration #2: $iterator->current() === $child4', function () {
+                $this->assertSame($this->child4, $this->iterator->current());
+                $this->iterator->next();
+            });
+
+            test('iteration #3: $iterator->current() === $component', function () {
+                $this->assertSame($this->component, $this->iterator->current());
+                $this->iterator->next();
+                $this->assertNull($this->iterator->current());
+            });
+        });
+
         // testCase('exists a subtree listening for an event (see sources)', function () {
         //     setUp(function () {
         //         $this->eventName = uniqid('event');
