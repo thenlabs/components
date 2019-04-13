@@ -11,5 +11,5 @@ use NubecuLabs\Components\CompositeComponentTrait;
  */
 class CompositeComponent extends Component implements CompositeComponentInterface
 {
-    use CompositeComponentTrait;
+    use CompositeComponentTrait, CommonTrait;
 }

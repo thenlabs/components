@@ -71,223 +71,242 @@ testCase('ExistsAComponentsTree.php', function () {
             $this->injectVars();
         });
 
-        // $id = uniqid('comp');
-        // test("\$component->findChildById('$id') === null", function () use ($id) {
-        //     $this->assertNull($this->component->findChildById($id));
-        // });
+        $id = uniqid('comp');
+        test("\$component->findChildById('$id') === null", function () use ($id) {
+            $this->assertNull($this->component->findChildById($id));
+        });
 
-        // test('$component->findChildById("child4") === $child4', function () {
-        //     $this->assertSame($this->child4, $this->component->findChildById('child4'));
-        // });
+        test('$component->findChildById("child412") === $child412', function () {
+            $this->assertSame($this->child412, $this->component->findChildById('child412'));
+        });
 
-        // testCase('$iterator = $component->children();', function () {
-        //     setUpBeforeClassOnce(function () {
-        //         $component = static::getVar('component');
-        //         static::setVar('iterator', $component->children());
-        //     });
+        testCase('$iterator = $component->children();', function () {
+            setUpBeforeClassOnce(function () {
+                $component = static::getVar('component');
+                static::setVar('iterator', $component->children());
+            });
 
-        //     test('iteration #1: $iterator->current() === $child1', function () {
-        //         $this->assertSame($this->child1, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #1: $iterator->current() === $child1', function () {
+                $this->assertSame($this->child1, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #2: $iterator->current() === $child2', function () {
-        //         $this->assertSame($this->child2, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #2: $iterator->current() === $child2', function () {
+                $this->assertSame($this->child2, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #3: $iterator->current() === $child3', function () {
-        //         $this->assertSame($this->child3, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #3: $iterator->current() === $child3', function () {
+                $this->assertSame($this->child3, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #4: $iterator->current() === $child4', function () {
-        //         $this->assertSame($this->child4, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #4: $iterator->current() === $child31', function () {
+                $this->assertSame($this->child31, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #5: $iterator->current() === $child5', function () {
-        //         $this->assertSame($this->child5, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #5: $iterator->current() === $child32', function () {
+                $this->assertSame($this->child32, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #6: $iterator->current() === $child6', function () {
-        //         $this->assertSame($this->child6, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #6: $iterator->current() === $child33', function () {
+                $this->assertSame($this->child33, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #7: $iterator->current() === $child7', function () {
-        //         $this->assertSame($this->child7, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #7: $iterator->current() === $child4', function () {
+                $this->assertSame($this->child4, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #8: $iterator->current() === $child8', function () {
-        //         $this->assertSame($this->child8, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #8: $iterator->current() === $child41', function () {
+                $this->assertSame($this->child41, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #9: $iterator->current() === $child9', function () {
-        //         $this->assertSame($this->child9, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #9: $iterator->current() === $child411', function () {
+                $this->assertSame($this->child411, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #10 (End): $iterator->current() === $child10', function () {
-        //         $this->assertSame($this->child10, $this->iterator->current());
-        //         $this->iterator->next();
-        //         $this->assertNull($this->iterator->current());
-        //     });
-        // });
+            test('iteration #10 (End): $iterator->current() === $child412', function () {
+                $this->assertSame($this->child412, $this->iterator->current());
+                $this->iterator->next();
+                $this->assertNull($this->iterator->current());
+            });
+        });
 
-        // testCase('$iterator = $component->children(false);', function () {
-        //     setUpBeforeClassOnce(function () {
-        //         $component = static::getVar('component');
-        //         static::setVar('iterator', $component->children(false));
-        //     });
+        testCase('$iterator = $component->children(false);', function () {
+            setUpBeforeClassOnce(function () {
+                $component = static::getVar('component');
+                static::setVar('iterator', $component->children(false));
+            });
 
-        //     test('iteration #1: $iterator->current() === $child1', function () {
-        //         $this->assertSame($this->child1, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #1: $iterator->current() === $child1', function () {
+                $this->assertSame($this->child1, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #2: $iterator->current() === $child2', function () {
-        //         $this->assertSame($this->child2, $this->iterator->current());
-        //         $this->iterator->next();
-        //     });
+            test('iteration #2: $iterator->current() === $child2', function () {
+                $this->assertSame($this->child2, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        //     test('iteration #3 (End): $iterator->current() === $child5', function () {
-        //         $this->assertSame($this->child5, $this->iterator->current());
-        //         $this->iterator->next();
-        //         $this->assertNull($this->iterator->current());
-        //     });
-        // });
+            test('iteration #3 (End): $iterator->current() === $child3', function () {
+                $this->assertSame($this->child3, $this->iterator->current());
+                $this->iterator->next();
+            });
 
-        // testCase('$component->findChild($callback) cases', function () {
-        //     test('returns null when callback always returns false', function () {
-        //         $this->assertNull($this->component->findChild(function (ComponentInterface $child) {
-        //             return false;
-        //         }));
-        //     });
+            test('iteration #3 (End): $iterator->current() === $child4', function () {
+                $this->assertSame($this->child4, $this->iterator->current());
+                $this->iterator->next();
+                $this->assertNull($this->iterator->current());
+            });
+        });
 
-        //     test('returns null when the callback not returns nothing', function () {
-        //         $this->assertNull($this->component->findChild(function (ComponentInterface $child) {
-        //         }));
-        //     });
+        testCase('$component->findChild($callback) cases', function () {
+            test('returns null when callback always returns false', function () {
+                $this->assertNull($this->component->findChild(function (ComponentInterface $child) {
+                    return false;
+                }));
+            });
 
-        //     test('returns the child for whom the callback returns a value', function () {
-        //         $this->assertSame($this->child4, $this->component->findChild(function (ComponentInterface $child) {
-        //             return $child->getId() == 'child4' ? true : false;
-        //         }));
+            test('returns null when the callback not returns nothing', function () {
+                $this->assertNull($this->component->findChild(function (ComponentInterface $child) {
+                }));
+            });
 
-        //         $this->assertSame($this->child4, $this->component->findChild(function (ComponentInterface $child) {
-        //             if ($child->getId() == 'child4') {
-        //                 return $child;
-        //             }
-        //         }));
-        //     });
+            test('returns the child for whom the callback returns a value', function () {
+                $this->assertSame($this->child411, $this->component->findChild(function (ComponentInterface $child) {
+                    return $child->getId() == 'child411' ? true : false;
+                }));
 
-        //     test('$component->findChild($callback, false) does not do a recursive search', function () {
-        //         $callback = function (ComponentInterface $child) {
-        //             return $child->getId() == 'child4' ? true : false;
-        //         };
+                $this->assertSame($this->child411, $this->component->findChild(function (ComponentInterface $child) {
+                    if ($child->getId() == 'child411') {
+                        return $child;
+                    }
+                }));
+            });
 
-        //         $this->assertNull($this->component->findChild($callback, false));
-        //     });
-        // });
+            test('$component->findChild($callback, false) does not do a recursive search', function () {
+                $callback = function (ComponentInterface $child) {
+                    return $child->getId() == 'child411' ? true : false;
+                };
 
-        // testCase('$component->findChilds($callback) cases', function () {
-        //     test('returns an empty array when callback always return false', function () {
-        //         $callback = function () {
-        //             return false;
-        //         };
+                $this->assertNull($this->component->findChild($callback, false));
+            });
+        });
 
-        //         $this->assertEquals([], $this->component->findChilds($callback));
-        //     });
+        testCase('$component->findChilds($callback) cases', function () {
+            test('returns an empty array when callback always return false', function () {
+                $callback = function () {
+                    return false;
+                };
 
-        //     test('returns an empty array when callback not returns nothing', function () {
-        //         $callback = function () {
-        //             return false;
-        //         };
+                $this->assertEquals([], $this->component->findChilds($callback));
+            });
 
-        //         $this->assertEquals([], $this->component->findChilds($callback));
-        //     });
+            test('returns an empty array when callback not returns nothing', function () {
+                $callback = function () {
+                    return false;
+                };
 
-        //     test('returns in an array the childs for whom the callback returns true', function () {
-        //         $callback = function (ComponentInterface $child) {
-        //             return $child instanceof CompositeComponent ? false : true;
-        //         };
+                $this->assertEquals([], $this->component->findChilds($callback));
+            });
 
-        //         $childs = $this->component->findChilds($callback);
+            test('returns in an array the childs for whom the callback returns true', function () {
+                $callback = function (ComponentInterface $child) {
+                    if ($child instanceof CompositeComponent &&
+                        ! $child instanceof CompositeComponentWithEvents
+                    ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
 
-        //         $this->assertCount(2, $childs);
-        //         $this->assertSame($this->child1, $childs[0]);
-        //         $this->assertSame($this->child4, $childs[1]);
-        //     });
+                $childs = $this->component->findChilds($callback);
 
-        //     test('returns in an array the childs for whom the callback returns a value', function () {
-        //         $callback = function (ComponentInterface $child) {
-        //             if (! $child instanceof CompositeComponent) {
-        //                 return $child;
-        //             }
-        //         };
+                $this->assertCount(3, $childs);
+                $this->assertSame($this->child3, $childs[0]);
+                $this->assertSame($this->child31, $childs[1]);
+                $this->assertSame($this->child411, $childs[2]);
+            });
 
-        //         $childs = $this->component->findChilds($callback);
+            test('returns in an array the childs for whom the callback returns a value', function () {
+                $callback = function (ComponentInterface $child) {
+                    if ($child instanceof CompositeComponent &&
+                        ! $child instanceof CompositeComponentWithEvents
+                    ) {
+                        return $child;
+                    }
+                };
 
-        //         $this->assertCount(2, $childs);
-        //         $this->assertSame($this->child1, $childs[0]);
-        //         $this->assertSame($this->child4, $childs[1]);
-        //     });
+                $childs = $this->component->findChilds($callback);
 
-        //     test('$component->findChilds($callback, false) does not do a recursive search', function () {
-        //         $callback = function (ComponentInterface $child) {
-        //             return $child instanceof CompositeComponent ? false : true;
-        //         };
+                $this->assertCount(3, $childs);
+                $this->assertSame($this->child3, $childs[0]);
+                $this->assertSame($this->child31, $childs[1]);
+                $this->assertSame($this->child411, $childs[2]);
+            });
 
-        //         $childs = $this->component->findChilds($callback, false);
+            test('$component->findChilds($callback, false) does not do a recursive search', function () {
+                $callback = function (ComponentInterface $child) {
+                    if ($child instanceof CompositeComponent &&
+                        ! $child instanceof CompositeComponentWithEvents
+                    ) {
+                        return true;
+                    }
+                };
 
-        //         $this->assertCount(1, $childs);
-        //         $this->assertSame($this->child1, $childs[0]);
-        //     });
-        // });
+                $childs = $this->component->findChilds($callback, false);
 
-        // testCase('$parents = $child1->getParents();', function () {
-        //     setUp(function () {
-        //         $this->parents = $this->child1->getParents();
-        //     });
+                $this->assertCount(1, $childs);
+                $this->assertSame($this->child3, $childs[0]);
+            });
+        });
 
-        //     test('count($parents) == 1', function () {
-        //         $this->assertCount(1, $this->parents);
-        //     });
+        testCase('$parents = $child32->getParents();', function () {
+            setUp(function () {
+                $this->parents = $this->child32->getParents();
+            });
 
-        //     test('$parents[0] === $component', function () {
-        //         $this->assertSame($this->component, $this->parents[0]);
-        //     });
-        // });
+            test('count($parents) == 2', function () {
+                $this->assertCount(2, $this->parents);
+            });
 
-        // testCase('$parents = $child8->getParents();', function () {
-        //     setUp(function () {
-        //         $this->parents = $this->child8->getParents();
-        //     });
+            test('$parents[0] === $child3', function () {
+                $this->assertSame($this->child3, $this->parents[0]);
+            });
 
-        //     test('count($parents) == 4', function () {
-        //         $this->assertCount(4, $this->parents);
-        //     });
+            test('$parents[1] === $component', function () {
+                $this->assertSame($this->component, $this->parents[1]);
+            });
+        });
 
-        //     test('$parents[0] === $child7', function () {
-        //         $this->assertSame($this->child7, $this->parents[0]);
-        //     });
+        testCase('$parents = $child412->getParents();', function () {
+            setUp(function () {
+                $this->parents = $this->child412->getParents();
+            });
 
-        //     test('$parents[1] === $child6', function () {
-        //         $this->assertSame($this->child6, $this->parents[1]);
-        //     });
+            test('count($parents) == 3', function () {
+                $this->assertCount(3, $this->parents);
+            });
 
-        //     test('$parents[2] === $child5', function () {
-        //         $this->assertSame($this->child5, $this->parents[2]);
-        //     });
+            test('$parents[0] === $child41', function () {
+                $this->assertSame($this->child41, $this->parents[0]);
+            });
 
-        //     test('$parents[3] === $component', function () {
-        //         $this->assertSame($this->component, $this->parents[3]);
-        //     });
-        // });
+            test('$parents[1] === $child4', function () {
+                $this->assertSame($this->child4, $this->parents[1]);
+            });
+
+            test('$parents[2] === $component', function () {
+                $this->assertSame($this->component, $this->parents[2]);
+            });
+        });
 
         // testCase('exists a subtree listening for an event (see sources)', function () {
         //     setUp(function () {

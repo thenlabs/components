@@ -11,5 +11,5 @@ use NubecuLabs\Components\CompositeComponentWithEventsTrait;
  */
 class CompositeComponentWithEvents extends ComponentWithEvents implements CompositeComponentWithEventsInterface
 {
-    use CompositeComponentWithEventsTrait;
+    use CompositeComponentWithEventsTrait, CommonTrait;
 }
