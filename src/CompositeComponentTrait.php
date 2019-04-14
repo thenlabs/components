@@ -37,7 +37,7 @@ trait CompositeComponentTrait
         return false;
     }
 
-    public function addChild(ComponentInterface $child, $setParentInChild = true/*, bool $dispatchEvents = true*/): void
+    public function addChild(ComponentInterface $child, $setParentInChild = true): void
     {
         if (! $this->validateChild($child)) {
             throw new Exception\InvalidChildException(
@@ -45,29 +45,11 @@ trait CompositeComponentTrait
             );
         }
 
-        // if ($dispatchEvents) {
-        //     $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
-        //     $this->getEventDispatcher()->dispatch(
-        //         TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent
-        //     );
-
-        //     if ($beforeInsertionEvent->isCancelled()) {
-        //         return;
-        //     }
-        // }
-
         $this->childs[$child->getId()] = $child;
 
         if ($setParentInChild) {
             $child->setParent($this, false, false);
         }
-
-        // if ($dispatchEvents) {
-        //     $afterInsertionEvent = new AfterInsertionTreeEvent($child, $this);
-        //     $this->getEventDispatcher()->dispatch(
-        //         TreeEvent::AFTER_INSERTION, $afterInsertionEvent
-        //     );
-        // }
     }
 
     public function addChilds(ComponentInterface ...$childs): void
@@ -82,7 +64,7 @@ trait CompositeComponentTrait
         return $this->childs[$id] ?? null;
     }
 
-    public function dropChild($child/*, bool $dispatchEvents = true*/): void
+    public function dropChild($child): void
     {
         $obj = null;
 
@@ -97,26 +79,8 @@ trait CompositeComponentTrait
         if ($obj instanceof ComponentInterface &&
             isset($this->childs[$obj->getId()])
         ) {
-            // if ($dispatchEvents) {
-            //     $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
-            //     $this->getEventDispatcher()->dispatch(
-            //         TreeEvent::BEFORE_DELETION, $beforeDeletionEvent
-            //     );
-
-            //     if ($beforeDeletionEvent->isCancelled()) {
-            //         return;
-            //     }
-            // }
-
             unset($this->childs[$obj->getId()]);
             $obj->setParent(null, false, false);
-
-            // if ($dispatchEvents) {
-            //     $afterDeletionEvent = new AfterDeletionTreeEvent($obj, $this);
-            //     $this->getEventDispatcher()->dispatch(
-            //         TreeEvent::AFTER_DELETION, $afterDeletionEvent
-            //     );
-            // }
         }
     }
 
@@ -172,38 +136,6 @@ trait CompositeComponentTrait
             return $id == $child->getId() ? true : false;
         });
     }
-
-    // public function getCaptureEventDispatcher(): EventDispatcherInterface
-    // {
-    //     if (! $this->captureEventDispatcher) {
-    //         $this->captureEventDispatcher = new EventDispatcher;
-    //     }
-
-    //     return $this->captureEventDispatcher;
-    // }
-
-    // public function setCaptureEventDispatcher(EventDispatcherInterface $captureEventDispatcher): void
-    // {
-    //     $this->captureEventDispatcher = $captureEventDispatcher;
-    // }
-
-    // public function on(string $eventName, callable $listener, bool $capture = false): void
-    // {
-    //     if ($capture) {
-    //         $this->getCaptureEventDispatcher()->addListener($eventName, $listener);
-    //     } else {
-    //         $this->getEventDispatcher()->addListener($eventName, $listener);
-    //     }
-    // }
-
-    // public function off(string $eventName, callable $listener, bool $capture = false): void
-    // {
-    //     if ($capture) {
-    //         $this->getCaptureEventDispatcher()->removeListener($eventName, $listener);
-    //     } else {
-    //         $this->getEventDispatcher()->removeListener($eventName, $listener);
-    //     }
-    // }
 
     public function validateChild(ComponentInterface $child): bool
     {

@@ -18,8 +18,6 @@ trait ComponentTrait
 
     protected $parent;
 
-    protected $dependencies = [];
-
     public function getId(): string
     {
         if (! $this->id) {
@@ -65,53 +63,16 @@ trait ComponentTrait
         }
     }
 
-    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true/*, bool $dispatchEvents = true*/): void
+    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true): void
     {
         if ($this->parent instanceof CompositeComponentInterface) {
-            // if ($dispatchEvents) {
-            //     $beforeDeletionEvent = new BeforeDeletionTreeEvent($this, $this->parent);
-            //     $this->parent->getEventDispatcher()->dispatch(
-            //         TreeEvent::BEFORE_DELETION, $beforeDeletionEvent
-            //     );
-
-            //     if ($beforeDeletionEvent->isCancelled()) {
-            //         return;
-            //     }
-            // }
-
-            // $oldParent = $this->parent;
             $this->parent->dropChild($this, false, false);
-
-            // if ($dispatchEvents) {
-            //     $afterDeletionEvent = new AfterDeletionTreeEvent($this, $oldParent);
-            //     $oldParent->getEventDispatcher()->dispatch(
-            //         TreeEvent::AFTER_DELETION, $afterDeletionEvent
-            //     );
-            // }
         }
-
-        // if ($parent && $dispatchEvents) {
-        //     $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
-        //     $parent->getEventDispatcher()->dispatch(
-        //         TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent
-        //     );
-
-        //     if ($beforeInsertionEvent->isCancelled()) {
-        //         return;
-        //     }
-        // }
 
         $this->parent = $parent;
 
         if ($parent && $addChildToParent) {
             $this->parent->addChild($this, false, false);
-
-            // if ($dispatchEvents) {
-            //     $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
-            //     $parent->getEventDispatcher()->dispatch(
-            //         TreeEvent::AFTER_INSERTION, $afterInsertionEvent
-            //     );
-            // }
         }
     }
 
@@ -122,6 +83,6 @@ trait ComponentTrait
 
     public function getDependencies(): array
     {
-        return $this->dependencies;
+        return [];
     }
 }
