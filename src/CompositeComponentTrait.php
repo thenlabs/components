@@ -3,14 +3,6 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
-use NubecuLabs\Components\Event\TreeEvent;
-use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
-use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
-use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
-use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
