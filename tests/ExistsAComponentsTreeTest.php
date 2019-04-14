@@ -349,85 +349,119 @@ testCase('ExistsAComponentsTree.php', function () {
             });
         });
 
-        // testCase('exists a subtree listening for an event (see sources)', function () {
-        //     setUp(function () {
-        //         $this->eventName = uniqid('event');
-        //         $this->event = new Event;
-        //         $this->momentCapture1 = null;
-        //         $this->momentCapture2 = null;
-        //         $this->moment = null;
-        //         $this->momentBubble1 = null;
-        //         $this->momentBubble2 = null;
+        testCase('exists a subtree listening for an event (see sources)', function () {
+            setUp(function () {
+                $this->eventName = uniqid('event');
+                $this->event = new Event;
+                $this->momentCapture1 = null;
+                $this->momentCapture2 = null;
+                $this->momentCapture3 = null;
+                $this->moment = null;
+                $this->momentBubble1 = null;
+                $this->momentBubble2 = null;
+                $this->momentBubble3 = null;
 
-        //         $this->component->on($this->eventName, $this->listenerCapture1 = function () {
-        //             $this->momentCapture1 = microtime(true);
-        //         }, true);
+                $this->component->on($this->eventName, $this->listenerCapture1 = function () {
+                    $this->momentCapture1 = new DateTime;
+                }, true);
 
-        //         $this->child2->on($this->eventName, $this->listenerCapture2 = function () {
-        //             $this->momentCapture2 = microtime(true);
-        //         }, true);
+                $this->child4->on($this->eventName, $this->listenerCapture2 = function () {
+                    $this->momentCapture2 = new DateTime;
+                }, true);
 
-        //         $this->child4->on($this->eventName, function () {
-        //             $this->moment = microtime(true);
-        //         });
+                $this->child41->on($this->eventName, $this->listenerCapture3 = function () {
+                    $this->momentCapture3 = new DateTime;
+                }, true);
 
-        //         $this->child2->on($this->eventName, function () {
-        //             $this->momentBubble1 = microtime(true);
-        //         });
+                $this->child412->on($this->eventName, $this->listener1 = function () {
+                    $this->moment = new DateTime;
+                });
 
-        //         $this->component->on($this->eventName, function () {
-        //             $this->momentBubble2 = microtime(true);
-        //         });
-        //     });
+                $this->child41->on($this->eventName, $this->listener2 = function () {
+                    $this->momentBubble1 = new DateTime;
+                });
 
-        //     test('testing order of event propagation from capture to bubbling', function () {
-        //         $this->child4->dispatch($this->eventName, $this->event);
+                $this->child4->on($this->eventName, $this->listener3 = function () {
+                    $this->momentBubble2 = new DateTime;
+                });
 
-        //         $this->assertGreaterThan($this->momentCapture1, $this->momentCapture2);
-        //         $this->assertGreaterThan($this->momentCapture2, $this->moment);
-        //         $this->assertGreaterThan($this->moment, $this->momentBubble1);
-        //         $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
-        //     });
+                $this->component->on($this->eventName, $this->listener4 = function () {
+                    $this->momentBubble3 = new DateTime;
+                });
+            });
 
-        //     test('testing order of event propagation when capture is disabled', function () {
-        //         $this->child4->dispatch($this->eventName, $this->event, false);
+            test('testing order of event propagation from capture to bubbling', function () {
+                $this->child412->dispatch($this->eventName, $this->event);
 
-        //         $this->assertNull($this->momentCapture1);
-        //         $this->assertNull($this->momentCapture2);
-        //         $this->assertGreaterThan($this->moment, $this->momentBubble1);
-        //         $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
-        //     });
+                $this->assertInstanceOf(DateTime::class, $this->momentCapture1);
+                $this->assertInstanceOf(DateTime::class, $this->momentCapture2);
+                $this->assertInstanceOf(DateTime::class, $this->momentCapture3);
+                $this->assertInstanceOf(DateTime::class, $this->moment);
+                $this->assertInstanceOf(DateTime::class, $this->momentBubble1);
+                $this->assertInstanceOf(DateTime::class, $this->momentBubble2);
+                $this->assertInstanceOf(DateTime::class, $this->momentBubble3);
 
-        //     test('testing order of event propagation when bubbling is disabled', function () {
-        //         $this->child4->dispatch($this->eventName, $this->event, true, false);
+                $this->assertGreaterThan($this->momentCapture1, $this->momentCapture2);
+                $this->assertGreaterThan($this->momentCapture2, $this->momentCapture3);
+                $this->assertGreaterThan($this->momentCapture3, $this->moment);
+                $this->assertGreaterThan($this->moment, $this->momentBubble1);
+                $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
+                $this->assertGreaterThan($this->momentBubble2, $this->momentBubble3);
+            });
 
-        //         $this->assertGreaterThan($this->momentCapture1, $this->momentCapture2);
-        //         $this->assertGreaterThan($this->momentCapture2, $this->moment);
-        //         $this->assertNull($this->momentBubble1);
-        //         $this->assertNull($this->momentBubble2);
-        //     });
+            test('testing order of event propagation when capture is disabled', function () {
+                $this->child412->dispatch($this->eventName, $this->event, false);
 
-        //     test('testing order of event propagation when capture and bubbling are disabled', function () {
-        //         $this->child4->dispatch($this->eventName, $this->event, false, false);
+                $this->assertNull($this->momentCapture1);
+                $this->assertNull($this->momentCapture2);
+                $this->assertNull($this->momentCapture3);
+                $this->assertGreaterThan($this->moment, $this->momentBubble1);
+                $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
+                $this->assertGreaterThan($this->momentBubble2, $this->momentBubble3);
+            });
 
-        //         $this->assertNull($this->momentCapture1);
-        //         $this->assertNull($this->momentCapture2);
-        //         $this->assertInternalType('float', $this->moment);
-        //         $this->assertNull($this->momentBubble1);
-        //         $this->assertNull($this->momentBubble2);
-        //     });
+            test('testing order of event propagation when bubbling is disabled', function () {
+                $this->child412->dispatch($this->eventName, $this->event, true, false);
 
-        //     test('removing listeners of capture ', function () {
-        //         $this->component->off($this->eventName, $this->listenerCapture1, true);
-        //         $this->child2->off($this->eventName, $this->listenerCapture2, true);
+                $this->assertGreaterThan($this->momentCapture1, $this->momentCapture2);
+                $this->assertGreaterThan($this->momentCapture2, $this->momentCapture3);
+                $this->assertGreaterThan($this->momentCapture3, $this->moment);
+                $this->assertNull($this->momentBubble1);
+                $this->assertNull($this->momentBubble2);
+                $this->assertNull($this->momentBubble3);
+            });
 
-        //         $this->child4->dispatch($this->eventName, $this->event);
+            test('testing order of event propagation when capture and bubbling are disabled', function () {
+                $this->child412->dispatch($this->eventName, $this->event, false, false);
 
-        //         $this->assertNull($this->momentCapture1);
-        //         $this->assertNull($this->momentCapture2);
-        //         $this->assertGreaterThan($this->moment, $this->momentBubble1);
-        //         $this->assertGreaterThan($this->momentBubble1, $this->momentBubble2);
-        //     });
-        // });
+                $this->assertNull($this->momentCapture1);
+                $this->assertNull($this->momentCapture2);
+                $this->assertNull($this->momentCapture3);
+                $this->assertInstanceOf(DateTime::class, $this->moment);
+                $this->assertNull($this->momentBubble1);
+                $this->assertNull($this->momentBubble2);
+                $this->assertNull($this->momentBubble3);
+            });
+
+            test('the event listeners are not executed when they are removed', function () {
+                $this->component->off($this->eventName, $this->listenerCapture1, true);
+                $this->child4->off($this->eventName, $this->listenerCapture2, true);
+                $this->child41->off($this->eventName, $this->listenerCapture3, true);
+                $this->child412->off($this->eventName, $this->listener1);
+                $this->child41->off($this->eventName, $this->listener2);
+                $this->child4->off($this->eventName, $this->listener3);
+                $this->component->off($this->eventName, $this->listener4);
+
+                $this->child412->dispatch($this->eventName, $this->event);
+
+                $this->assertNull($this->momentCapture1);
+                $this->assertNull($this->momentCapture2);
+                $this->assertNull($this->momentCapture3);
+                $this->assertNull($this->moment);
+                $this->assertNull($this->momentBubble1);
+                $this->assertNull($this->momentBubble2);
+                $this->assertNull($this->momentBubble3);
+            });
+        });
     });
 });
