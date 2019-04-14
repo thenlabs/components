@@ -20,6 +20,4 @@ interface ComponentWithEventsInterface extends ComponentInterface
     public function off(string $eventName, callable $listener): void;
 
     public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void;
-
-    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true): void;
 }

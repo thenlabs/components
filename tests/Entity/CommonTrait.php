@@ -17,12 +17,4 @@ trait CommonTrait
             $this->id = $id;
         }
     }
-
-    /**
-     * Permit assign the dependencies for testing purpouses.
-     */
-    // public function setDependencies(array $dependencies): void
-    // {
-    //     $this->dependencies = $dependencies;
-    // }
 }
