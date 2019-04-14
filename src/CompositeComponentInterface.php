@@ -28,7 +28,5 @@ interface CompositeComponentInterface extends ComponentInterface
 
     public function findChildById(string $id): ?ComponentInterface;
 
-    public function getOwnDependencies(): array;
-
     public function validateChild(ComponentInterface $child): bool;
 }

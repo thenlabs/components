@@ -12,6 +12,10 @@ createMacro('commons', function () {
         $this->assertNull($this->component->getParent());
     });
 
+    test('$component->getOwnDependencies() === []', function () {
+        $this->assertSame([], $this->component->getOwnDependencies());
+    });
+
     testCase('$component->getId();', function () {
         test('always returns the same value', function () {
             $id = $this->component->getId();

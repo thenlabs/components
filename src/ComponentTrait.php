@@ -115,6 +115,11 @@ trait ComponentTrait
         }
     }
 
+    public function getOwnDependencies(): array
+    {
+        return [];
+    }
+
     public function getDependencies(): array
     {
         return $this->dependencies;

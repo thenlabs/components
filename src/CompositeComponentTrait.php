@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 trait CompositeComponentTrait
 {
-    use ComponentTrait { getDependencies as getOwnDependencies; }
+    use ComponentTrait;
 
     protected $childs = [];
 
