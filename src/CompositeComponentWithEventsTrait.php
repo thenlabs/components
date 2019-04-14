@@ -22,6 +22,7 @@ trait CompositeComponentWithEventsTrait
         ComponentWithEventsTrait::getParents insteadof CompositeComponentTrait;
         ComponentWithEventsTrait::parents insteadof CompositeComponentTrait;
         ComponentWithEventsTrait::getOwnDependencies insteadof CompositeComponentTrait;
+        ComponentWithEventsTrait::getAdditionalDependencies insteadof CompositeComponentTrait;
         ComponentWithEventsTrait::getDependencies insteadof CompositeComponentTrait;
         ComponentWithEventsTrait::setParent insteadof CompositeComponentTrait;
     }

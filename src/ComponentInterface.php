@@ -20,5 +20,7 @@ interface ComponentInterface
 
     public function getOwnDependencies(): array;
 
+    public function getAdditionalDependencies(): array;
+
     public function getDependencies(): array;
 }

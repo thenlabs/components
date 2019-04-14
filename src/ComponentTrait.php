@@ -122,6 +122,11 @@ trait ComponentTrait
         return [];
     }
 
+    public function getAdditionalDependencies(): array
+    {
+        return [];
+    }
+
     public function getDependencies(): array
     {
         return [];

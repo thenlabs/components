@@ -16,6 +16,10 @@ createMacro('commons', function () {
         $this->assertSame([], $this->component->getOwnDependencies());
     });
 
+    test('$component->getAdditionalDependencies() === []', function () {
+        $this->assertSame([], $this->component->getAdditionalDependencies());
+    });
+
     test('$component->getDependencies() === []', function () {
         $this->assertSame([], $this->component->getDependencies());
     });
