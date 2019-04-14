@@ -4,6 +4,7 @@ use NubecuLabs\Components\Tests\Entity\Component;
 use NubecuLabs\Components\Tests\Entity\ComponentWithEvents;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
+use NubecuLabs\Components\Exception\InvalidChildException;
 use NubecuLabs\Components\ComponentInterface;
 
 createMacro('commons of CompositeComponent and CompositeComponentWithEvents', function () {
@@ -23,6 +24,89 @@ createMacro('commons of CompositeComponent and CompositeComponentWithEvents', fu
     });
 
     createMacro('commons for when the component adds a child', function () {
+        testCase('it is invoked to $component->validateChild($child)', function () {
+            createMethod('addTheChild', function () {
+                $component = $this->getMockBuilder($this->componentClass)
+                    ->setMethods(['validateChild'])
+                    ->getMock();
+                $component->expects($this->once())
+                    ->method('validateChild')
+                    ->with($this->equalTo($this->child))
+                    ->willReturn(true)
+                ;
+
+                $component->addChild($this->child);
+            });
+
+            test('when child is an instance of ComponentInterface', function () {
+                $this->child = new Component;
+
+                $this->addTheChild();
+            });
+
+            test('when child is an instance of ComponentWithEventsInterface', function () {
+                $this->child = new ComponentWithEvents;
+
+                $this->addTheChild();
+            });
+
+            test('when child is an instance of CompositeComponentInterface', function () {
+                $this->child = new CompositeComponent;
+
+                $this->addTheChild();
+            });
+
+            test('when child is an instance of CompositeComponentWithEventsInterface', function () {
+                $this->child = new CompositeComponentWithEvents;
+
+                $this->addTheChild();
+            });
+        });
+
+        testCase('it is triggered a "NubecuLabs\Components\Exception\InvalidChildException" when #validateChild() returns false', function () {
+            setUp(function () {
+                $this->component = $this->getMockBuilder($this->componentClass)
+                    ->setMethods(['validateChild'])
+                    ->getMock();
+                $this->component->expects($this->once())
+                    ->method('validateChild')
+                    ->willReturn(false)
+                ;
+
+                $this->expectException(InvalidChildException::class);
+            });
+
+            createMethod('addTheChild', function () {
+                $this->expectExceptionMessage("Invalid child with id equal to '{$this->child->getId()}'.");
+
+                $this->component->addChild($this->child);
+            });
+
+            test('when child is an instance of ComponentInterface', function () {
+                $this->child = new Component;
+
+                $this->addTheChild();
+            });
+
+            test('when child is an instance of ComponentWithEventsInterface', function () {
+                $this->child = new ComponentWithEvents;
+
+                $this->addTheChild();
+            });
+
+            test('when child is an instance of CompositeComponentInterface', function () {
+                $this->child = new CompositeComponent;
+
+                $this->addTheChild();
+            });
+
+            test('when child is an instance of CompositeComponentWithEventsInterface', function () {
+                $this->child = new CompositeComponentWithEvents;
+
+                $this->addTheChild();
+            });
+        });
+
         test('$component->hasChild($child) === true', function () {
             $this->assertTrue($this->component->hasChild($this->child));
         });
