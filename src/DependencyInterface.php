@@ -34,4 +34,6 @@ interface DependencyInterface
     public function getUpgradeableVersionsList(): array;
 
     public function getIncompatibilityVersionsList(): array;
+
+    public function getDependencies(): array;
 }
