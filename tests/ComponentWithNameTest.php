@@ -1,13 +1,9 @@
 <?php
 
-use NubecuLabs\Components\ComponentWithEventsInterface;
 use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\CompositeComponentWithEventsInterface;
 use NubecuLabs\Components\CompositeComponentInterface;
 use NubecuLabs\Components\ComponentWithNameInterface;
 use NubecuLabs\Components\ComponentTrait;
-use NubecuLabs\Components\CompositeComponentWithEventsTrait;
-use NubecuLabs\Components\ComponentWithEventsTrait;
 use NubecuLabs\Components\CompositeComponentTrait;
 use NubecuLabs\Components\ComponentWithNameTrait;
 
@@ -42,30 +38,10 @@ testCase('ComponentWithNameTest.php', function () {
         useMacro('tests');
     });
 
-    testCase('exists an instance of ComponentWithEventsInterface', function () {
-        setUp(function () {
-            $this->component = new class implements ComponentWithEventsInterface, ComponentWithNameInterface {
-                use ComponentWithEventsTrait, ComponentWithNameTrait;
-            };
-        });
-
-        useMacro('tests');
-    });
-
     testCase('exists an instance of CompositeComponentInterface', function () {
         setUp(function () {
             $this->component = new class implements CompositeComponentInterface, ComponentWithNameInterface {
                 use CompositeComponentTrait, ComponentWithNameTrait;
-            };
-        });
-
-        useMacro('tests');
-    });
-
-    testCase('exists an instance of CompositeComponentWithEventsInterface', function () {
-        setUp(function () {
-            $this->component = new class implements CompositeComponentWithEventsInterface, ComponentWithNameInterface {
-                use CompositeComponentWithEventsTrait, ComponentWithNameTrait;
             };
         });
 

@@ -1,7 +1,8 @@
 <?php
 
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
-use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 createMacro('commons', function () {
     setUp(function () {
@@ -91,29 +92,11 @@ createMacro('commons', function () {
 
             useMacro('tests for when a new parent is assigned');
         });
-
-        testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents);', function () {
-            setUp(function () {
-                $this->parent2 = new CompositeComponentWithEvents;
-                $this->component->setParent($this->parent2);
-            });
-
-            useMacro('tests for when a new parent is assigned');
-        });
     });
 
     testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
         setUp(function () {
             $this->parent = new CompositeComponent;
-            $this->component->setParent($this->parent);
-        });
-
-        useMacro('tests for when the parent is assigned');
-    });
-
-    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents);', function () {
-        setUp(function () {
-            $this->parent = new CompositeComponentWithEvents;
             $this->component->setParent($this->parent);
         });
 
@@ -139,20 +122,68 @@ createMacro('commons', function () {
         useMacro('tests for when the parent is assigned without add the child in the parent');
     });
 
-    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeWithEventsComponent, false);', function () {
-        setUp(function () {
-            $this->parent = new CompositeComponentWithEvents;
-            $this->component->setParent($this->parent, false);
-        });
-
-        useMacro('tests for when the parent is assigned without add the child in the parent');
-    });
-
     testCase('$iterator = $component->parents();', function () {
         test('the iterator is empty', function () {
             $iterator = $this->component->parents();
 
             $this->assertNull($iterator->current());
+        });
+    });
+
+    testCase('$component->getEventDispatcher();', function () {
+        test('returns an instance of "Symfony\Component\EventDispatcher\EventDispatcher"', function () {
+            $this->assertInstanceOf(EventDispatcher::class, $this->component->getEventDispatcher());
+        });
+
+        test('returns always the same instance', function () {
+            $dispatcher = $this->component->getEventDispatcher();
+
+            $this->assertSame($dispatcher, $this->component->getEventDispatcher());
+            $this->assertSame($dispatcher, $this->component->getEventDispatcher());
+        });
+
+        testCase('$component->setEventDispatcher($newDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher);', function () {
+            test('$component->getEventDispatcher() === $newDispatcher', function () {
+                $newDispatcher = new EventDispatcher;
+
+                $this->component->setEventDispatcher($newDispatcher);
+
+                $this->assertSame($newDispatcher, $this->component->getEventDispatcher());
+            });
+        });
+    });
+
+    testCase('$component->on($eventName, $listener);', function () {
+        setUp(function () {
+            $this->executedListener = false;
+            $this->eventName = uniqid('event');
+            $this->event = new Event;
+
+            $this->component->on($this->eventName, $this->listener = function (Event $event) {
+                $this->executedListener = true;
+                $this->assertSame($event, $this->event);
+            });
+        });
+
+        testCase('$component->dispatch($eventName = "eventName", $event = new Event($component));', function () {
+            setUp(function () {
+                $this->component->dispatch($this->eventName, $this->event);
+            });
+
+            test('$listener was executed with the event object as argument', function () {
+                $this->assertTrue($this->executedListener);
+            });
+        });
+
+        testCase('$component->off($eventName, $listener);', function () {
+            setUp(function () {
+                $this->component->off($this->eventName, $this->listener);
+                $this->component->dispatch($this->eventName, $this->event);
+            });
+
+            test('$listener was not executed', function () {
+                $this->assertFalse($this->executedListener);
+            });
         });
     });
 });

@@ -2,7 +2,6 @@
 
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\Tests\Entity\Component;
-use NubecuLabs\Components\Tests\Entity\ComponentWithEvents;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
 use Symfony\Component\EventDispatcher\Event;
@@ -14,38 +13,36 @@ testCase('ExistsAComponentsTree.php', function () {
     testCase('exists a tree of components (see sources)', function () {
         /**
          * C:    Component
-         * CWE:  ComponentWithEvents
          * CC:   CompositeComponent
-         * CCWE: CompositeComponentWithEvents
          *
-         * $component (CCWE)
+         * $component (CC)
          *     |
          *     |____$child1 (C)
-         *     |____$child2 (CWE)
+         *     |____$child2 (C)
          *     |____$child3 (CC)
          *     |       |
          *     |       |____$child31 (CC)
          *     |       |____$child32 (C)
-         *     |       |____$child33 (CWE)
+         *     |       |____$child33 (C)
          *     |
-         *     |____$child4 (CCWE)
+         *     |____$child4 (CC)
          *     |       |
-         *     |       |____$child41 (CCWE)
+         *     |       |____$child41 (CC)
          *     |               |____$child411 (CC)
-         *     |               |____$child412 (CWE)
+         *     |               |____$child412 (C)
          */
         setUpBeforeClassOnce(function () {
-            $component = new CompositeComponentWithEvents('component');
+            $component = new CompositeComponent('component');
             $child1 = new Component('child1');
-            $child2 = new ComponentWithEvents('child2');
+            $child2 = new Component('child2');
             $child3 = new CompositeComponent('child3');
             $child31 = new CompositeComponent('child31');
             $child32 = new Component('child32');
-            $child33 = new ComponentWithEvents('child33');
-            $child4 = new CompositeComponentWithEvents('child4');
-            $child41 = new CompositeComponentWithEvents('child41');
+            $child33 = new Component('child33');
+            $child4 = new CompositeComponent('child4');
+            $child41 = new CompositeComponent('child41');
             $child411 = new CompositeComponent('child411');
-            $child412 = new ComponentWithEvents('child412');
+            $child412 = new Component('child412');
 
             $component->addChilds($child1, $child2, $child3, $child4);
             $child3->addChilds($child31, $child32, $child33);
@@ -218,8 +215,7 @@ testCase('ExistsAComponentsTree.php', function () {
 
             test('returns in an array the childs for whom the callback returns true', function () {
                 $callback = function (ComponentInterface $child) {
-                    if ($child instanceof CompositeComponent &&
-                        ! $child instanceof CompositeComponentWithEvents
+                    if ($child instanceof CompositeComponent
                     ) {
                         return true;
                     } else {
@@ -229,27 +225,29 @@ testCase('ExistsAComponentsTree.php', function () {
 
                 $childs = $this->component->findChilds($callback);
 
-                $this->assertCount(3, $childs);
+                $this->assertCount(5, $childs);
                 $this->assertSame($this->child3, $childs[0]);
                 $this->assertSame($this->child31, $childs[1]);
-                $this->assertSame($this->child411, $childs[2]);
+                $this->assertSame($this->child4, $childs[2]);
+                $this->assertSame($this->child41, $childs[3]);
+                $this->assertSame($this->child411, $childs[4]);
             });
 
             test('returns in an array the childs for whom the callback returns a value', function () {
                 $callback = function (ComponentInterface $child) {
-                    if ($child instanceof CompositeComponent &&
-                        ! $child instanceof CompositeComponentWithEvents
-                    ) {
+                    if ($child instanceof CompositeComponent) {
                         return $child;
                     }
                 };
 
                 $childs = $this->component->findChilds($callback);
 
-                $this->assertCount(3, $childs);
+                $this->assertCount(5, $childs);
                 $this->assertSame($this->child3, $childs[0]);
                 $this->assertSame($this->child31, $childs[1]);
-                $this->assertSame($this->child411, $childs[2]);
+                $this->assertSame($this->child4, $childs[2]);
+                $this->assertSame($this->child41, $childs[3]);
+                $this->assertSame($this->child411, $childs[4]);
             });
 
             test('$component->findChilds($callback, false) does not do a recursive search', function () {
@@ -263,8 +261,9 @@ testCase('ExistsAComponentsTree.php', function () {
 
                 $childs = $this->component->findChilds($callback, false);
 
-                $this->assertCount(1, $childs);
+                $this->assertCount(2, $childs);
                 $this->assertSame($this->child3, $childs[0]);
+                $this->assertSame($this->child4, $childs[1]);
             });
         });
 

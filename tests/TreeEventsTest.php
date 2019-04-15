@@ -6,9 +6,7 @@ use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
 use NubecuLabs\Components\Tests\Entity\Component;
-use NubecuLabs\Components\Tests\Entity\ComponentWithEvents;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
-use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
@@ -23,7 +21,7 @@ testCase('TreeEventsTest.php', function () {
                 $this->executedListenerBeforeDeletion2 = 0;
                 $this->executedListenerAfterInsertion = 0;
                 $this->executedListenerAfterDeletion = 0;
-                $this->parent = new CompositeComponentWithEvents;
+                $this->parent = new CompositeComponent;
 
                 $this->beforeInsertionListener1 = function (BeforeInsertionTreeEvent $event) {
                     $this->executedListenerBeforeInsertion1++;
@@ -223,25 +221,9 @@ testCase('TreeEventsTest.php', function () {
         useMacro('testing events in the parent and child relationship');
     });
 
-    testCase('when the child is an instance of ComponentWithEventsInterface', function () {
-        setUp(function () {
-            $this->child = new ComponentWithEvents;
-        });
-
-        useMacro('testing events in the parent and child relationship');
-    });
-
     testCase('when the child is an instance of CompositeComponentInterface', function () {
         setUp(function () {
             $this->child = new CompositeComponent;
-        });
-
-        useMacro('testing events in the parent and child relationship');
-    });
-
-    testCase('when the child is an instance of CompositeComponentWithEventsInterface', function () {
-        setUp(function () {
-            $this->child = new CompositeComponentWithEvents;
         });
 
         useMacro('testing events in the parent and child relationship');
