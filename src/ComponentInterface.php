@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-interface ComponentInterface
+interface ComponentInterface extends DependentInterface
 {
     public function getId(): string;
 
@@ -24,8 +24,6 @@ interface ComponentInterface
     public function getOwnDependencies(): array;
 
     public function getAdditionalDependencies(): array;
-
-    public function getDependencies(): array;
 
     public function getEventDispatcher(): EventDispatcherInterface;
 

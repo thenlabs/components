@@ -6,7 +6,7 @@ namespace NubecuLabs\Components;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-interface DependencyInterface
+interface DependencyInterface extends DependentInterface
 {
     /**
      * Include name and version. Example "jquery-1.11.1".
@@ -34,6 +34,4 @@ interface DependencyInterface
     public function getUpgradeableVersionsList(): array;
 
     public function getIncompatibilityVersionsList(): array;
-
-    public function getDependencies(): array;
 }
