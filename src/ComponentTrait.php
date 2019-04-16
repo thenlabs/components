@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 trait ComponentTrait
 {
-    private $id;
+    protected $id;
 
     protected $parent;
 

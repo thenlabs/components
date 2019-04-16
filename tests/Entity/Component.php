@@ -11,5 +11,15 @@ use NubecuLabs\Components\ComponentTrait;
  */
 class Component implements ComponentInterface
 {
-    use ComponentTrait, CommonTrait;
+    use ComponentTrait;
+
+    /**
+     * Permit assign the id for testing purpouses.
+     */
+    public function __construct(?string $id = null)
+    {
+        if ($id) {
+            $this->id = $id;
+        }
+    }
 }
