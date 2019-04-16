@@ -28,7 +28,7 @@ testCase('ComponentWithNameTest.php', function () {
         });
     });
 
-    testCase('exists an instance of ComponentInterface', function () {
+    testCase('$component = new Component;', function () {
         setUp(function () {
             $this->component = new class implements ComponentInterface, ComponentWithNameInterface {
                 use ComponentTrait, ComponentWithNameTrait;
@@ -38,7 +38,7 @@ testCase('ComponentWithNameTest.php', function () {
         useMacro('tests');
     });
 
-    testCase('exists an instance of CompositeComponentInterface', function () {
+    testCase('$component = new CompositeComponent;', function () {
         setUp(function () {
             $this->component = new class implements CompositeComponentInterface, ComponentWithNameInterface {
                 use CompositeComponentTrait, ComponentWithNameTrait;
