@@ -173,7 +173,9 @@ trait CompositeComponentTrait
     public function findChildById(string $id): ?ComponentInterface
     {
         return $this->findChild(function (ComponentInterface $child) use ($id) {
-            return $id == $child->getId() ? true : false;
+            if ($id == $child->getId()) {
+                return $child;
+            }
         });
     }
 
