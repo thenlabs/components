@@ -125,4 +125,27 @@ testCase('ComponentWithNameTest.php', function () {
             $this->assertSame($this->child12, $this->root->findChildsByName($name2)[1]);
         });
     });
+
+    testCase('exception when SearchByNameTrait is used in a class that is not CompositeComponentInterface', function () {
+        setUp(function () {
+            $this->expectException(Exception::class);
+            $this->expectExceptionMessage('The SearchByNameTrait only can be used on a class that implements the CompositeComponentInterface.');
+        });
+
+        testCase(function () {
+            setUp(function () {
+                $this->entity = new class implements ComponentInterface {
+                    use ComponentTrait, SearchByNameTrait;
+                };
+            });
+
+            test(function () {
+                $this->entity->findChildByName(uniqid());
+            });
+
+            test(function () {
+                $this->entity->findChildsByName(uniqid());
+            });
+        });
+    });
 });
