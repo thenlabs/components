@@ -8,11 +8,16 @@ namespace NubecuLabs\Components;
  */
 trait SearchByNameTrait
 {
-    public function findChildByName(string $name): ?ComponentInterface
+    private function _validateThisInstanceForSearchsByName(): void
     {
         if (! $this instanceof CompositeComponentInterface) {
             throw new \Exception('The SearchByNameTrait only can be used on a class that implements the CompositeComponentInterface.');
         }
+    }
+
+    public function findChildByName(string $name): ?ComponentInterface
+    {
+        $this->_validateThisInstanceForSearchsByName();
 
         return $this->findChild(function (ComponentInterface $component) use ($name) {
             if ($component instanceof ComponentWithNameInterface &&
@@ -25,9 +30,7 @@ trait SearchByNameTrait
 
     public function findChildsByName(string $name): array
     {
-        if (! $this instanceof CompositeComponentInterface) {
-            throw new \Exception('The SearchByNameTrait only can be used on a class that implements the CompositeComponentInterface.');
-        }
+        $this->_validateThisInstanceForSearchsByName();
 
         return $this->findChilds(function (ComponentInterface $component) use ($name) {
             if ($component instanceof ComponentWithNameInterface &&
