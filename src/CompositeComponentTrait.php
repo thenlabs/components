@@ -107,10 +107,7 @@ trait CompositeComponentTrait
 
             if ($dispatchEvents) {
                 $afterDeletionEvent = new AfterDeletionTreeEvent($obj, $this);
-                $this->getEventDispatcher()->dispatch(
-                    TreeEvent::AFTER_DELETION,
-                    $afterDeletionEvent
-                );
+                $this->dispatch(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
             }
         }
     }

@@ -85,10 +85,7 @@ trait ComponentTrait
 
             if ($oldParent instanceof CompositeComponentInterface && $dispatchEvents) {
                 $afterDeletionEvent = new AfterDeletionTreeEvent($this, $oldParent);
-                $oldParent->getEventDispatcher()->dispatch(
-                    TreeEvent::AFTER_DELETION,
-                    $afterDeletionEvent
-                );
+                $oldParent->dispatch(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
             }
         }
 

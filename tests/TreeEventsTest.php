@@ -431,44 +431,46 @@ testCase('TreeEventsTest.php', function () {
                 useMacro('commons of deletion events');
             });
 
-            // testCase('testing propagation of AfterInsertionTreeEvent', function () {
-            //     setUp(function () {
-            //         $this->checkEventData = function ($event) {
-            //             $this->assertSame($this->component3, $event->getParent());
-            //             $this->assertSame($this->child, $event->getChild());
+            testCase('testing propagation of AfterDeletionTreeEvent', function () {
+                setUp(function () {
+                    $this->component3->addChild($this->child);
 
-            //             $this->assertSame($this->component3, $event->getChild()->getParent());
-            //             $this->assertTrue($event->getParent()->hasChild($this->child->getId()));
-            //         };
+                    $this->checkEventData = function ($event) {
+                        $this->assertSame($this->component3, $event->getParent());
+                        $this->assertSame($this->child, $event->getChild());
 
-            //         $this->component1->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
-            //             call_user_func($this->checkEventData, $event);
-            //             $this->executedCaptureListener1 = new DateTime;
-            //         }, true); // Capture
+                        $this->assertNull($event->getChild()->getParent());
+                        $this->assertFalse($event->getParent()->hasChild($this->child->getId()));
+                    };
 
-            //         $this->component2->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
-            //             call_user_func($this->checkEventData, $event);
-            //             $this->executedCaptureListener2 = new DateTime;
-            //         }, true); // Capture
+                    $this->component1->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedCaptureListener1 = new DateTime;
+                    }, true); // Capture
 
-            //         $this->component3->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
-            //             call_user_func($this->checkEventData, $event);
-            //             $this->executedListener = new DateTime;
-            //         });
+                    $this->component2->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedCaptureListener2 = new DateTime;
+                    }, true); // Capture
 
-            //         $this->component2->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
-            //             call_user_func($this->checkEventData, $event);
-            //             $this->executedBubblesListener2 = new DateTime;
-            //         }); // Bubbling
+                    $this->component3->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedListener = new DateTime;
+                    });
 
-            //         $this->component1->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
-            //             call_user_func($this->checkEventData, $event);
-            //             $this->executedBubblesListener1 = new DateTime;
-            //         }); // Bubbling
-            //     });
+                    $this->component2->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedBubblesListener2 = new DateTime;
+                    }); // Bubbling
 
-            //     useMacro('commons of insertion events');
-            // });
+                    $this->component1->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedBubblesListener1 = new DateTime;
+                    }); // Bubbling
+                });
+
+                useMacro('commons of deletion events');
+            });
         });
     });
 });
