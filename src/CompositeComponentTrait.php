@@ -203,4 +203,25 @@ trait CompositeComponentTrait
     {
         return true;
     }
+
+    public function getDependencies(array $options = []): array
+    {
+        $dependenciesOfChilds = [];
+        foreach ($this->getChilds() as $child) {
+            $dependenciesOfChilds = array_merge(
+                $dependenciesOfChilds,
+                $child->getDependencies($options)
+            );
+        }
+
+        return Helper::getInstance()->sortDependencies(
+            array_merge(
+                $this->getOwnDependencies($options),
+                $this->getAdditionalDependencies($options),
+                $dependenciesOfChilds
+            ),
+            $this->getEventDispatcher(),
+            $options
+        );
+    }
 }
