@@ -111,10 +111,7 @@ trait ComponentTrait
 
             if ($parent instanceof CompositeComponentInterface && $dispatchEvents) {
                 $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
-                $parent->getEventDispatcher()->dispatch(
-                    TreeEvent::AFTER_INSERTION,
-                    $afterInsertionEvent
-                );
+                $parent->dispatch(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
             }
         }
     }

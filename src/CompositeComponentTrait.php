@@ -69,10 +69,7 @@ trait CompositeComponentTrait
 
         if ($dispatchEvents) {
             $afterInsertionEvent = new AfterInsertionTreeEvent($child, $this);
-            $this->getEventDispatcher()->dispatch(
-                TreeEvent::AFTER_INSERTION,
-                $afterInsertionEvent
-            );
+            $this->dispatch(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
         }
     }
 
