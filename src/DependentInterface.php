@@ -8,5 +8,5 @@ namespace NubecuLabs\Components;
  */
 interface DependentInterface
 {
-    public function getDependencies(): array;
+    public function getDependencies(array $config = []): array;
 }

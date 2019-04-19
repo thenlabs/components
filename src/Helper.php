@@ -32,6 +32,10 @@ class Helper
      */
     public static function getInstance(): Helper
     {
+        if (! static::$instance instanceof self) {
+            static::$instance = new self;
+        }
+
         return static::$instance;
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
+use NubecuLabs\Components\Helper;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -23,6 +24,43 @@ createMacro('commons', function () {
 
     test('$component->getDependencies() === []', function () {
         $this->assertSame([], $this->component->getDependencies());
+    });
+
+    test('#getDependencies() returns result of merge the method #getOwnDependencies() and #getAdditionalDependencies() in Helper::sortDependencies()', function () {
+        $ownDependencies = ['own1', 'own2', 'own3'];
+        $additionalDependencies = ['additional1', 'additional2'];
+        $mergedDependencies = array_merge($ownDependencies, $additionalDependencies);
+        $expectedResult = array_reverse($mergedDependencies);
+        $config = $this->getRandomArray();
+
+        $component = $this->getMockBuilder($this->componentClass)
+            ->setMethods(['getOwnDependencies', 'getAdditionalDependencies'])
+            ->getMock();
+        $component->expects($this->once())
+            ->method('getOwnDependencies')
+            ->with($this->equalTo($config))
+            ->willReturn($ownDependencies);
+        $component->expects($this->once())
+            ->method('getAdditionalDependencies')
+            ->with($this->equalTo($config))
+            ->willReturn($additionalDependencies);
+
+        $helper = $this->getMockBuilder(Helper::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['sortDependencies'])
+            ->getMock();
+        $helper->expects($this->once())
+            ->method('sortDependencies')
+            ->with(
+                $this->equalTo($mergedDependencies),
+                $this->equalTo($component->getEventDispatcher()),
+                $this->equalTo($config)
+            )
+            ->willReturn($expectedResult);
+
+        Helper::setInstance($helper);
+
+        $this->assertEquals($expectedResult, $component->getDependencies($config));
     });
 
     testCase('$component->getId();', function () {
