@@ -31,18 +31,18 @@ createMacro('commons', function () {
         $additionalDependencies = ['additional1', 'additional2'];
         $mergedDependencies = array_merge($ownDependencies, $additionalDependencies);
         $expectedResult = array_reverse($mergedDependencies);
-        $config = $this->getRandomArray();
+        $options = $this->getRandomArray();
 
         $component = $this->getMockBuilder($this->componentClass)
             ->setMethods(['getOwnDependencies', 'getAdditionalDependencies'])
             ->getMock();
         $component->expects($this->once())
             ->method('getOwnDependencies')
-            ->with($this->equalTo($config))
+            ->with($this->equalTo($options))
             ->willReturn($ownDependencies);
         $component->expects($this->once())
             ->method('getAdditionalDependencies')
-            ->with($this->equalTo($config))
+            ->with($this->equalTo($options))
             ->willReturn($additionalDependencies);
 
         $helper = $this->getMockBuilder(Helper::class)
@@ -54,13 +54,13 @@ createMacro('commons', function () {
             ->with(
                 $this->equalTo($mergedDependencies),
                 $this->equalTo($component->getEventDispatcher()),
-                $this->equalTo($config)
+                $this->equalTo($options)
             )
             ->willReturn($expectedResult);
 
         Helper::setInstance($helper);
 
-        $this->assertEquals($expectedResult, $component->getDependencies($config));
+        $this->assertEquals($expectedResult, $component->getDependencies($options));
     });
 
     testCase('$component->getId();', function () {

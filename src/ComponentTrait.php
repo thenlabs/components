@@ -110,25 +110,25 @@ trait ComponentTrait
         }
     }
 
-    public function getOwnDependencies(array $config = []): array
+    public function getOwnDependencies(array $options = []): array
     {
         return [];
     }
 
-    public function getAdditionalDependencies(array $config = []): array
+    public function getAdditionalDependencies(array $options = []): array
     {
         return [];
     }
 
-    public function getDependencies(array $config = []): array
+    public function getDependencies(array $options = []): array
     {
         return Helper::getInstance()->sortDependencies(
             array_merge(
-                $this->getOwnDependencies($config),
-                $this->getAdditionalDependencies($config)
+                $this->getOwnDependencies($options),
+                $this->getAdditionalDependencies($options)
             ),
             $this->getEventDispatcher(),
-            $config
+            $options
         );
     }
 
