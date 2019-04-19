@@ -18,4 +18,9 @@ class TestCase extends PHPUnitTestCase
     {
         return new $this->componentClass;
     }
+
+    public function getRandomArray(): array
+    {
+        return range(1, mt_rand(1, 10));
+    }
 }
