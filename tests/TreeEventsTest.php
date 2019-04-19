@@ -229,7 +229,7 @@ testCase('TreeEventsTest.php', function () {
         useMacro('testing events in the parent and child relationship');
     });
 
-    testCase(function () {
+    testCase('testing propagation of tree events', function () {
         setUp(function () {
             $this->executedCaptureListener1 = null;
             $this->executedCaptureListener2 = null;
@@ -247,11 +247,14 @@ testCase('TreeEventsTest.php', function () {
             $this->child = new Component;
         });
 
-        testCase(function () {
+        testCase('testing propagation of BeforeInsertionTreeEvent', function () {
             setUp(function () {
                 $this->checkEventData = function ($event) {
                     $this->assertSame($this->component3, $event->getParent());
                     $this->assertSame($this->child, $event->getChild());
+
+                    $this->assertNull($event->getChild()->getParent());
+                    $this->assertFalse($event->getParent()->hasChild($this->child->getId()));
                 };
 
                 $this->component1->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
@@ -281,7 +284,7 @@ testCase('TreeEventsTest.php', function () {
             });
 
             createMacro('tests', function () {
-                test(function () {
+                test('listeners are executed in order', function () {
                     $this->assertGreaterThan($this->executedCaptureListener1, $this->executedCaptureListener2);
                     $this->assertGreaterThan($this->executedCaptureListener2, $this->executedListener);
                     $this->assertGreaterThan($this->executedListener, $this->executedBubblesListener2);
@@ -289,7 +292,7 @@ testCase('TreeEventsTest.php', function () {
                 });
             });
 
-            testCase(function () {
+            testCase('$parent->addChild($child);', function () {
                 setUp(function () {
                     $this->component3->addChild($this->child);
                 });
@@ -297,7 +300,7 @@ testCase('TreeEventsTest.php', function () {
                 useMacro('tests');
             });
 
-            testCase(function () {
+            testCase('$child->setParent($parent);', function () {
                 setUp(function () {
                     $this->child->setParent($this->component3);
                 });
