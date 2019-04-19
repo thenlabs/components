@@ -54,10 +54,7 @@ trait CompositeComponentTrait
 
         if ($dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
-            $this->getEventDispatcher()->dispatch(
-                TreeEvent::BEFORE_INSERTION,
-                $beforeInsertionEvent
-            );
+            $this->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
             if ($beforeInsertionEvent->isCancelled()) {
                 return;

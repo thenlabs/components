@@ -16,7 +16,8 @@
     "require": {
         "phpunit/phpunit": "^7.0",
         "composer/semver": "^1.5",
-        "symfony/event-dispatcher": "^4.2"
+        "symfony/event-dispatcher": "^4.2",
+        "doctrine/annotations": "^1.6"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",

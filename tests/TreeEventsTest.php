@@ -228,4 +228,82 @@ testCase('TreeEventsTest.php', function () {
 
         useMacro('testing events in the parent and child relationship');
     });
+
+    testCase(function () {
+        setUp(function () {
+            $this->executedCaptureListener1 = null;
+            $this->executedCaptureListener2 = null;
+            $this->executedListener = null;
+            $this->executedBubblesListener1 = null;
+            $this->executedBubblesListener2 = null;
+
+            $this->component1 = new CompositeComponent;
+            $this->component2 = new CompositeComponent;
+            $this->component3 = new CompositeComponent;
+
+            $this->component1->addChild($this->component2);
+            $this->component2->addChild($this->component3);
+
+            $this->child = new Component;
+        });
+
+        testCase(function () {
+            setUp(function () {
+                $this->checkEventData = function ($event) {
+                    $this->assertSame($this->component3, $event->getParent());
+                    $this->assertSame($this->child, $event->getChild());
+                };
+
+                $this->component1->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    call_user_func($this->checkEventData, $event);
+                    $this->executedCaptureListener1 = new DateTime;
+                }, true); // Capture
+
+                $this->component2->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    call_user_func($this->checkEventData, $event);
+                    $this->executedCaptureListener2 = new DateTime;
+                }, true); // Capture
+
+                $this->component3->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    call_user_func($this->checkEventData, $event);
+                    $this->executedListener = new DateTime;
+                });
+
+                $this->component2->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    call_user_func($this->checkEventData, $event);
+                    $this->executedBubblesListener2 = new DateTime;
+                }); // Bubbling
+
+                $this->component1->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    call_user_func($this->checkEventData, $event);
+                    $this->executedBubblesListener1 = new DateTime;
+                }); // Bubbling
+            });
+
+            createMacro('tests', function () {
+                test(function () {
+                    $this->assertGreaterThan($this->executedCaptureListener1, $this->executedCaptureListener2);
+                    $this->assertGreaterThan($this->executedCaptureListener2, $this->executedListener);
+                    $this->assertGreaterThan($this->executedListener, $this->executedBubblesListener2);
+                    $this->assertGreaterThan($this->executedBubblesListener2, $this->executedBubblesListener1);
+                });
+            });
+
+            testCase(function () {
+                setUp(function () {
+                    $this->component3->addChild($this->child);
+                });
+
+                useMacro('tests');
+            });
+
+            testCase(function () {
+                setUp(function () {
+                    $this->child->setParent($this->component3);
+                });
+
+                useMacro('tests');
+            });
+        });
+    });
 });

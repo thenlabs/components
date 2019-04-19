@@ -97,10 +97,7 @@ trait ComponentTrait
 
         if ($parent instanceof CompositeComponentInterface && $dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
-            $parent->getEventDispatcher()->dispatch(
-                TreeEvent::BEFORE_INSERTION,
-                $beforeInsertionEvent
-            );
+            $parent->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
             if ($beforeInsertionEvent->isCancelled()) {
                 return;
