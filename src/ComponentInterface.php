@@ -21,9 +21,9 @@ interface ComponentInterface extends DependentInterface
 
     public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true): void;
 
-    public function getOwnDependencies(array $options = []): array;
+    public function getOwnDependencies(): array;
 
-    public function getAdditionalDependencies(array $options = []): array;
+    public function getAdditionalDependencies(): array;
 
     public function getEventDispatcher(): EventDispatcherInterface;
 

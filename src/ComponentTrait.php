@@ -110,12 +110,12 @@ trait ComponentTrait
         }
     }
 
-    public function getOwnDependencies(array $options = []): array
+    public function getOwnDependencies(): array
     {
         return [];
     }
 
-    public function getAdditionalDependencies(array $options = []): array
+    public function getAdditionalDependencies(): array
     {
         return [];
     }

@@ -38,11 +38,9 @@ createMacro('commons', function () {
             ->getMock();
         $component->expects($this->once())
             ->method('getOwnDependencies')
-            ->with($this->equalTo($options))
             ->willReturn($ownDependencies);
         $component->expects($this->once())
             ->method('getAdditionalDependencies')
-            ->with($this->equalTo($options))
             ->willReturn($additionalDependencies);
 
         $helper = $this->getMockBuilder(Helper::class)
