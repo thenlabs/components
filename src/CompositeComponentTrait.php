@@ -95,10 +95,7 @@ trait CompositeComponentTrait
         ) {
             if ($dispatchEvents) {
                 $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
-                $this->getEventDispatcher()->dispatch(
-                    TreeEvent::BEFORE_DELETION,
-                    $beforeDeletionEvent
-                );
+                $this->dispatch(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
 
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;

@@ -73,10 +73,7 @@ trait ComponentTrait
         if ($this->parent instanceof CompositeComponentInterface) {
             if ($dispatchEvents) {
                 $beforeDeletionEvent = new BeforeDeletionTreeEvent($this, $this->parent);
-                $this->parent->getEventDispatcher()->dispatch(
-                    TreeEvent::BEFORE_DELETION,
-                    $beforeDeletionEvent
-                );
+                $this->parent->dispatch(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
 
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;

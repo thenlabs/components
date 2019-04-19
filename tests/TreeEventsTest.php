@@ -353,5 +353,122 @@ testCase('TreeEventsTest.php', function () {
                 useMacro('commons of insertion events');
             });
         });
+
+        testCase('testing deletion events', function () {
+            createMacro('commons of deletion events', function () {
+                createMacro('tests', function () {
+                    test('listeners are executed in order', function () {
+                        $this->assertGreaterThan($this->executedCaptureListener1, $this->executedCaptureListener2);
+                        $this->assertGreaterThan($this->executedCaptureListener2, $this->executedListener);
+                        $this->assertGreaterThan($this->executedListener, $this->executedBubblesListener2);
+                        $this->assertGreaterThan($this->executedBubblesListener2, $this->executedBubblesListener1);
+                    });
+                });
+
+                testCase('$parent->dropChild($child);', function () {
+                    setUp(function () {
+                        $this->component3->dropChild($this->child);
+                    });
+
+                    useMacro('tests');
+                });
+
+                testCase('$parent->dropChild($child->getId());', function () {
+                    setUp(function () {
+                        $this->component3->dropChild($this->child->getId());
+                    });
+
+                    useMacro('tests');
+                });
+
+                testCase('$child->setParent(null);', function () {
+                    setUp(function () {
+                        $this->child->setParent(null);
+                    });
+
+                    useMacro('tests');
+                });
+            });
+
+            testCase('testing propagation of BeforeDeletionTreeEvent', function () {
+                setUp(function () {
+                    $this->component3->addChild($this->child);
+
+                    $this->checkEventData = function ($event) {
+                        $this->assertSame($this->component3, $event->getParent());
+                        $this->assertSame($this->child, $event->getChild());
+
+                        $this->assertSame($this->component3, $event->getChild()->getParent());
+                        $this->assertTrue($event->getParent()->hasChild($this->child->getId()));
+                    };
+
+                    $this->component1->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedCaptureListener1 = new DateTime;
+                    }, true); // Capture
+
+                    $this->component2->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedCaptureListener2 = new DateTime;
+                    }, true); // Capture
+
+                    $this->component3->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedListener = new DateTime;
+                    });
+
+                    $this->component2->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedBubblesListener2 = new DateTime;
+                    }); // Bubbling
+
+                    $this->component1->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                        call_user_func($this->checkEventData, $event);
+                        $this->executedBubblesListener1 = new DateTime;
+                    }); // Bubbling
+                });
+
+                useMacro('commons of deletion events');
+            });
+
+            // testCase('testing propagation of AfterInsertionTreeEvent', function () {
+            //     setUp(function () {
+            //         $this->checkEventData = function ($event) {
+            //             $this->assertSame($this->component3, $event->getParent());
+            //             $this->assertSame($this->child, $event->getChild());
+
+            //             $this->assertSame($this->component3, $event->getChild()->getParent());
+            //             $this->assertTrue($event->getParent()->hasChild($this->child->getId()));
+            //         };
+
+            //         $this->component1->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+            //             call_user_func($this->checkEventData, $event);
+            //             $this->executedCaptureListener1 = new DateTime;
+            //         }, true); // Capture
+
+            //         $this->component2->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+            //             call_user_func($this->checkEventData, $event);
+            //             $this->executedCaptureListener2 = new DateTime;
+            //         }, true); // Capture
+
+            //         $this->component3->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+            //             call_user_func($this->checkEventData, $event);
+            //             $this->executedListener = new DateTime;
+            //         });
+
+            //         $this->component2->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+            //             call_user_func($this->checkEventData, $event);
+            //             $this->executedBubblesListener2 = new DateTime;
+            //         }); // Bubbling
+
+            //         $this->component1->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+            //             call_user_func($this->checkEventData, $event);
+            //             $this->executedBubblesListener1 = new DateTime;
+            //         }); // Bubbling
+            //     });
+
+            //     useMacro('commons of insertion events');
+            // });
+        });
     });
 });
