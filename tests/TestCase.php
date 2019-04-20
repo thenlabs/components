@@ -19,8 +19,14 @@ class TestCase extends PHPUnitTestCase
         return new $this->componentClass;
     }
 
-    public function getRandomArray(): array
+    public function getRandomArray(string $prefix = ''): array
     {
-        return range(1, mt_rand(1, 10));
+        $result = [];
+
+        foreach (range(1, mt_rand(1, 10)) as $i) {
+            $result[] = $prefix . $i;
+        }
+
+        return $result;
     }
 }
