@@ -34,13 +34,13 @@ testCase('AdditionalDependenciesFromAnnotationsTraitTest.php', function () {
         );
     });
 
-    test(function () {
+    test('when component is only instance of ComponentInterface', function () {
         $this->component = new ComponentWithAnnotatedProperties;
 
         $this->assignPropertiesAndDoAsserts();
     });
 
-    test(function () {
+    test('when component is instance of CompositeComponentInterface', function () {
         $this->component = new CompositeComponentWithAnnotatedProperties;
 
         $this->assignPropertiesAndDoAsserts();
