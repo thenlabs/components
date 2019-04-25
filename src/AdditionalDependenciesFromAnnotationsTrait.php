@@ -16,8 +16,7 @@ trait AdditionalDependenciesFromAnnotationsTrait
         $result = [];
         $reader = new AnnotationReader();
 
-        // Hack for load the annotation class. If is omitted throw an annotation
-        // not found exception.
+        // Hack for load the annotation class. If is omitted it's throws an doctrine exception.
         new ComponentAnnotation;
 
         $class = new \ReflectionClass($this);

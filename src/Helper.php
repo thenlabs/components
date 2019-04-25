@@ -39,8 +39,22 @@ class Helper
         return static::$instance;
     }
 
-    public function sortDependencies(array $dependencies, EventDispatcherInterface $dispatcher, array $options = []): array
+    public function sortDependencies(array $dependencies, ?EventDispatcherInterface $dispatcher = null, array $options = []): array
     {
-        return [];
+        $result = [];
+
+        $add = function ($dependency) use (&$result, &$add) {
+            foreach ($dependency->getDependencies() as $dep) {
+                $add($dep);
+            }
+
+            $result[$dependency->getName()] = $dependency;
+        };
+
+        foreach ($dependencies as $dependency) {
+            $add($dependency);
+        }
+
+        return $result;
     }
 }

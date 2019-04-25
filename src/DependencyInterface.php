@@ -9,13 +9,6 @@ namespace NubecuLabs\Components;
 interface DependencyInterface extends DependentInterface
 {
     /**
-     * Include name and version. Example "jquery-1.11.1".
-     *
-     * @return string
-     */
-    public function getId(): string;
-
-    /**
      * Main name of the project. Example "jquery".
      *
      * @return string
