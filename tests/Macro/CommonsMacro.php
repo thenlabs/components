@@ -51,7 +51,7 @@ createMacro('commons', function () {
             ->method('sortDependencies')
             ->with(
                 $this->equalTo($mergedDependencies),
-                $this->equalTo($component->getEventDispatcher()),
+                $this->equalTo($component),
                 $this->equalTo($options)
             )
             ->willReturn($expectedResult);

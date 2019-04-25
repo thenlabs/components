@@ -2,6 +2,7 @@
 
 use NubecuLabs\Components\Helper;
 use NubecuLabs\Components\DependencyInterface;
+use NubecuLabs\Components\Exception\InvalidConflictDispatcherException;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
@@ -23,13 +24,20 @@ testCase('HelperTest.php', function () {
 
     testCase('#sortDependencies()', function () {
         test(function () {
+            $this->expectException(InvalidConflictDispatcherException::class);
+            $this->expectExceptionMessage('The conflict dispatcher may be only an instance of "Symfony\Component\EventDispatcher\EventDispatcherInterface" or "NubecuLabs\Components\ComponentInterface".');
+
+            Helper::sortDependencies([], uniqid());
+        });
+
+        test(function () {
             $dep1 = $this->createMock(DependencyInterface::class);
             $dep1->method('getName')->willReturn('dep1');
 
             $dep2 = $this->createMock(DependencyInterface::class);
             $dep2->method('getName')->willReturn('dep2');
 
-            $deps = [$dep1, $dep2];
+            $deps = [$dep1, $dep2, 1, uniqid(), range(1, 10)];
             $result = Helper::sortDependencies($deps);
 
             $this->assertCount(2, $result);

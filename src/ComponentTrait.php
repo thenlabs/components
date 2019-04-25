@@ -127,7 +127,7 @@ trait ComponentTrait
                 $this->getOwnDependencies($options),
                 $this->getAdditionalDependencies($options)
             ),
-            $this->getEventDispatcher(),
+            $this,
             $options
         );
     }

@@ -220,7 +220,7 @@ trait CompositeComponentTrait
                 $this->getAdditionalDependencies($options),
                 $dependenciesOfChilds
             ),
-            $this->getEventDispatcher(),
+            $this,
             $options
         );
     }
