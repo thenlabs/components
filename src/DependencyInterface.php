@@ -27,4 +27,6 @@ interface DependencyInterface extends DependentInterface
     public function getUpgradeableVersionsList(): array;
 
     public function getIncompatibilityVersionsList(): array;
+
+    public function getIncludeList(): array;
 }

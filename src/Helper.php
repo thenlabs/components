@@ -52,6 +52,22 @@ class Helper
         $result = [];
 
         $add = function ($dependency) use (&$result, &$add) {
+            // check if this dependency contains any of the already added.
+            foreach ($dependency->getIncludeList() as $dep) {
+                $name = $dep->getName();
+                if (isset($result[$name])) {
+                    unset($result[$name]);
+                }
+            }
+
+            // check if dependency is implicit.
+            foreach ($result as $dep) {
+                $include = $dep->getIncludeList();
+                if (isset($include[$dependency->getName()])) {
+                    return;
+                }
+            }
+
             foreach ($dependency->getDependencies() as $dep) {
                 $add($dep);
             }

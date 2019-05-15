@@ -65,5 +65,35 @@ testCase('HelperTest.php', function () {
             $this->assertEquals($dep2, $result['dep2']);
             $this->assertEquals($dep3, $result['dep3']);
         });
+
+        test(function () {
+            $dep1 = $this->createMock(DependencyInterface::class);
+            $dep1->method('getName')->willReturn('dep1');
+
+            $dep2 = $this->createMock(DependencyInterface::class);
+            $dep2->method('getName')->willReturn('dep2');
+            $dep2->method('getIncludeList')->willReturn([$dep1]);
+
+            $deps = [$dep1, $dep2];
+            $result = Helper::sortDependencies($deps);
+
+            $this->assertCount(1, $result);
+            $this->assertEquals($dep2, $result['dep2']);
+        });
+
+        test('my demo', function () {
+            $dep1 = $this->createMock(DependencyInterface::class);
+            $dep1->method('getName')->willReturn('dep1');
+
+            $dep2 = $this->createMock(DependencyInterface::class);
+            $dep2->method('getName')->willReturn('dep2');
+            $dep2->method('getIncludeList')->willReturn([$dep1]);
+
+            $deps = [$dep2, $dep1];
+            $result = Helper::sortDependencies($deps);
+
+            $this->assertCount(1, $result);
+            $this->assertEquals($dep2, $result['dep2']);
+        });
     });
 });
