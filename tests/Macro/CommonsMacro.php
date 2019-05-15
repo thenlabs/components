@@ -27,38 +27,7 @@ createMacro('commons', function () {
     });
 
     test('#getDependencies() returns result of merge the method #getOwnDependencies() and #getAdditionalDependencies() in Helper::sortDependencies()', function () {
-        $ownDependencies = ['own1', 'own2', 'own3'];
-        $additionalDependencies = ['additional1', 'additional2'];
-        $mergedDependencies = array_merge($ownDependencies, $additionalDependencies);
-        $expectedResult = array_reverse($mergedDependencies);
-        $options = $this->getRandomArray();
-
-        $component = $this->getMockBuilder($this->componentClass)
-            ->setMethods(['getOwnDependencies', 'getAdditionalDependencies'])
-            ->getMock();
-        $component->expects($this->once())
-            ->method('getOwnDependencies')
-            ->willReturn($ownDependencies);
-        $component->expects($this->once())
-            ->method('getAdditionalDependencies')
-            ->willReturn($additionalDependencies);
-
-        $helper = $this->getMockBuilder(Helper::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['sortDependencies'])
-            ->getMock();
-        $helper->expects($this->once())
-            ->method('sortDependencies')
-            ->with(
-                $this->equalTo($mergedDependencies),
-                $this->equalTo($component),
-                $this->equalTo($options)
-            )
-            ->willReturn($expectedResult);
-
-        Helper::setInstance($helper);
-
-        $this->assertEquals($expectedResult, $component->getDependencies($options));
+        $this->markTestIncomplete();
     });
 
     testCase('$component->getId();', function () {

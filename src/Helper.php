@@ -9,38 +9,9 @@ use NubecuLabs\Components\ComponentInterface;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class Helper
+abstract class Helper
 {
-    /**
-     * @static
-     */
-    protected static $instance;
-
-    private function __construct()
-    {
-    }
-
-    /**
-     * @static
-     */
-    public static function setInstance(Helper $instance): void
-    {
-        static::$instance = $instance;
-    }
-
-    /**
-     * @static
-     */
-    public static function getInstance(): Helper
-    {
-        if (! static::$instance instanceof self) {
-            static::$instance = new self;
-        }
-
-        return static::$instance;
-    }
-
-    public function sortDependencies(array $dependencies, $conflictDispatcher = null, array $options = []): array
+    public static function sortDependencies(array $dependencies, $conflictDispatcher = null, array $options = []): array
     {
         if ($conflictDispatcher && ! (
             $conflictDispatcher instanceof EventDispatcherInterface ||

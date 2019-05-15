@@ -214,7 +214,7 @@ trait CompositeComponentTrait
             );
         }
 
-        return Helper::getInstance()->sortDependencies(
+        return Helper::sortDependencies(
             array_merge(
                 $this->getOwnDependencies($options),
                 $this->getAdditionalDependencies($options),
