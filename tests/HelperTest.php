@@ -6,6 +6,7 @@ use NubecuLabs\Components\Event\DependencyConflictEvent;
 use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\Components\Exception\InvalidConflictDispatcherException;
 use NubecuLabs\Components\Exception\UnresolvedDependencyConflictException;
+use NubecuLabs\Components\Tests\Entity\Component;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
@@ -131,6 +132,26 @@ testCase('HelperTest.php', function () {
                 });
 
                 $result = Helper::sortDependencies($this->deps, $dispatcher);
+
+                $this->assertCount(1, $result);
+                $this->assertTrue($this->executed);
+                $this->assertSame($this->dep1, $result[$this->name]);
+            });
+
+            test(function () {
+                $eventName = Event::DEPENDENCY_CONFLICT . $this->name;
+
+                $component = new Component;
+                $component->on($eventName, function (DependencyConflictEvent $event) {
+                    $this->executed = true;
+
+                    $this->assertSame($this->dep1, $event->getDependency1());
+                    $this->assertSame($this->dep2, $event->getDependency2());
+
+                    $event->setSolution($this->dep1);
+                });
+
+                $result = Helper::sortDependencies($this->deps, $component);
 
                 $this->assertCount(1, $result);
                 $this->assertTrue($this->executed);

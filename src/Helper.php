@@ -49,7 +49,7 @@ abstract class Helper
         }
 
         foreach ($result as $resultDep) {
-            // if the same instance already is in result is not necesary do nothing.
+            // if the same instance already is in the result is not necesary do nothing.
             if ($resultDep === $dependency) {
                 return;
             }
