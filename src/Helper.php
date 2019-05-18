@@ -17,8 +17,7 @@ abstract class Helper
     {
         if ($conflictDispatcher && ! (
             $conflictDispatcher instanceof EventDispatcherInterface ||
-            $conflictDispatcher instanceof ComponentInterface
-        )
+            $conflictDispatcher instanceof ComponentInterface)
         ) {
             throw new Exception\InvalidConflictDispatcherException;
         }
