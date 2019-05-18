@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace NubecuLabs\Components;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\Event\Event;
 use NubecuLabs\Components\Event\DependencyConflictEvent;
 
@@ -17,7 +16,8 @@ abstract class Helper
     {
         if ($conflictDispatcher && ! (
             $conflictDispatcher instanceof EventDispatcherInterface ||
-            $conflictDispatcher instanceof ComponentInterface)
+            $conflictDispatcher instanceof ComponentInterface
+        )
         ) {
             throw new Exception\InvalidConflictDispatcherException;
         }
@@ -82,7 +82,12 @@ abstract class Helper
     {
         $eventName = Event::DEPENDENCY_CONFLICT . $name;
         $conflictEvent = new DependencyConflictEvent($dependency1, $dependency2);
-        $conflictDispatcher->dispatch($eventName, $conflictEvent);
+
+        if ($conflictDispatcher instanceof EventDispatcherInterface) {
+            $conflictDispatcher->dispatch($eventName, $conflictEvent);
+        } elseif ($conflictDispatcher instanceof ComponentInterface) {
+            $conflictDispatcher->dispatchEvent($eventName, $conflictEvent);
+        }
 
         $solution = $conflictEvent->getSolution();
         if (! $solution) {

@@ -390,7 +390,7 @@ testCase('ExistsAComponentsTree.php', function () {
             });
 
             test('testing order of event propagation from capture to bubbling', function () {
-                $this->child412->dispatch($this->eventName, $this->event);
+                $this->child412->dispatchEvent($this->eventName, $this->event);
 
                 $this->assertInstanceOf(DateTime::class, $this->momentCapture1);
                 $this->assertInstanceOf(DateTime::class, $this->momentCapture2);
@@ -409,7 +409,7 @@ testCase('ExistsAComponentsTree.php', function () {
             });
 
             test('testing order of event propagation when capture is disabled', function () {
-                $this->child412->dispatch($this->eventName, $this->event, false);
+                $this->child412->dispatchEvent($this->eventName, $this->event, false);
 
                 $this->assertNull($this->momentCapture1);
                 $this->assertNull($this->momentCapture2);
@@ -420,7 +420,7 @@ testCase('ExistsAComponentsTree.php', function () {
             });
 
             test('testing order of event propagation when bubbling is disabled', function () {
-                $this->child412->dispatch($this->eventName, $this->event, true, false);
+                $this->child412->dispatchEvent($this->eventName, $this->event, true, false);
 
                 $this->assertGreaterThan($this->momentCapture1, $this->momentCapture2);
                 $this->assertGreaterThan($this->momentCapture2, $this->momentCapture3);
@@ -431,7 +431,7 @@ testCase('ExistsAComponentsTree.php', function () {
             });
 
             test('testing order of event propagation when capture and bubbling are disabled', function () {
-                $this->child412->dispatch($this->eventName, $this->event, false, false);
+                $this->child412->dispatchEvent($this->eventName, $this->event, false, false);
 
                 $this->assertNull($this->momentCapture1);
                 $this->assertNull($this->momentCapture2);
@@ -451,7 +451,7 @@ testCase('ExistsAComponentsTree.php', function () {
                 $this->child4->off($this->eventName, $this->listener3);
                 $this->component->off($this->eventName, $this->listener4);
 
-                $this->child412->dispatch($this->eventName, $this->event);
+                $this->child412->dispatchEvent($this->eventName, $this->event);
 
                 $this->assertNull($this->momentCapture1);
                 $this->assertNull($this->momentCapture2);

@@ -70,7 +70,7 @@ trait ComponentTrait
         if ($this->parent instanceof CompositeComponentInterface) {
             if ($dispatchEvents) {
                 $beforeDeletionEvent = new BeforeDeletionTreeEvent($this, $this->parent);
-                $this->parent->dispatch(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
+                $this->parent->dispatchEvent(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
 
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;
@@ -82,13 +82,13 @@ trait ComponentTrait
 
             if ($oldParent instanceof CompositeComponentInterface && $dispatchEvents) {
                 $afterDeletionEvent = new AfterDeletionTreeEvent($this, $oldParent);
-                $oldParent->dispatch(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
+                $oldParent->dispatchEvent(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
             }
         }
 
         if ($parent instanceof CompositeComponentInterface && $dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
-            $parent->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
+            $parent->dispatchEvent(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
             if ($beforeInsertionEvent->isCancelled()) {
                 return;
@@ -102,7 +102,7 @@ trait ComponentTrait
 
             if ($parent instanceof CompositeComponentInterface && $dispatchEvents) {
                 $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
-                $parent->dispatch(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
+                $parent->dispatchEvent(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
             }
         }
     }
@@ -153,7 +153,7 @@ trait ComponentTrait
         $this->getEventDispatcher()->removeListener($eventName, $listener);
     }
 
-    public function dispatch(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
+    public function dispatchEvent(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
     {
         $parents = $this->getParents();
 

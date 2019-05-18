@@ -1,7 +1,6 @@
 <?php
 
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
-use NubecuLabs\Components\Helper;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use NubecuLabs\Components\Tests\Entity\Component;
 use NubecuLabs\Components\Exception\InvalidChildException;

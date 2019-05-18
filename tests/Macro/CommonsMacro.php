@@ -1,7 +1,6 @@
 <?php
 
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
-use NubecuLabs\Components\Helper;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -179,7 +178,7 @@ createMacro('commons', function () {
 
         testCase('$component->dispatch($eventName = "eventName", $event = new Event($component));', function () {
             setUp(function () {
-                $this->component->dispatch($this->eventName, $this->event);
+                $this->component->dispatchEvent($this->eventName, $this->event);
             });
 
             test('$listener was executed with the event object as argument', function () {
@@ -190,7 +189,7 @@ createMacro('commons', function () {
         testCase('$component->off($eventName, $listener);', function () {
             setUp(function () {
                 $this->component->off($this->eventName, $this->listener);
-                $this->component->dispatch($this->eventName, $this->event);
+                $this->component->dispatchEvent($this->eventName, $this->event);
             });
 
             test('$listener was not executed', function () {

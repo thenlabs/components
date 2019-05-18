@@ -54,7 +54,7 @@ trait CompositeComponentTrait
 
         if ($dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
-            $this->dispatch(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
+            $this->dispatchEvent(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
 
             if ($beforeInsertionEvent->isCancelled()) {
                 return;
@@ -69,7 +69,7 @@ trait CompositeComponentTrait
 
         if ($dispatchEvents) {
             $afterInsertionEvent = new AfterInsertionTreeEvent($child, $this);
-            $this->dispatch(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
+            $this->dispatchEvent(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
         }
     }
 
@@ -95,7 +95,7 @@ trait CompositeComponentTrait
         ) {
             if ($dispatchEvents) {
                 $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
-                $this->dispatch(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
+                $this->dispatchEvent(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
 
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;
@@ -107,7 +107,7 @@ trait CompositeComponentTrait
 
             if ($dispatchEvents) {
                 $afterDeletionEvent = new AfterDeletionTreeEvent($obj, $this);
-                $this->dispatch(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
+                $this->dispatchEvent(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
             }
         }
     }
