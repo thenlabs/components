@@ -18,15 +18,6 @@ testCase('CompositeComponentTest.php', function () {
     testCase(sprintf("\$component = new \\%s;", CompositeComponent::class), function () {
         useMacro('commons');
 
-        testCase('$component->getId();', function () {
-            test('returns an unique string that starts with "compositecomponent_"', function () {
-                $id = $this->component->getId();
-
-                $this->assertGreaterThan(13, strlen($id));
-                $this->assertStringStartsWith('compositecomponent_', $id);
-            });
-        });
-
         testCase('$component->getCaptureEventDispatcher();', function () {
             test('returns an instance of "Symfony\Component\EventDispatcher\EventDispatcher"', function () {
                 $this->assertInstanceOf(EventDispatcher::class, $this->component->getCaptureEventDispatcher());

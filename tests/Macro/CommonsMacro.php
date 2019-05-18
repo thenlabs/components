@@ -10,6 +10,13 @@ createMacro('commons', function () {
         $this->component = $this->getNewComponent();
     });
 
+    test('$component->getId() != null', function () {
+        $id = $this->component->getId();
+
+        $this->assertGreaterThan(13, strlen($id));
+        $this->assertStringStartsWith('comp_', $id);
+    });
+
     test('$component->getParent() === null', function () {
         $this->assertNull($this->component->getParent());
     });

@@ -26,10 +26,7 @@ trait ComponentTrait
     public function getId(): string
     {
         if (! $this->id) {
-            $nameParts = explode('\\', __CLASS__);
-            $shortLowerName = strtolower(array_pop($nameParts));
-
-            $this->id = uniqid($shortLowerName . '_');
+            $this->id = uniqid('comp_');
         }
 
         return $this->id;
