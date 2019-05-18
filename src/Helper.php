@@ -22,38 +22,50 @@ abstract class Helper
 
         $result = [];
 
-        $add = function ($dependency) use (&$result, &$add) {
-            // check if this dependency contains any of the already added.
-            foreach ($dependency->getIncludeList() as $dep) {
-                $name = $dep->getName();
-                if (isset($result[$name])) {
-                    unset($result[$name]);
-                }
-            }
-
-            // check if dependency is implicit.
-            foreach ($result as $dep) {
-                $include = $dep->getIncludeList();
-                if (isset($include[$dependency->getName()])) {
-                    return;
-                }
-            }
-
-            foreach ($dependency->getDependencies() as $dep) {
-                $add($dep);
-            }
-
-            $result[$dependency->getName()] = $dependency;
-        };
-
         foreach ($dependencies as $dependency) {
             if (! $dependency instanceof DependencyInterface) {
                 continue;
             }
 
-            $add($dependency);
+            self::addDependency($dependency, $result);
         }
 
         return $result;
+    }
+
+    private static function addDependency(DependencyInterface $dependency, array &$result): void
+    {
+        $dependencyName = $dependency->getName();
+
+        // check if this dependency contains any of the already added.
+        foreach ($dependency->getIncludeList() as $includedDep) {
+            $name = $includedDep->getName();
+            if (isset($result[$name])) {
+                unset($result[$name]);
+            }
+        }
+
+        // check if this dependency is implicit.
+        foreach ($result as $resultDep) {
+            if ($resultDep === $dependency) {
+                return;
+            }
+
+            if ($resultDep->getName() == $dependencyName) {
+                throw new Exception\UnresolvedDependencyConflictException($dependencyName);
+            }
+
+            foreach ($resultDep->getIncludeList() as $includedDep) {
+                if ($includedDep->getName() == $dependency->getName()) {
+                    return;
+                }
+            }
+        }
+
+        foreach ($dependency->getDependencies() as $dep) {
+            self::addDependency($dep, $result);
+        }
+
+        $result[$dependency->getName()] = $dependency;
     }
 }

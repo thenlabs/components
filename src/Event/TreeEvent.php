@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\CompositeComponentInterface;
 
@@ -12,13 +11,13 @@ use NubecuLabs\Components\CompositeComponentInterface;
  */
 class TreeEvent extends Event
 {
-    public const BEFORE_INSERTION = 'tree.before_insertion';
+    public const BEFORE_INSERTION = 'components.tree.before_insertion';
 
-    public const AFTER_INSERTION = 'tree.after_insertion';
+    public const AFTER_INSERTION = 'components.tree.after_insertion';
 
-    public const BEFORE_DELETION = 'tree.before_deletion';
+    public const BEFORE_DELETION = 'components.tree.before_deletion';
 
-    public const AFTER_DELETION = 'tree.after_deletion';
+    public const AFTER_DELETION = 'components.tree.after_deletion';
 
     protected $child;
 

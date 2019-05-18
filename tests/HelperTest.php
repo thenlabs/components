@@ -3,6 +3,8 @@
 use NubecuLabs\Components\Helper;
 use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\Components\Exception\InvalidConflictDispatcherException;
+use NubecuLabs\Components\Exception\UnresolvedDependencyConflictException;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
@@ -67,7 +69,7 @@ testCase('HelperTest.php', function () {
             $this->assertEquals($dep2, $result['dep2']);
         });
 
-        test('my demo', function () {
+        test(function () {
             $dep1 = $this->createMock(DependencyInterface::class);
             $dep1->method('getName')->willReturn('dep1');
 
@@ -80,6 +82,56 @@ testCase('HelperTest.php', function () {
 
             $this->assertCount(1, $result);
             $this->assertEquals($dep2, $result['dep2']);
+        });
+
+        test(function () {
+            $dep1 = $this->createMock(DependencyInterface::class);
+            $dep1->method('getName')->willReturn('dep1');
+
+            $deps = [$dep1, $dep1, $dep1];
+            $result = Helper::sortDependencies($deps);
+
+            $this->assertCount(1, $result);
+            $this->assertEquals($dep1, $result['dep1']);
+        });
+
+        testCase('exists two dependency with equal name in the same level', function () {
+            setUp(function () {
+                $this->name = uniqid('dependency') ;
+
+                $this->dep1 = $this->createMock(DependencyInterface::class);
+                $this->dep1->method('getName')->willReturn($this->name);
+
+                $this->dep2 = $this->createMock(DependencyInterface::class);
+                $this->dep2->method('getName')->willReturn($this->name);
+
+                $this->deps = [$this->dep1, $this->dep2];
+            });
+
+            test('it is triggered an UnresolvedDependencyConflictException', function () {
+                $this->expectException(UnresolvedDependencyConflictException::class);
+                $this->expectExceptionMessage("Conflict between dependencies with name '{$this->name}'.");
+
+                $result = Helper::sortDependencies($this->deps);
+            });
+
+            // test(function () {
+            //     $dispatcher = new EventDispatcher;
+            //     $dispatcher->addListener("components.dependency_conflict_{$this->name}", function (DependencyConflictEvent $event) {
+            //         $this->executed = true;
+
+            //         $this->assertSame($this->dep1, $event->getDependency1());
+            //         $this->assertSame($this->dep2, $event->getDependency1());
+
+            //         $event->resolveWith($this->dep1);
+            //     });
+
+            //     $result = Helper::sortDependencies($this->deps, $dispatcher);
+
+            //     $this->assertCount(1, $result);
+            //     $this->assertTrue($this->executed);
+            //     $this->assertSame($this->dep1, $result[$this->name]);
+            // });
         });
     });
 });
