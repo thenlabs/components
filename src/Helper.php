@@ -6,6 +6,7 @@ namespace NubecuLabs\Components;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use NubecuLabs\Components\Event\Event;
 use NubecuLabs\Components\Event\DependencyConflictEvent;
+use Composer\Semver\Comparator;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -90,6 +91,19 @@ abstract class Helper
         }
 
         $solution = $conflictEvent->getSolution();
+
+        // if the conflict was not resolved then attempt resolve it.
+        if (! $solution) {
+            $version1 = $dependency1->getVersion();
+            $version2 = $dependency2->getVersion();
+
+            if ($version1 && $version2) {
+                $solution = Comparator::greaterThanOrEqualTo($version1, $version2) ?
+                    $dependency1 : $dependency2
+                ;
+            }
+        }
+
         if (! $solution) {
             throw new Exception\UnresolvedDependencyConflictException($name);
         }

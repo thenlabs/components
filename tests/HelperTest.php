@@ -157,6 +157,49 @@ testCase('HelperTest.php', function () {
                 $this->assertTrue($this->executed);
                 $this->assertSame($this->dep1, $result[$this->name]);
             });
+
+            testCase('automatic conflict solutions when both has information about his versions', function () {
+                setUp(function () {
+                    $minorValue = mt_rand(1, 5);
+                    $majorValue = $minorValue + 1;
+
+                    $this->minor = "1.{$minorValue}.0";
+                    $this->major = "1.{$majorValue}.0";
+                });
+
+                test(function () {
+                    $this->dep1->method('getVersion')->willReturn($this->major);
+                    $this->dep2->method('getVersion')->willReturn($this->minor);
+
+                    $dispatcher = new EventDispatcher;
+                    $result = Helper::sortDependencies($this->deps, $dispatcher);
+
+                    $this->assertCount(1, $result);
+                    $this->assertSame($this->dep1, $result[$this->name]);
+                });
+
+                test(function () {
+                    $this->dep1->method('getVersion')->willReturn($this->minor);
+                    $this->dep2->method('getVersion')->willReturn($this->major);
+
+                    $dispatcher = new EventDispatcher;
+                    $result = Helper::sortDependencies($this->deps, $dispatcher);
+
+                    $this->assertCount(1, $result);
+                    $this->assertSame($this->dep2, $result[$this->name]);
+                });
+
+                test(function () {
+                    $this->dep1->method('getVersion')->willReturn($this->minor);
+                    $this->dep2->method('getVersion')->willReturn($this->minor);
+
+                    $dispatcher = new EventDispatcher;
+                    $result = Helper::sortDependencies($this->deps, $dispatcher);
+
+                    $this->assertCount(1, $result);
+                    $this->assertSame($this->dep1, $result[$this->name]);
+                });
+            });
         });
     });
 });
