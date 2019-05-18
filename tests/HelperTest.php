@@ -1,6 +1,8 @@
 <?php
 
 use NubecuLabs\Components\Helper;
+use NubecuLabs\Components\Event\Event;
+use NubecuLabs\Components\Event\DependencyConflictEvent;
 use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\Components\Exception\InvalidConflictDispatcherException;
 use NubecuLabs\Components\Exception\UnresolvedDependencyConflictException;
@@ -26,7 +28,7 @@ testCase('HelperTest.php', function () {
             $dep2->method('getName')->willReturn('dep2');
 
             $deps = [$dep1, $dep2, 1, uniqid(), range(1, 10)];
-            $result = Helper::sortDependencies($deps);
+            $result = Helper::sortDependencies($deps, new EventDispatcher);
 
             $this->assertCount(2, $result);
             $this->assertEquals($dep1, $result['dep1']);
@@ -46,7 +48,7 @@ testCase('HelperTest.php', function () {
             $dep3->method('getDependencies')->willReturn([$dep2]);
 
             $deps = [$dep3];
-            $result = Helper::sortDependencies($deps);
+            $result = Helper::sortDependencies($deps, new EventDispatcher);
 
             $this->assertCount(3, $result);
             $this->assertEquals($dep1, $result['dep1']);
@@ -63,7 +65,7 @@ testCase('HelperTest.php', function () {
             $dep2->method('getIncludeList')->willReturn([$dep1]);
 
             $deps = [$dep1, $dep2];
-            $result = Helper::sortDependencies($deps);
+            $result = Helper::sortDependencies($deps, new EventDispatcher);
 
             $this->assertCount(1, $result);
             $this->assertEquals($dep2, $result['dep2']);
@@ -78,7 +80,7 @@ testCase('HelperTest.php', function () {
             $dep2->method('getIncludeList')->willReturn([$dep1]);
 
             $deps = [$dep2, $dep1];
-            $result = Helper::sortDependencies($deps);
+            $result = Helper::sortDependencies($deps, new EventDispatcher);
 
             $this->assertCount(1, $result);
             $this->assertEquals($dep2, $result['dep2']);
@@ -89,7 +91,7 @@ testCase('HelperTest.php', function () {
             $dep1->method('getName')->willReturn('dep1');
 
             $deps = [$dep1, $dep1, $dep1];
-            $result = Helper::sortDependencies($deps);
+            $result = Helper::sortDependencies($deps, new EventDispatcher);
 
             $this->assertCount(1, $result);
             $this->assertEquals($dep1, $result['dep1']);
@@ -112,26 +114,28 @@ testCase('HelperTest.php', function () {
                 $this->expectException(UnresolvedDependencyConflictException::class);
                 $this->expectExceptionMessage("Conflict between dependencies with name '{$this->name}'.");
 
-                $result = Helper::sortDependencies($this->deps);
+                $result = Helper::sortDependencies($this->deps, new EventDispatcher);
             });
 
-            // test(function () {
-            //     $dispatcher = new EventDispatcher;
-            //     $dispatcher->addListener("components.dependency_conflict_{$this->name}", function (DependencyConflictEvent $event) {
-            //         $this->executed = true;
+            test(function () {
+                $eventName = Event::DEPENDENCY_CONFLICT . $this->name;
 
-            //         $this->assertSame($this->dep1, $event->getDependency1());
-            //         $this->assertSame($this->dep2, $event->getDependency1());
+                $dispatcher = new EventDispatcher;
+                $dispatcher->addListener($eventName, function (DependencyConflictEvent $event) {
+                    $this->executed = true;
 
-            //         $event->resolveWith($this->dep1);
-            //     });
+                    $this->assertSame($this->dep1, $event->getDependency1());
+                    $this->assertSame($this->dep2, $event->getDependency2());
 
-            //     $result = Helper::sortDependencies($this->deps, $dispatcher);
+                    $event->setSolution($this->dep1);
+                });
 
-            //     $this->assertCount(1, $result);
-            //     $this->assertTrue($this->executed);
-            //     $this->assertSame($this->dep1, $result[$this->name]);
-            // });
+                $result = Helper::sortDependencies($this->deps, $dispatcher);
+
+                $this->assertCount(1, $result);
+                $this->assertTrue($this->executed);
+                $this->assertSame($this->dep1, $result[$this->name]);
+            });
         });
     });
 });
