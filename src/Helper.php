@@ -55,7 +55,7 @@ abstract class Helper
             }
 
             if ($resultDep->getName() == $dependencyName) {
-                $dependency = self::preventConflict(
+                $dependency = self::resolveConflict(
                     $resultDep,
                     $dependency,
                     $dependencyName,
@@ -78,7 +78,7 @@ abstract class Helper
         $result[$dependency->getName()] = $dependency;
     }
 
-    private static function preventConflict(DependencyInterface $dependency1, DependencyInterface $dependency2, string $name, $conflictDispatcher): DependencyInterface
+    private static function resolveConflict(DependencyInterface $dependency1, DependencyInterface $dependency2, string $name, $conflictDispatcher): DependencyInterface
     {
         $eventName = Event::DEPENDENCY_CONFLICT . $name;
         $conflictEvent = new DependencyConflictEvent($dependency1, $dependency2);
