@@ -62,7 +62,7 @@ testCase('HelperTest.php', function () {
 
             $dep2 = $this->createMock(DependencyInterface::class);
             $dep2->method('getName')->willReturn('dep2');
-            $dep2->method('getIncludeList')->willReturn([$dep1]);
+            $dep2->method('getIncludedDependencies')->willReturn([$dep1]);
 
             $deps = [$dep1, $dep2];
             $result = Helper::sortDependencies($deps, new EventDispatcher);
@@ -77,7 +77,7 @@ testCase('HelperTest.php', function () {
 
             $dep2 = $this->createMock(DependencyInterface::class);
             $dep2->method('getName')->willReturn('dep2');
-            $dep2->method('getIncludeList')->willReturn([$dep1]);
+            $dep2->method('getIncludedDependencies')->willReturn([$dep1]);
 
             $deps = [$dep2, $dep1];
             $result = Helper::sortDependencies($deps, new EventDispatcher);

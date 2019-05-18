@@ -39,8 +39,9 @@ abstract class Helper
     {
         $dependencyName = $dependency->getName();
 
-        // check if this dependency contains any of the already added.
-        foreach ($dependency->getIncludeList() as $includedDep) {
+        // check if this dependency include any dependency that already is in result.
+        // if true then remove it from result.
+        foreach ($dependency->getIncludedDependencies() as $includedDep) {
             $name = $includedDep->getName();
             if (isset($result[$name])) {
                 unset($result[$name]);
@@ -48,23 +49,22 @@ abstract class Helper
         }
 
         foreach ($result as $resultDep) {
+            // if the same instance already is in result is not necesary do nothing.
             if ($resultDep === $dependency) {
                 return;
             }
 
             if ($resultDep->getName() == $dependencyName) {
-                $eventName = Event::DEPENDENCY_CONFLICT . $dependencyName;
-                $conflictEvent = new DependencyConflictEvent($resultDep, $dependency);
-                $conflictDispatcher->dispatch($eventName, $conflictEvent);
-
-                $dependency = $conflictEvent->getSolution();
-                if (! $dependency) {
-                    throw new Exception\UnresolvedDependencyConflictException($dependencyName);
-                }
+                $dependency = self::preventConflict(
+                    $resultDep,
+                    $dependency,
+                    $dependencyName,
+                    $conflictDispatcher
+                );
             }
 
             // check if dependency is implicit.
-            foreach ($resultDep->getIncludeList() as $includedDep) {
+            foreach ($resultDep->getIncludedDependencies() as $includedDep) {
                 if ($includedDep->getName() == $dependency->getName()) {
                     return;
                 }
@@ -76,5 +76,19 @@ abstract class Helper
         }
 
         $result[$dependency->getName()] = $dependency;
+    }
+
+    private static function preventConflict(DependencyInterface $dependency1, DependencyInterface $dependency2, string $name, $conflictDispatcher): DependencyInterface
+    {
+        $eventName = Event::DEPENDENCY_CONFLICT . $name;
+        $conflictEvent = new DependencyConflictEvent($dependency1, $dependency2);
+        $conflictDispatcher->dispatch($eventName, $conflictEvent);
+
+        $solution = $conflictEvent->getSolution();
+        if (! $solution) {
+            throw new Exception\UnresolvedDependencyConflictException($name);
+        }
+
+        return $solution;
     }
 }
