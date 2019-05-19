@@ -167,6 +167,36 @@ trait CompositeComponentTrait
         });
     }
 
+    public function findChildByName(string $name): ?ComponentInterface
+    {
+        if (! $this instanceof CompositeComponentInterface) {
+            throw new SearchsByNameTraitException;
+        }
+
+        return $this->findChild(function (ComponentInterface $component) use ($name) {
+            if ($component instanceof ComponentWithNameInterface &&
+                $component->getName() == $name
+            ) {
+                return $component;
+            }
+        });
+    }
+
+    public function findChildsByName(string $name): array
+    {
+        if (! $this instanceof CompositeComponentInterface) {
+            throw new SearchsByNameTraitException;
+        }
+
+        return $this->findChilds(function (ComponentInterface $component) use ($name) {
+            if ($component instanceof ComponentWithNameInterface &&
+                $component->getName() == $name
+            ) {
+                return $component;
+            }
+        });
+    }
+
     public function getCaptureEventDispatcher(): EventDispatcherInterface
     {
         if (! $this->captureEventDispatcher) {

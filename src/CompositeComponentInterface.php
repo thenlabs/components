@@ -26,6 +26,10 @@ interface CompositeComponentInterface extends ComponentInterface
 
     public function findChildById(string $id): ?ComponentInterface;
 
+    public function findChildByName(string $name): ?ComponentInterface;
+
+    public function findChildsByName(string $name): array;
+
     public function validateChild(ComponentInterface $child): bool;
 
     public function addChild(ComponentInterface $child, $setParentInChild = true, bool $dispatchEvents = true): void;

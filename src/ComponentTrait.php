@@ -19,6 +19,8 @@ trait ComponentTrait
 {
     protected $id;
 
+    protected $name;
+
     protected $parent;
 
     protected $eventDispatcher;
@@ -30,6 +32,16 @@ trait ComponentTrait
         }
 
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
     }
 
     public function getParent(): ?CompositeComponentInterface

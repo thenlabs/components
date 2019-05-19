@@ -13,6 +13,10 @@ interface ComponentInterface extends DependentInterface
 {
     public function getId(): string;
 
+    public function getName(): ?string;
+
+    public function setName(?string $name): void;
+
     public function getParent(): ?CompositeComponentInterface;
 
     public function getParents(): array;

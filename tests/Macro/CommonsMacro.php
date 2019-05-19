@@ -1,6 +1,7 @@
 <?php
 
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
+use NubecuLabs\Components\Tests\Entity\Component;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -14,6 +15,10 @@ createMacro('commons', function () {
 
         $this->assertGreaterThan(13, strlen($id));
         $this->assertStringStartsWith('comp_', $id);
+    });
+
+    test('$component->getName() === null', function () {
+        $this->assertNull($this->component->getName());
     });
 
     test('$component->getParent() === null', function () {
@@ -43,6 +48,17 @@ createMacro('commons', function () {
             $this->assertEquals($id, $this->component->getId());
             $this->assertEquals($id, $this->component->getId());
             $this->assertEquals($id, $this->component->getId());
+        });
+    });
+
+    $name = uniqid('comp');
+    testCase("\$component->setName('$name')", function () use ($name) {
+        setUp(function () use ($name) {
+            $this->component->setName($name);
+        });
+
+        test("\$component->getName() === '$name'", function () use ($name) {
+            $this->assertEquals($name, $this->component->getName());
         });
     });
 
