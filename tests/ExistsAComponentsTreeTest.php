@@ -30,6 +30,7 @@ testCase('ExistsAComponentsTree.php', function () {
          *     |       |____$child41 (CC)
          *     |               |____$child411 (CC)
          *     |               |____$child412 (C)
+         *     |               |____$child413 (C)
          */
         setUpBeforeClassOnce(function () {
             $component = new CompositeComponent('component');
@@ -43,11 +44,12 @@ testCase('ExistsAComponentsTree.php', function () {
             $child41 = new CompositeComponent('child41');
             $child411 = new CompositeComponent('child411');
             $child412 = new Component('child412');
+            $child413 = new Component('child3');
 
             $component->addChilds($child1, $child2, $child3, $child4);
             $child3->addChilds($child31, $child32, $child33);
             $child4->addChilds($child41);
-            $child41->addChilds($child411, $child412);
+            $child41->addChilds($child411, $child412, $child413);
 
             static::addVars(compact(
                 'component',
@@ -60,7 +62,8 @@ testCase('ExistsAComponentsTree.php', function () {
                 'child4',
                 'child41',
                 'child411',
-                'child412'
+                'child412',
+                'child413'
             ));
         });
 
@@ -75,6 +78,18 @@ testCase('ExistsAComponentsTree.php', function () {
 
         test('$component->findChildById("child412") === $child412', function () {
             $this->assertSame($this->child412, $this->component->findChildById('child412'));
+        });
+
+        test('$component->findChildByName("child412") === $child412', function () {
+            $this->assertSame($this->child412, $this->component->findChildByName('child412'));
+        });
+
+        test('$component->findChildsByName("child3") === [$child3, $child413]', function () {
+            $childs = $this->component->findChildsByName('child3');
+
+            $this->assertCount(2, $childs);
+            $this->assertEquals($this->child3, $childs[0]);
+            $this->assertEquals($this->child413, $childs[1]);
         });
 
         testCase('$iterator = $component->children();', function () {
@@ -128,8 +143,13 @@ testCase('ExistsAComponentsTree.php', function () {
                 $this->iterator->next();
             });
 
-            test('iteration #10 (End): $iterator->current() === $child412', function () {
+            test('iteration #10: $iterator->current() === $child412', function () {
                 $this->assertSame($this->child412, $this->iterator->current());
+                $this->iterator->next();
+            });
+
+            test('iteration #11 (End): $iterator->current() === $child413', function () {
+                $this->assertSame($this->child413, $this->iterator->current());
                 $this->iterator->next();
                 $this->assertNull($this->iterator->current());
             });

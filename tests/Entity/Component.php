@@ -20,6 +20,7 @@ class Component implements ComponentInterface
     {
         if ($id) {
             $this->id = $id;
+            $this->name = $id;
         }
     }
 }
