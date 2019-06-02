@@ -80,6 +80,10 @@ abstract class Helper
 
     private static function resolveConflict(DependencyInterface $dependency1, DependencyInterface $dependency2, string $name, $conflictDispatcher): DependencyInterface
     {
+        if ($dependency1 === $dependency2) {
+            return $dependency1;
+        }
+
         $eventName = Event::DEPENDENCY_CONFLICT . $name;
         $conflictEvent = new DependencyConflictEvent($dependency1, $dependency2);
 

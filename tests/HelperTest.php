@@ -100,7 +100,7 @@ testCase('HelperTest.php', function () {
 
         testCase('exists two dependency with equal name in the same level', function () {
             setUp(function () {
-                $this->name = uniqid('dependency') ;
+                $this->name = uniqid('dependency');
 
                 $this->dep1 = $this->createMock(DependencyInterface::class);
                 $this->dep1->method('getName')->willReturn($this->name);
