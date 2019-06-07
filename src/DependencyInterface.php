@@ -18,13 +18,11 @@ interface DependencyInterface extends DependentInterface
     /**
      * Value of the semantic version of the project.
      *
-     * Should be an exactly version. Example "1.11.1".
+     * Should be an exactly version value. Example "1.11.1".
      *
      * @return string
      */
     public function getVersion(): string;
-
-    public function getUpgradeableVersionsList(): array;
 
     public function getIncompatibilityVersionsList(): array;
 

@@ -5,6 +5,7 @@ use NubecuLabs\Components\Event\Event;
 use NubecuLabs\Components\Event\DependencyConflictEvent;
 use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\Components\Exception\InvalidConflictDispatcherException;
+use NubecuLabs\Components\Exception\IncompatibilityBetweenDependenciesException;
 use NubecuLabs\Components\Exception\UnresolvedDependencyConflictException;
 use NubecuLabs\Components\Tests\Entity\Component;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -111,15 +112,33 @@ testCase('HelperTest.php', function () {
                 $this->deps = [$this->dep1, $this->dep2];
             });
 
-            test('it is triggered an UnresolvedDependencyConflictException', function () {
+            test('it is triggered an UnresolvedDependencyConflictException when the user not resolve the conflict', function () {
                 $this->expectException(UnresolvedDependencyConflictException::class);
                 $this->expectExceptionMessage("Conflict between dependencies with name '{$this->name}'.");
 
                 $result = Helper::sortDependencies($this->deps, new EventDispatcher);
             });
 
-            test(function () {
-                $eventName = Event::DEPENDENCY_CONFLICT . $this->name;
+            test('UnresolvedDependencyConflictException when only the left dependency has version', function () {
+                $this->expectException(UnresolvedDependencyConflictException::class);
+                $this->expectExceptionMessage("Conflict between dependencies with name '{$this->name}'.");
+
+                $this->dep1->method('getVersion')->willReturn('1.0');
+
+                $result = Helper::sortDependencies($this->deps, new EventDispatcher);
+            });
+
+            test('UnresolvedDependencyConflictException when only the right dependency has version', function () {
+                $this->expectException(UnresolvedDependencyConflictException::class);
+                $this->expectExceptionMessage("Conflict between dependencies with name '{$this->name}'.");
+
+                $this->dep2->method('getVersion')->willReturn('1.0');
+
+                $result = Helper::sortDependencies($this->deps, new EventDispatcher);
+            });
+
+            test('resolving a conflict manually with a symfony event dispatcher', function () {
+                $eventName = Helper::getConflictEventName($this->name);
 
                 $dispatcher = new EventDispatcher;
                 $dispatcher->addListener($eventName, function (DependencyConflictEvent $event) {
@@ -138,8 +157,8 @@ testCase('HelperTest.php', function () {
                 $this->assertSame($this->dep1, $result[$this->name]);
             });
 
-            test(function () {
-                $eventName = Event::DEPENDENCY_CONFLICT . $this->name;
+            test('resolving a conflict manually with a component', function () {
+                $eventName = Helper::getConflictEventName($this->name);
 
                 $component = new Component;
                 $component->on($eventName, function (DependencyConflictEvent $event) {
@@ -158,7 +177,7 @@ testCase('HelperTest.php', function () {
                 $this->assertSame($this->dep1, $result[$this->name]);
             });
 
-            testCase('automatic conflict solutions when both has information about his versions', function () {
+            testCase('testing the automatic conflict solutions when both has information about his versions', function () {
                 setUp(function () {
                     $minorValue = mt_rand(1, 5);
                     $majorValue = $minorValue + 1;
@@ -190,7 +209,7 @@ testCase('HelperTest.php', function () {
                 });
 
                 test(function () {
-                    $this->dep1->method('getVersion')->willReturn($this->minor);
+                    $this->dep1->method('getVersion')->willReturn($this->major);
                     $this->dep2->method('getVersion')->willReturn($this->minor);
 
                     $dispatcher = new EventDispatcher;
@@ -198,6 +217,22 @@ testCase('HelperTest.php', function () {
 
                     $this->assertCount(1, $result);
                     $this->assertSame($this->dep1, $result[$this->name]);
+                });
+            });
+
+            testCase('testing cases of incompatibility between dependencies', function () {
+                setUp(function () {
+                    $this->expectException(IncompatibilityBetweenDependenciesException::class);
+                    $this->expectExceptionMessage("The dependency '{$this->name}' version '1.0.1' is not compatible with version '2.1.0'.");
+
+                    $this->dep1->method('getVersion')->willReturn('1.0.1');
+                    $this->dep2->method('getVersion')->willReturn('2.1.0');
+                });
+
+                test(function () {
+                    $this->dep1->method('getIncompatibilityVersionsList')->willReturn(['>=2.0']);
+
+                    $result = Helper::sortDependencies($this->deps, new EventDispatcher);
                 });
             });
         });

@@ -84,7 +84,7 @@ abstract class Helper
             return $dependency1;
         }
 
-        $eventName = Event::DEPENDENCY_CONFLICT . $name;
+        $eventName = self::getConflictEventName($name);
         $conflictEvent = new DependencyConflictEvent($dependency1, $dependency2);
 
         if ($conflictDispatcher instanceof EventDispatcherInterface) {
@@ -95,7 +95,7 @@ abstract class Helper
 
         $solution = $conflictEvent->getSolution();
 
-        // if the conflict was not resolved then attempt resolve it.
+        // if the conflict was not resolved then attempt resolve it automatically.
         if (! $solution) {
             $version1 = $dependency1->getVersion();
             $version2 = $dependency2->getVersion();
@@ -112,5 +112,10 @@ abstract class Helper
         }
 
         return $solution;
+    }
+
+    public static function getConflictEventName(string $name): string
+    {
+        return Event::DEPENDENCY_CONFLICT . $name;
     }
 }
