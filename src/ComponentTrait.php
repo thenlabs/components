@@ -129,15 +129,14 @@ trait ComponentTrait
         return [];
     }
 
-    public function getDependencies(array $options = []): array
+    public function getDependencies(): array
     {
         return Helper::sortDependencies(
             array_merge(
-                $this->getOwnDependencies($options),
-                $this->getAdditionalDependencies($options)
+                $this->getOwnDependencies(),
+                $this->getAdditionalDependencies()
             ),
-            $this,
-            $options
+            $this
         );
     }
 

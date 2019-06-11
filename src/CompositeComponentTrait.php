@@ -222,24 +222,23 @@ trait CompositeComponentTrait
         return true;
     }
 
-    public function getDependencies(array $options = []): array
+    public function getDependencies(): array
     {
         $dependenciesOfChilds = [];
         foreach ($this->getChilds() as $child) {
             $dependenciesOfChilds = array_merge(
                 $dependenciesOfChilds,
-                $child->getDependencies($options)
+                $child->getDependencies()
             );
         }
 
         return Helper::sortDependencies(
             array_merge(
-                $this->getOwnDependencies($options),
-                $this->getAdditionalDependencies($options),
+                $this->getOwnDependencies(),
+                $this->getAdditionalDependencies(),
                 $dependenciesOfChilds
             ),
-            $this,
-            $options
+            $this
         );
     }
 }
