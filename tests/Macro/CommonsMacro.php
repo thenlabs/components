@@ -1,7 +1,6 @@
 <?php
 
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
-use NubecuLabs\Components\Tests\Entity\Component;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

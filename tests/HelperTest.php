@@ -1,11 +1,10 @@
 <?php
 
 use NubecuLabs\Components\Helper;
-use NubecuLabs\Components\Event\Event;
 use NubecuLabs\Components\Event\DependencyConflictEvent;
 use NubecuLabs\Components\DependencyInterface;
 use NubecuLabs\Components\Exception\InvalidConflictDispatcherException;
-use NubecuLabs\Components\Exception\IncompatibilityBetweenDependenciesException;
+use NubecuLabs\Components\Exception\IncompatibilityException;
 use NubecuLabs\Components\Exception\UnresolvedDependencyConflictException;
 use NubecuLabs\Components\Tests\Entity\Component;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -222,7 +221,7 @@ testCase('HelperTest.php', function () {
 
             testCase('testing cases of incompatibility between dependencies', function () {
                 setUp(function () {
-                    $this->expectException(IncompatibilityBetweenDependenciesException::class);
+                    $this->expectException(IncompatibilityException::class);
                     $this->expectExceptionMessage("The dependency '{$this->name}' version '1.0.1' is not compatible with version '2.1.0'.");
 
                     $this->dep1->method('getVersion')->willReturn('1.0.1');
@@ -230,7 +229,19 @@ testCase('HelperTest.php', function () {
                 });
 
                 test(function () {
-                    $this->dep1->method('getIncompatibilityVersionsList')->willReturn(['>=2.0']);
+                    $this->dep1->method('getIncompatibleVersions')->willReturn('>=2.0');
+
+                    $result = Helper::sortDependencies($this->deps, new EventDispatcher);
+                });
+
+                test(function () {
+                    $this->dep1->method('getIncompatibleVersions')->willReturn($this->dep2->getVersion());
+
+                    $result = Helper::sortDependencies($this->deps, new EventDispatcher);
+                });
+
+                test(function () {
+                    $this->dep2->method('getIncompatibleVersions')->willReturn($this->dep1->getVersion());
 
                     $result = Helper::sortDependencies($this->deps, new EventDispatcher);
                 });

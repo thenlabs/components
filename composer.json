@@ -21,8 +21,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.12",
-        "andaniel05/pyramidaltests": "dev-master",
-        "nunomaduro/phpinsights": "^1.3"
+        "andaniel05/pyramidaltests": "dev-master"
     },
     "autoload": {
         "psr-4": {

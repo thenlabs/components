@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use NubecuLabs\Components\Event\Event;
 use NubecuLabs\Components\Event\DependencyConflictEvent;
 use Composer\Semver\Comparator;
+use Composer\Semver\Semver;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
@@ -17,7 +18,8 @@ abstract class Helper
     {
         if ($conflictDispatcher && ! (
             $conflictDispatcher instanceof EventDispatcherInterface ||
-            $conflictDispatcher instanceof ComponentInterface)
+            $conflictDispatcher instanceof ComponentInterface
+        )
         ) {
             throw new Exception\InvalidConflictDispatcherException;
         }
@@ -84,6 +86,17 @@ abstract class Helper
             return $dependency1;
         }
 
+        $version1 = $dependency1->getVersion();
+        $version2 = $dependency2->getVersion();
+        $incompatibleVersions1 = $dependency1->getIncompatibleVersions();
+        $incompatibleVersions2 = $dependency2->getIncompatibleVersions();
+
+        if (($version1 && $incompatibleVersions2 && Semver::satisfies($version1, $incompatibleVersions2)) ||
+            ($version2 && $incompatibleVersions1 && Semver::satisfies($version2, $incompatibleVersions1))
+        ) {
+            throw new Exception\IncompatibilityException($name, $version1, $version2);
+        }
+
         $eventName = self::getConflictEventName($name);
         $conflictEvent = new DependencyConflictEvent($dependency1, $dependency2);
 
@@ -96,15 +109,11 @@ abstract class Helper
         $solution = $conflictEvent->getSolution();
 
         // if the conflict was not resolved then attempt resolve it automatically.
-        if (! $solution) {
-            $version1 = $dependency1->getVersion();
-            $version2 = $dependency2->getVersion();
-
-            if ($version1 && $version2) {
-                $solution = Comparator::greaterThanOrEqualTo($version1, $version2) ?
-                    $dependency1 : $dependency2
-                ;
-            }
+        if (! $solution && ($version1 && $version2)) {
+            // the solution is the dependency with major version.
+            $solution = Comparator::greaterThanOrEqualTo($version1, $version2) ?
+                $dependency1 : $dependency2
+            ;
         }
 
         if (! $solution) {
