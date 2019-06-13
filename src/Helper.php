@@ -125,6 +125,6 @@ abstract class Helper
 
     public static function getConflictEventName(string $name): string
     {
-        return Event::DEPENDENCY_CONFLICT . $name;
+        return DependencyConflictEvent::EVENT_NAME_PREFIX . $name;
     }
 }

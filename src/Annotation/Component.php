@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace NubecuLabs\Components\Annotation;
 
 /**
- * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
+ * It's used for indicate that an attribute may contain a component.
  *
  * @Annotation
+ *
+ * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
 class Component
 {

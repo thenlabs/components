@@ -10,5 +10,4 @@ use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
  */
 class Event extends SymfonyEvent
 {
-    public const DEPENDENCY_CONFLICT = 'components.dependency_conflict_';
 }

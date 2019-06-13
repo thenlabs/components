@@ -9,8 +9,11 @@ use NubecuLabs\Components\ComponentInterface;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class InvalidConflictDispatcherException extends \Exception
+class InvalidConflictDispatcherException extends \TypeError
 {
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         parent::__construct(sprintf(

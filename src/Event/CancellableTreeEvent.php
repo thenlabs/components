@@ -8,13 +8,27 @@ namespace NubecuLabs\Components\Event;
  */
 class CancellableTreeEvent extends TreeEvent
 {
+    /**
+     * Indicate if operation should be cancelled or not.
+     *
+     * @var boolean
+     */
     protected $cancelled = false;
 
+    /**
+     * @return boolean
+     */
     public function isCancelled(): bool
     {
         return $this->cancelled;
     }
 
+    /**
+     * Sets if operation is cancelled or not.
+     *
+     * @param  boolean $cancelled
+     * @return void
+     */
     public function cancel(bool $cancelled = true): void
     {
         $this->cancelled = $cancelled;
