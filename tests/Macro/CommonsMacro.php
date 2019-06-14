@@ -40,6 +40,29 @@ createMacro('commons', function () {
         $this->markTestIncomplete();
     });
 
+    test('$component->getAllData() === []', function() {
+        $this->assertEquals([], $this->component->getAllData());
+    });
+
+    $key = uniqid('data');
+    $value = mt_rand(1, 100);
+    testCase("\$component->setData('{$key}', {$value});", function () use ($key, $value) {
+        setUp(function () use ($key, $value) {
+            $this->component->setData($key, $value);
+        });
+
+        test("\$component->getData('{$key}') == {$value}", function() use ($key, $value) {
+            $this->assertEquals($value, $this->component->getData($key));
+        });
+
+        test("\$component->getAllData() == ['{$key}' => {$value}]", function() use ($key, $value) {
+            $this->assertEquals(
+                [$key => $value],
+                $this->component->getAllData()
+            );
+        });
+    });
+
     testCase('$component->getId();', function () {
         test('always returns the same value', function () {
             $id = $this->component->getId();

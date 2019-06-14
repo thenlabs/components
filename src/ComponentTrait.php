@@ -25,6 +25,8 @@ trait ComponentTrait
 
     protected $eventDispatcher;
 
+    protected $data = [];
+
     public function getId(): string
     {
         if (! $this->id) {
@@ -181,5 +183,20 @@ trait ComponentTrait
                 $parent->getEventDispatcher()->dispatch($eventName, $event);
             }
         }
+    }
+
+    public function getAllData(): array
+    {
+        return $this->data;
+    }
+
+    public function setData(string $key, $value): void
+    {
+        $this->data[$key] = $value;
+    }
+
+    public function getData(string $key)
+    {
+        return $this->data[$key] ?? null;
     }
 }

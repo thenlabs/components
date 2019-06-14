@@ -45,4 +45,10 @@ interface ComponentInterface extends DependentInterface
     public function off(string $eventName, callable $listener): void;
 
     public function dispatchEvent(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void;
+
+    public function getAllData(): array;
+
+    public function setData(string $key, $value): void;
+
+    public function getData(string $key);
 }
