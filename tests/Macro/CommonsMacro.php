@@ -45,6 +45,10 @@ createMacro('commons', function () {
     });
 
     $key = uniqid('data');
+    test("\$component->hasData('{$key}') === false", function() use ($key) {
+        $this->assertFalse($this->component->hasData($key));
+    });
+
     $value = mt_rand(1, 100);
     testCase("\$component->setData('{$key}', {$value});", function () use ($key, $value) {
         setUp(function () use ($key, $value) {
@@ -60,6 +64,10 @@ createMacro('commons', function () {
                 [$key => $value],
                 $this->component->getAllData()
             );
+        });
+
+        test("\$component->hasData('{$key}') === true", function() use ($key) {
+            $this->assertTrue($this->component->hasData($key));
         });
     });
 

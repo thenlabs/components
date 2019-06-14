@@ -51,4 +51,8 @@ interface ComponentInterface extends DependentInterface
     public function setData(string $key, $value): void;
 
     public function getData(string $key);
+
+    public function hasData(string $key): bool;
+
+    public function getTopData(string $key);
 }

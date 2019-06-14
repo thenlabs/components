@@ -51,6 +51,13 @@ testCase('ExistsAComponentsTree.php', function () {
             $child4->addChilds($child41);
             $child41->addChilds($child411, $child412, $child413);
 
+            $key = uniqid('data');
+            $value1 = uniqid('val');
+            $value2 = uniqid('val');
+
+            $component->setData($key, $value1);
+            $child3->setData($key, $value2);
+
             static::addVars(compact(
                 'component',
                 'child1',
@@ -63,7 +70,10 @@ testCase('ExistsAComponentsTree.php', function () {
                 'child41',
                 'child411',
                 'child412',
-                'child413'
+                'child413',
+                'key',
+                'value1',
+                'value2'
             ));
         });
 
@@ -90,6 +100,26 @@ testCase('ExistsAComponentsTree.php', function () {
             $this->assertCount(2, $childs);
             $this->assertEquals($this->child3, $childs[0]);
             $this->assertEquals($this->child413, $childs[1]);
+        });
+
+        testCase('getTopData() looks up the nearest data', function () {
+            test(function () {
+                $this->assertEquals($this->value2, $this->child32->getTopData($this->key));
+            });
+
+            test(function () {
+                $this->assertEquals($this->value1, $this->child413->getTopData($this->key));
+            });
+
+            test(function () {
+                $this->assertNull($this->child413->getTopData(uniqid('data')));
+            });
+
+            test('prueba', function () {
+                $this->child41->setData($this->key, null);
+
+                $this->assertNull($this->child413->getTopData($this->key));
+            });
         });
 
         testCase('$iterator = $component->children();', function () {

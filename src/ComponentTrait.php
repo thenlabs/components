@@ -199,4 +199,20 @@ trait ComponentTrait
     {
         return $this->data[$key] ?? null;
     }
+
+    public function hasData(string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    public function getTopData(string $key)
+    {
+        foreach ($this->parents() as $parent) {
+            if ($parent->hasData($key)) {
+                return $parent->getData($key);
+            }
+        }
+
+        return null;
+    }
 }
