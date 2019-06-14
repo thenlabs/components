@@ -11,6 +11,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 interface ComponentInterface extends DependentInterface
 {
+    /**
+     * Returns the component identifier.
+     *
+     * The component identifier is a value
+     *
+     * @return string
+     */
     public function getId(): string;
 
     public function getName(): ?string;

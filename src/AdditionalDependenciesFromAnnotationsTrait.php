@@ -7,10 +7,17 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use NubecuLabs\Components\Annotation\Component as ComponentAnnotation;
 
 /**
+ * Use this trait for get the additional dependencies of a component from attributes
+ * that have the @Component annotation.
+ *
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
 trait AdditionalDependenciesFromAnnotationsTrait
 {
+    /**
+     * @see     \NubecuLabs\Components\ComponentInterface::getAdditionalDependencies()
+     * @return  DependencyInterface[]
+     */
     public function getAdditionalDependencies(): array
     {
         $result = [];
