@@ -17,16 +17,34 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 trait ComponentTrait
 {
+    /**
+     * @var string
+     */
     protected $id;
 
+    /**
+     * @var string
+     */
     protected $name;
 
+    /**
+     * @var CompositeComponentInterface|null
+     */
     protected $parent;
 
+    /**
+     * @var EventDispatcherInterface
+     */
     protected $eventDispatcher;
 
+    /**
+     * @var array
+     */
     protected $data = [];
 
+    /**
+     * @see ComponentInterface::getId()
+     */
     public function getId(): string
     {
         if (! $this->id) {
@@ -36,21 +54,33 @@ trait ComponentTrait
         return $this->id;
     }
 
+    /**
+     * @see ComponentInterface::getName()
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @see ComponentInterface::setName()
+     */
     public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
+    /**
+     * @see ComponentInterface::getParent()
+     */
     public function getParent(): ?CompositeComponentInterface
     {
         return $this->parent;
     }
 
+    /**
+     * @see ComponentInterface::getParents()
+     */
     public function getParents(): array
     {
         $parents = [];
@@ -62,6 +92,9 @@ trait ComponentTrait
         return $parents;
     }
 
+    /**
+     * @see ComponentInterface::parents()
+     */
     public function parents(): iterable
     {
         $node = $this;
@@ -79,6 +112,9 @@ trait ComponentTrait
         }
     }
 
+    /**
+     * @see ComponentInterface::setParent()
+     */
     public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true): void
     {
         if ($this->parent instanceof CompositeComponentInterface) {
@@ -121,16 +157,25 @@ trait ComponentTrait
         }
     }
 
+    /**
+     * @see ComponentInterface::getOwnDependencies()
+     */
     public function getOwnDependencies(): array
     {
         return [];
     }
 
+    /**
+     * @see ComponentInterface::getAdditionalDependencies()
+     */
     public function getAdditionalDependencies(): array
     {
         return [];
     }
 
+    /**
+     * @see ComponentInterface::getDependencies()
+     */
     public function getDependencies(): array
     {
         return Helper::sortDependencies(
@@ -142,6 +187,9 @@ trait ComponentTrait
         );
     }
 
+    /**
+     * @see ComponentInterface::getEventDispatcher()
+     */
     public function getEventDispatcher(): EventDispatcherInterface
     {
         if (! $this->eventDispatcher) {
@@ -151,21 +199,33 @@ trait ComponentTrait
         return $this->eventDispatcher;
     }
 
+    /**
+     * @see ComponentInterface::setEventDispatcher()
+     */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @see ComponentInterface::on()
+     */
     public function on(string $eventName, callable $listener): void
     {
         $this->getEventDispatcher()->addListener($eventName, $listener);
     }
 
+    /**
+     * @see ComponentInterface::off()
+     */
     public function off(string $eventName, callable $listener): void
     {
         $this->getEventDispatcher()->removeListener($eventName, $listener);
     }
 
+    /**
+     * @see ComponentInterface::dispatchEvent()
+     */
     public function dispatchEvent(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
     {
         $parents = $this->getParents();
@@ -185,26 +245,41 @@ trait ComponentTrait
         }
     }
 
+    /**
+     * @see ComponentInterface::getAllData()
+     */
     public function getAllData(): array
     {
         return $this->data;
     }
 
+    /**
+     * @see ComponentInterface::setData()
+     */
     public function setData(string $key, $value): void
     {
         $this->data[$key] = $value;
     }
 
+    /**
+     * @see ComponentInterface::getData()
+     */
     public function getData(string $key)
     {
         return $this->data[$key] ?? null;
     }
 
+    /**
+     * @see ComponentInterface::hasData()
+     */
     public function hasData(string $key): bool
     {
         return array_key_exists($key, $this->data);
     }
 
+    /**
+     * @see ComponentInterface::getTopData()
+     */
     public function getTopData(string $key)
     {
         foreach ($this->parents() as $parent) {
