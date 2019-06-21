@@ -9,22 +9,37 @@ namespace NubecuLabs\Components;
 interface DependencyInterface extends DependentInterface
 {
     /**
-     * Main name of the project. Example "jquery".
+     * Returns the main name of the project. Example "jquery".
      *
      * @return string
      */
     public function getName(): string;
 
     /**
-     * Value of the semantic version of the project.
+     * Returns the value of the semantic version of the project.
      *
      * Should be an exactly version value. Example "1.11.1".
+     *
+     * @see https://getcomposer.org/doc/articles/versions.md
      *
      * @return string
      */
     public function getVersion(): string;
 
+    /**
+     * Returns the version constraint for which there are incompatibilities
+     * with this dependency.
+     *
+     * @see https://getcomposer.org/doc/articles/versions.md
+     *
+     * @return string  Composer constraint.
+     */
     public function getIncompatibleVersions(): string;
 
+    /**
+     * Returns all dependencies that are inside this dependency.
+     *
+     * @return DependencyInterace[]
+     */
     public function getIncludedDependencies(): array;
 }

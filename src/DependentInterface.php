@@ -8,5 +8,8 @@ namespace NubecuLabs\Components;
  */
 interface DependentInterface
 {
+    /**
+     * @return DependencyInterface
+     */
     public function getDependencies(): array;
 }

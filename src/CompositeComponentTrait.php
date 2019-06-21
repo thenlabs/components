@@ -18,10 +18,19 @@ trait CompositeComponentTrait
 {
     use ComponentTrait;
 
+    /**
+     * @var ComponentInterface[]
+     */
     protected $childs = [];
 
+    /**
+     * @var EventDispatcherInterface
+     */
     protected $captureEventDispatcher;
 
+    /**
+     * @see CompositeComponentInterface::addChilds()
+     */
     public function addChilds(ComponentInterface ...$childs): void
     {
         foreach ($childs as $child) {
@@ -29,6 +38,9 @@ trait CompositeComponentTrait
         }
     }
 
+    /**
+     * @see CompositeComponentInterface::hasChild()
+     */
     public function hasChild($child): bool
     {
         if (is_string($child) && isset($this->childs[$child])) {
@@ -44,6 +56,9 @@ trait CompositeComponentTrait
         return false;
     }
 
+    /**
+     * @see CompositeComponentInterface::addChild()
+     */
     public function addChild(ComponentInterface $child, $setParentInChild = true, bool $dispatchEvents = true): void
     {
         if (! $this->validateChild($child)) {
@@ -73,11 +88,17 @@ trait CompositeComponentTrait
         }
     }
 
+    /**
+     * @see CompositeComponentInterface::getChild()
+     */
     public function getChild(string $id): ?ComponentInterface
     {
         return $this->childs[$id] ?? null;
     }
 
+    /**
+     * @see CompositeComponentInterface::dropChild()
+     */
     public function dropChild($child, bool $dispatchEvents = true): void
     {
         $obj = null;
@@ -112,18 +133,24 @@ trait CompositeComponentTrait
         }
     }
 
+    /**
+     * @see CompositeComponentInterface::getChilds()
+     */
     public function getChilds(): array
     {
         return $this->childs;
     }
 
-    public function children(bool $recursive = true): iterable
+    /**
+     * @see CompositeComponentInterface::children()
+     */
+    public function children(bool $deep = true): iterable
     {
-        $generator = function (array $children) use (&$generator, $recursive) {
+        $generator = function (array $children) use (&$generator, $deep) {
             foreach ($children as $child) {
                 yield $child;
 
-                if ($recursive && $child instanceof CompositeComponentInterface) {
+                if ($deep && $child instanceof CompositeComponentInterface) {
                     yield from $generator($child->getChilds());
                 }
             }
@@ -134,9 +161,12 @@ trait CompositeComponentTrait
         return $generator($this->childs);
     }
 
-    public function findChild(callable $callback, bool $recursive = true): ?ComponentInterface
+    /**
+     * @see CompositeComponentInterface::findChild()
+     */
+    public function findChild(callable $callback, bool $deep = true): ?ComponentInterface
     {
-        foreach ($this->children($recursive) as $child) {
+        foreach ($this->children($deep) as $child) {
             if ($callback($child)) {
                 return $child;
             }
@@ -145,11 +175,14 @@ trait CompositeComponentTrait
         return null;
     }
 
-    public function findChilds(callable $callback, bool $recursive = true): array
+    /**
+     * @see CompositeComponentInterface::findChilds()
+     */
+    public function findChilds(callable $callback, bool $deep = true): array
     {
         $childs = [];
 
-        foreach ($this->children($recursive) as $child) {
+        foreach ($this->children($deep) as $child) {
             if ($callback($child)) {
                 $childs[] = $child;
             }
@@ -158,6 +191,9 @@ trait CompositeComponentTrait
         return $childs;
     }
 
+    /**
+     * @see CompositeComponentInterface::findChildById()
+     */
     public function findChildById(string $id): ?ComponentInterface
     {
         return $this->findChild(function (ComponentInterface $child) use ($id) {
@@ -167,6 +203,9 @@ trait CompositeComponentTrait
         });
     }
 
+    /**
+     * @see CompositeComponentInterface::findChildByName()
+     */
     public function findChildByName(string $name): ?ComponentInterface
     {
         return $this->findChild(function (ComponentInterface $component) use ($name) {
@@ -176,6 +215,9 @@ trait CompositeComponentTrait
         });
     }
 
+    /**
+     * @see CompositeComponentInterface::findChildsByName()
+     */
     public function findChildsByName(string $name): array
     {
         return $this->findChilds(function (ComponentInterface $component) use ($name) {
@@ -185,6 +227,9 @@ trait CompositeComponentTrait
         });
     }
 
+    /**
+     * @see CompositeComponentInterface::getCaptureEventDispatcher()
+     */
     public function getCaptureEventDispatcher(): EventDispatcherInterface
     {
         if (! $this->captureEventDispatcher) {
@@ -194,11 +239,17 @@ trait CompositeComponentTrait
         return $this->captureEventDispatcher;
     }
 
+    /**
+     * @see CompositeComponentInterface::setCaptureEventDispatcher()
+     */
     public function setCaptureEventDispatcher(EventDispatcherInterface $captureEventDispatcher): void
     {
         $this->captureEventDispatcher = $captureEventDispatcher;
     }
 
+    /**
+     * @see CompositeComponentInterface::on()
+     */
     public function on(string $eventName, callable $listener, bool $capture = false): void
     {
         if ($capture) {
@@ -208,6 +259,9 @@ trait CompositeComponentTrait
         }
     }
 
+    /**
+     * @see CompositeComponentInterface::off()
+     */
     public function off(string $eventName, callable $listener, bool $capture = false): void
     {
         if ($capture) {
@@ -217,11 +271,17 @@ trait CompositeComponentTrait
         }
     }
 
+    /**
+     * @see CompositeComponentInterface::validateChild()
+     */
     public function validateChild(ComponentInterface $child): bool
     {
         return true;
     }
 
+    /**
+     * @see CompositeComponentInterface::getDependencies()
+     */
     public function getDependencies(): array
     {
         $dependenciesOfChilds = [];

@@ -14,6 +14,16 @@ use Composer\Semver\Semver;
  */
 abstract class Helper
 {
+    /**
+     * Sorts a group of dependencies.
+     *
+     * @param  DependencyInterface[]                       $dependencies
+     * @param  ComponentInterface|EventDispatcherInterface $conflictDispatcher
+     *
+     * @throws Exception\InvalidConflictDispatcherException
+     *
+     * @return DependencyInterface[]
+     */
     public static function sortDependencies(array $dependencies, $conflictDispatcher): array
     {
         if ($conflictDispatcher && ! (
@@ -37,6 +47,13 @@ abstract class Helper
         return $result;
     }
 
+    /**
+     * Put a dependency in a result.
+     *
+     * @param DependencyInterface                         $dependency
+     * @param DependencyInterface[]                       &$result
+     * @param ComponentInterface|EventDispatcherInterface $conflictDispatcher
+     */
     private static function addDependency(DependencyInterface $dependency, array &$result, $conflictDispatcher): void
     {
         $dependencyName = $dependency->getName();
@@ -80,6 +97,19 @@ abstract class Helper
         $result[$dependency->getName()] = $dependency;
     }
 
+    /**
+     * Attempt resolve a conflict between two dependencies.
+     *
+     * @param  DependencyInterface                         $dependency1
+     * @param  DependencyInterface                         $dependency2
+     * @param  string                                      $name
+     * @param  ComponentInterface|EventDispatcherInterface $conflictDispatcher
+     *
+     * @throws Exception\IncompatibilityException               When the dependencies are incompatible.
+     * @throws Exception\UnresolvedDependencyConflictException  When the conflict was not resolved.
+     *
+     * @return DependencyInterface
+     */
     private static function resolveConflict(DependencyInterface $dependency1, DependencyInterface $dependency2, string $name, $conflictDispatcher): DependencyInterface
     {
         if ($dependency1 === $dependency2) {
@@ -123,6 +153,12 @@ abstract class Helper
         return $solution;
     }
 
+    /**
+     * Returns a conflict event name of a dependency.
+     *
+     * @param  string $name dependency name
+     * @return string
+     */
     public static function getConflictEventName(string $name): string
     {
         return DependencyConflictEvent::EVENT_NAME_PREFIX . $name;
