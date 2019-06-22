@@ -5,7 +5,6 @@ namespace NubecuLabs\Components;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use NubecuLabs\Components\DependencyInterface;
 
 /**
  * Base component contract.

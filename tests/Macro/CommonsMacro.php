@@ -40,12 +40,12 @@ createMacro('commons', function () {
         $this->markTestIncomplete();
     });
 
-    test('$component->getAllData() === []', function() {
+    test('$component->getAllData() === []', function () {
         $this->assertEquals([], $this->component->getAllData());
     });
 
     $key = uniqid('data');
-    test("\$component->hasData('{$key}') === false", function() use ($key) {
+    test("\$component->hasData('{$key}') === false", function () use ($key) {
         $this->assertFalse($this->component->hasData($key));
     });
 
@@ -55,18 +55,18 @@ createMacro('commons', function () {
             $this->component->setData($key, $value);
         });
 
-        test("\$component->getData('{$key}') == {$value}", function() use ($key, $value) {
+        test("\$component->getData('{$key}') == {$value}", function () use ($key, $value) {
             $this->assertEquals($value, $this->component->getData($key));
         });
 
-        test("\$component->getAllData() == ['{$key}' => {$value}]", function() use ($key, $value) {
+        test("\$component->getAllData() == ['{$key}' => {$value}]", function () use ($key, $value) {
             $this->assertEquals(
                 [$key => $value],
                 $this->component->getAllData()
             );
         });
 
-        test("\$component->hasData('{$key}') === true", function() use ($key) {
+        test("\$component->hasData('{$key}') === true", function () use ($key) {
             $this->assertTrue($this->component->hasData($key));
         });
     });
