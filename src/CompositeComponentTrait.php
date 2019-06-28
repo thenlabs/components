@@ -8,6 +8,7 @@ use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
 use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
+use NubecuLabs\Components\Event\FilterDependenciesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -292,7 +293,7 @@ trait CompositeComponentTrait
             );
         }
 
-        return Helper::sortDependencies(
+        $dependencies = Helper::sortDependencies(
             array_merge(
                 $this->getOwnDependencies(),
                 $this->getAdditionalDependencies(),
@@ -300,5 +301,10 @@ trait CompositeComponentTrait
             ),
             $this
         );
+
+        $event = new FilterDependenciesEvent($this, $dependencies);
+        $this->dispatchEvent(FilterDependenciesEvent::EVENT_NAME, $event);
+
+        return $event->getDependencies();
     }
 }

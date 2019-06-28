@@ -1,5 +1,6 @@
 <?php
 
+use NubecuLabs\Components\Event\FilterDependenciesEvent;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -38,6 +39,37 @@ createMacro('commons', function () {
 
     test('#getDependencies() returns result of merge the method #getOwnDependencies() and #getAdditionalDependencies() in Helper::sortDependencies()', function () {
         $this->markTestIncomplete();
+    });
+
+    testCase('filter dependencies event', function () {
+        test('#getDependencies() returns result of dispatch an event type FilterDependenciesEvent', function () {
+            $expectedDependencies = $this->getRandomArray();
+
+            $component = $this->getMockBuilder($this->componentClass)
+                ->setMethods(['dispatchEvent'])
+                ->getMock();
+            $component->expects($this->once())
+                ->method('dispatchEvent')
+                ->with(
+                    $this->equalTo('components.filter_dependencies'),
+                    $this->callback(function (FilterDependenciesEvent $event) use ($component, $expectedDependencies) {
+                        $this->assertSame($component, $event->getComponent());
+
+                        $event->setDependencies($expectedDependencies);
+
+                        return true;
+                    }),
+                    $this->equalTo(true),
+                    $this->equalTo(true)
+                )
+            ;
+
+            $this->assertEquals($expectedDependencies, $component->getDependencies());
+        });
+
+        test('the event dependencies are result of call to Helper::sortDependencies()', function () {
+            $this->markTestIncomplete();
+        });
     });
 
     test('$component->getAllData() === []', function () {
