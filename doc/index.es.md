@@ -35,8 +35,22 @@ Un componente compuesto constituye el nodo raíz de un árbol, ya que el mismo p
         |               |____$child413 (S)
 C: Compuesto, S: Simple
 
+
+
 Por lo general los componentes son entidades que tienen ciertos tipos de dependencias donde en el caso de los compuestos también dependerán de las dependencias que tengan sus hijos.
 
-A la hora de utilizar un componente con un fin específico, en la mayoría de los casos será necesario darle un tratamiento determinado a sus dependencias los cual puede resultar complejo dado que muchas veces estas dependencias pueden ser incompatibles entre sí.
+A la hora de utilizar un componente con un fin específico, en la mayoría de los casos será necesario darle un tratamiento determinado a sus dependencias lo cual puede resultar complejo dado que muchas veces estas dependencias presentan conflictos entre sí. En muchos casos esos conflictos pueden ser resueltos de manera automática pero en otros solo pueden ser resueltos por los usuarios.
 
+## Creando un componente simple.
+
+```php
+
+use NubecuLabs\Components\ComponentInterface;
+use NubecuLabs\Components\ComponentTrait;
+
+class MyComp implements ComponentInterface
+{
+    use ComponentTrait;
+}
+```
 
