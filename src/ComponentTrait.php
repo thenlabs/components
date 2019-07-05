@@ -286,11 +286,17 @@ trait ComponentTrait
     /**
      * @see ComponentInterface::getTopData()
      */
-    public function getTopData(string $key)
+    public function getTopData(string $key, bool $currentFirst = true)
     {
-        foreach ($this->parents() as $parent) {
-            if ($parent->hasData($key)) {
-                return $parent->getData($key);
+        $list = $this->getParents();
+
+        if ($currentFirst) {
+            $list = array_merge([$this], $list);
+        }
+
+        foreach ($list as $item) {
+            if ($item->hasData($key)) {
+                return $item->getData($key);
             }
         }
 

@@ -190,7 +190,8 @@ interface ComponentInterface extends DependentInterface
      * The search is made with a route from the direct father to the root of the tree.
      *
      * @param  string $key
+     * @param  bool   $currentFirst
      * @return mixed  The first data found.
      */
-    public function getTopData(string $key);
+    public function getTopData(string $key, bool $currentFirst = true);
 }

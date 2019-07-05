@@ -115,10 +115,18 @@ testCase('ExistsAComponentsTree.php', function () {
                 $this->assertNull($this->child413->getTopData(uniqid('data')));
             });
 
-            test('prueba', function () {
+            test(function () {
                 $this->child41->setData($this->key, null);
 
                 $this->assertNull($this->child413->getTopData($this->key));
+            });
+
+            test(function () {
+                $this->assertEquals($this->value2, $this->child3->getTopData($this->key));
+            });
+
+            test(function () {
+                $this->assertEquals($this->value1, $this->child3->getTopData($this->key, false));
             });
         });
 
