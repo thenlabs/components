@@ -45,7 +45,7 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 }
 ```
 
-Como se muestra en el ejemplo anterior, el componente compuesto extiende del componente simple lo cual es algo totalmente opcional y dependerá de las necesidades que se tengan.
+En el caso del ejemplo anterior, el componente compuesto hereda del componente simple. Esto es algo totalmente opcional y dependerá de las necesidades que se tengan para el diseño del mismo.
 
 Un componente compuesto constituye el nodo raíz de un árbol, ya que el mismo puede tener varios hijos que a su vez pueden contener otros hijos tal y como se muestra en el siguiente diagrama.
 
