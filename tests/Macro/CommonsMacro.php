@@ -51,7 +51,7 @@ createMacro('commons', function () {
             $component->expects($this->once())
                 ->method('dispatchEvent')
                 ->with(
-                    $this->equalTo('components.filter_dependencies'),
+                    $this->equalTo(FilterDependenciesEvent::class),
                     $this->callback(function (FilterDependenciesEvent $event) use ($component, $expectedDependencies) {
                         $this->assertSame($component, $event->getComponent());
 

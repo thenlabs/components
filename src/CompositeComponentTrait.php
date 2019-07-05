@@ -70,7 +70,7 @@ trait CompositeComponentTrait
 
         if ($dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
-            $this->dispatchEvent(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
+            $this->dispatchEvent(BeforeInsertionTreeEvent::class, $beforeInsertionEvent);
 
             if ($beforeInsertionEvent->isCancelled()) {
                 return;
@@ -85,7 +85,7 @@ trait CompositeComponentTrait
 
         if ($dispatchEvents) {
             $afterInsertionEvent = new AfterInsertionTreeEvent($child, $this);
-            $this->dispatchEvent(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
+            $this->dispatchEvent(AfterInsertionTreeEvent::class, $afterInsertionEvent);
         }
     }
 
@@ -117,7 +117,7 @@ trait CompositeComponentTrait
         ) {
             if ($dispatchEvents) {
                 $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
-                $this->dispatchEvent(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
+                $this->dispatchEvent(BeforeDeletionTreeEvent::class, $beforeDeletionEvent);
 
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;
@@ -129,7 +129,7 @@ trait CompositeComponentTrait
 
             if ($dispatchEvents) {
                 $afterDeletionEvent = new AfterDeletionTreeEvent($obj, $this);
-                $this->dispatchEvent(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
+                $this->dispatchEvent(AfterDeletionTreeEvent::class, $afterDeletionEvent);
             }
         }
     }
@@ -303,7 +303,7 @@ trait CompositeComponentTrait
         );
 
         $event = new FilterDependenciesEvent($this, $dependencies);
-        $this->dispatchEvent(FilterDependenciesEvent::EVENT_NAME, $event);
+        $this->dispatchEvent(FilterDependenciesEvent::class, $event);
 
         return $event->getDependencies();
     }

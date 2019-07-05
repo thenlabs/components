@@ -14,8 +14,6 @@ use NubecuLabs\Components\ComponentInterface;
  */
 class FilterDependenciesEvent extends Event
 {
-    public const EVENT_NAME = 'components.filter_dependencies';
-
     /**
      * @var ComponentInterface
      */

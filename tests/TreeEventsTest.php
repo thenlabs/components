@@ -87,7 +87,7 @@ testCase('TreeEventsTest.php', function () {
             testCase('testing the before insertion event', function () {
                 testCase('the event is dispatched', function () {
                     setUp(function () {
-                        $this->parent->on(TreeEvent::BEFORE_INSERTION, $this->beforeInsertionListener1);
+                        $this->parent->on(BeforeInsertionTreeEvent::class, $this->beforeInsertionListener1);
                     });
 
                     tearDown(function () {
@@ -107,7 +107,7 @@ testCase('TreeEventsTest.php', function () {
 
                 testCase('the event can cancel the insertion', function () {
                     setUp(function () {
-                        $this->parent->on(TreeEvent::BEFORE_INSERTION, $this->beforeInsertionListener2);
+                        $this->parent->on(BeforeInsertionTreeEvent::class, $this->beforeInsertionListener2);
                     });
 
                     tearDown(function () {
@@ -129,7 +129,7 @@ testCase('TreeEventsTest.php', function () {
             testCase('testing the after insertion event', function () {
                 testCase('the event is dispatched', function () {
                     setUp(function () {
-                        $this->parent->on(TreeEvent::AFTER_INSERTION, $this->afterInsertionListener);
+                        $this->parent->on(AfterInsertionTreeEvent::class, $this->afterInsertionListener);
                     });
 
                     tearDown(function () {
@@ -167,7 +167,7 @@ testCase('TreeEventsTest.php', function () {
                 testCase('the event is dispatched', function () {
                     setUp(function () {
                         $this->parent->addChild($this->child);
-                        $this->parent->on(TreeEvent::BEFORE_DELETION, $this->beforeDeletionListener1);
+                        $this->parent->on(BeforeDeletionTreeEvent::class, $this->beforeDeletionListener1);
                     });
 
                     tearDown(function () {
@@ -181,7 +181,7 @@ testCase('TreeEventsTest.php', function () {
                 testCase('the event can cancel the deletion', function () {
                     setUp(function () {
                         $this->parent->addChild($this->child);
-                        $this->parent->on(TreeEvent::BEFORE_DELETION, $this->beforeDeletionListener2);
+                        $this->parent->on(BeforeDeletionTreeEvent::class, $this->beforeDeletionListener2);
                     });
 
                     tearDown(function () {
@@ -198,7 +198,7 @@ testCase('TreeEventsTest.php', function () {
                 testCase('the event is dispatched', function () {
                     setUp(function () {
                         $this->parent->addChild($this->child);
-                        $this->parent->on(TreeEvent::AFTER_DELETION, $this->afterDeletionListener);
+                        $this->parent->on(AfterDeletionTreeEvent::class, $this->afterDeletionListener);
                     });
 
                     tearDown(function () {
@@ -285,27 +285,27 @@ testCase('TreeEventsTest.php', function () {
                         $this->assertFalse($event->getParent()->hasChild($this->child->getId()));
                     };
 
-                    $this->component1->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    $this->component1->on(BeforeInsertionTreeEvent::class, function (BeforeInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedCaptureListener1 = new DateTime;
                     }, true); // Capture
 
-                    $this->component2->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    $this->component2->on(BeforeInsertionTreeEvent::class, function (BeforeInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedCaptureListener2 = new DateTime;
                     }, true); // Capture
 
-                    $this->component3->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    $this->component3->on(BeforeInsertionTreeEvent::class, function (BeforeInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedListener = new DateTime;
                     });
 
-                    $this->component2->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    $this->component2->on(BeforeInsertionTreeEvent::class, function (BeforeInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedBubblesListener2 = new DateTime;
                     }); // Bubbling
 
-                    $this->component1->on(TreeEvent::BEFORE_INSERTION, function (BeforeInsertionTreeEvent $event) {
+                    $this->component1->on(BeforeInsertionTreeEvent::class, function (BeforeInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedBubblesListener1 = new DateTime;
                     }); // Bubbling
@@ -324,27 +324,27 @@ testCase('TreeEventsTest.php', function () {
                         $this->assertTrue($event->getParent()->hasChild($this->child->getId()));
                     };
 
-                    $this->component1->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+                    $this->component1->on(AfterInsertionTreeEvent::class, function (AfterInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedCaptureListener1 = new DateTime;
                     }, true); // Capture
 
-                    $this->component2->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+                    $this->component2->on(AfterInsertionTreeEvent::class, function (AfterInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedCaptureListener2 = new DateTime;
                     }, true); // Capture
 
-                    $this->component3->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+                    $this->component3->on(AfterInsertionTreeEvent::class, function (AfterInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedListener = new DateTime;
                     });
 
-                    $this->component2->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+                    $this->component2->on(AfterInsertionTreeEvent::class, function (AfterInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedBubblesListener2 = new DateTime;
                     }); // Bubbling
 
-                    $this->component1->on(TreeEvent::AFTER_INSERTION, function (AfterInsertionTreeEvent $event) {
+                    $this->component1->on(AfterInsertionTreeEvent::class, function (AfterInsertionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedBubblesListener1 = new DateTime;
                     }); // Bubbling
@@ -402,27 +402,27 @@ testCase('TreeEventsTest.php', function () {
                         $this->assertTrue($event->getParent()->hasChild($this->child->getId()));
                     };
 
-                    $this->component1->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                    $this->component1->on(BeforeDeletionTreeEvent::class, function (BeforeDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedCaptureListener1 = new DateTime;
                     }, true); // Capture
 
-                    $this->component2->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                    $this->component2->on(BeforeDeletionTreeEvent::class, function (BeforeDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedCaptureListener2 = new DateTime;
                     }, true); // Capture
 
-                    $this->component3->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                    $this->component3->on(BeforeDeletionTreeEvent::class, function (BeforeDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedListener = new DateTime;
                     });
 
-                    $this->component2->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                    $this->component2->on(BeforeDeletionTreeEvent::class, function (BeforeDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedBubblesListener2 = new DateTime;
                     }); // Bubbling
 
-                    $this->component1->on(TreeEvent::BEFORE_DELETION, function (BeforeDeletionTreeEvent $event) {
+                    $this->component1->on(BeforeDeletionTreeEvent::class, function (BeforeDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedBubblesListener1 = new DateTime;
                     }); // Bubbling
@@ -443,27 +443,27 @@ testCase('TreeEventsTest.php', function () {
                         $this->assertFalse($event->getParent()->hasChild($this->child->getId()));
                     };
 
-                    $this->component1->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                    $this->component1->on(AfterDeletionTreeEvent::class, function (AfterDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedCaptureListener1 = new DateTime;
                     }, true); // Capture
 
-                    $this->component2->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                    $this->component2->on(AfterDeletionTreeEvent::class, function (AfterDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedCaptureListener2 = new DateTime;
                     }, true); // Capture
 
-                    $this->component3->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                    $this->component3->on(AfterDeletionTreeEvent::class, function (AfterDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedListener = new DateTime;
                     });
 
-                    $this->component2->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                    $this->component2->on(AfterDeletionTreeEvent::class, function (AfterDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedBubblesListener2 = new DateTime;
                     }); // Bubbling
 
-                    $this->component1->on(TreeEvent::AFTER_DELETION, function (AfterDeletionTreeEvent $event) {
+                    $this->component1->on(AfterDeletionTreeEvent::class, function (AfterDeletionTreeEvent $event) {
                         call_user_func($this->checkEventData, $event);
                         $this->executedBubblesListener1 = new DateTime;
                     }); // Bubbling

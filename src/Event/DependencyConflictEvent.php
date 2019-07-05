@@ -13,11 +13,6 @@ use NubecuLabs\Components\DependencyInterface;
 class DependencyConflictEvent extends Event
 {
     /**
-     * Name prefix for all the conflict events.
-     */
-    public const EVENT_NAME_PREFIX = 'components.dependency_conflict_';
-
-    /**
      * @var DependencyInterface
      */
     protected $dependency1;

@@ -121,7 +121,7 @@ trait ComponentTrait
         if ($this->parent instanceof CompositeComponentInterface) {
             if ($dispatchEvents) {
                 $beforeDeletionEvent = new BeforeDeletionTreeEvent($this, $this->parent);
-                $this->parent->dispatchEvent(TreeEvent::BEFORE_DELETION, $beforeDeletionEvent);
+                $this->parent->dispatchEvent(BeforeDeletionTreeEvent::class, $beforeDeletionEvent);
 
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;
@@ -133,13 +133,13 @@ trait ComponentTrait
 
             if ($oldParent instanceof CompositeComponentInterface && $dispatchEvents) {
                 $afterDeletionEvent = new AfterDeletionTreeEvent($this, $oldParent);
-                $oldParent->dispatchEvent(TreeEvent::AFTER_DELETION, $afterDeletionEvent);
+                $oldParent->dispatchEvent(AfterDeletionTreeEvent::class, $afterDeletionEvent);
             }
         }
 
         if ($parent instanceof CompositeComponentInterface && $dispatchEvents) {
             $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
-            $parent->dispatchEvent(TreeEvent::BEFORE_INSERTION, $beforeInsertionEvent);
+            $parent->dispatchEvent(BeforeInsertionTreeEvent::class, $beforeInsertionEvent);
 
             if ($beforeInsertionEvent->isCancelled()) {
                 return;
@@ -153,7 +153,7 @@ trait ComponentTrait
 
             if ($parent instanceof CompositeComponentInterface && $dispatchEvents) {
                 $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
-                $parent->dispatchEvent(TreeEvent::AFTER_INSERTION, $afterInsertionEvent);
+                $parent->dispatchEvent(AfterInsertionTreeEvent::class, $afterInsertionEvent);
             }
         }
     }
@@ -188,7 +188,7 @@ trait ComponentTrait
         );
 
         $event = new FilterDependenciesEvent($this, $dependencies);
-        $this->dispatchEvent(FilterDependenciesEvent::EVENT_NAME, $event);
+        $this->dispatchEvent(FilterDependenciesEvent::class, $event);
 
         return $event->getDependencies();
     }

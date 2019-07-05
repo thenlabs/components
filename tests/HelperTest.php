@@ -137,10 +137,8 @@ testCase('HelperTest.php', function () {
             });
 
             test('resolving a conflict manually with a symfony event dispatcher', function () {
-                $eventName = Helper::getConflictEventName($this->name);
-
                 $dispatcher = new EventDispatcher;
-                $dispatcher->addListener($eventName, function (DependencyConflictEvent $event) {
+                $dispatcher->addListener(DependencyConflictEvent::class, function (DependencyConflictEvent $event) {
                     $this->executed = true;
 
                     $this->assertSame($this->dep1, $event->getDependency1());
@@ -157,10 +155,8 @@ testCase('HelperTest.php', function () {
             });
 
             test('resolving a conflict manually with a component', function () {
-                $eventName = Helper::getConflictEventName($this->name);
-
                 $component = new Component;
-                $component->on($eventName, function (DependencyConflictEvent $event) {
+                $component->on(DependencyConflictEvent::class, function (DependencyConflictEvent $event) {
                     $this->executed = true;
 
                     $this->assertSame($this->dep1, $event->getDependency1());

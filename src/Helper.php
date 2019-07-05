@@ -127,13 +127,12 @@ abstract class Helper
             throw new Exception\IncompatibilityException($name, $version1, $version2);
         }
 
-        $eventName = self::getConflictEventName($name);
         $conflictEvent = new DependencyConflictEvent($dependency1, $dependency2);
 
         if ($conflictDispatcher instanceof EventDispatcherInterface) {
-            $conflictDispatcher->dispatch($eventName, $conflictEvent);
+            $conflictDispatcher->dispatch(DependencyConflictEvent::class, $conflictEvent);
         } elseif ($conflictDispatcher instanceof ComponentInterface) {
-            $conflictDispatcher->dispatchEvent($eventName, $conflictEvent);
+            $conflictDispatcher->dispatchEvent(DependencyConflictEvent::class, $conflictEvent);
         }
 
         $solution = $conflictEvent->getSolution();
@@ -151,16 +150,5 @@ abstract class Helper
         }
 
         return $solution;
-    }
-
-    /**
-     * Returns a conflict event name of a dependency.
-     *
-     * @param  string $name dependency name
-     * @return string
-     */
-    public static function getConflictEventName(string $name): string
-    {
-        return DependencyConflictEvent::EVENT_NAME_PREFIX . $name;
     }
 }

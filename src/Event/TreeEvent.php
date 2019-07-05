@@ -14,26 +14,6 @@ use NubecuLabs\Components\CompositeComponentInterface;
 class TreeEvent extends Event
 {
     /**
-     * Occurs before a new component it's inserted in the tree.
-     */
-    public const BEFORE_INSERTION = 'components.tree.before_insertion';
-
-    /**
-     * Occurs after a new component was inserted in the tree.
-     */
-    public const AFTER_INSERTION = 'components.tree.after_insertion';
-
-    /**
-     * Occurs before that a component of the tree it's detached.
-     */
-    public const BEFORE_DELETION = 'components.tree.before_deletion';
-
-    /**
-     * Occurs after that a component of the tree was detached.
-     */
-    public const AFTER_DELETION = 'components.tree.after_deletion';
-
-    /**
      * @var ComponentInterface
      */
     protected $child;
