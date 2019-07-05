@@ -9,7 +9,7 @@ use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
 use NubecuLabs\Components\Event\FilterDependenciesEvent;
-use Symfony\Component\EventDispatcher\Event;
+use NubecuLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -234,6 +234,8 @@ trait ComponentTrait
      */
     public function dispatchEvent(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
     {
+        $event->setSource($this);
+
         $parents = $this->getParents();
 
         if ($capture) {

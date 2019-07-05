@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
-use Symfony\Component\EventDispatcher\Event;
+use NubecuLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

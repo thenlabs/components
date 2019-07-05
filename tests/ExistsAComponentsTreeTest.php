@@ -4,7 +4,7 @@ use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\Tests\Entity\Component;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
-use Symfony\Component\EventDispatcher\Event;
+use NubecuLabs\Components\Event\Event;
 
 setTestCaseNamespace('NubecuLabs\Components\Tests');
 setTestCaseClass('NubecuLabs\Components\Tests\TestCase');

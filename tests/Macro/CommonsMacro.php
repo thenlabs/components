@@ -2,7 +2,7 @@
 
 use NubecuLabs\Components\Event\FilterDependenciesEvent;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
-use Symfony\Component\EventDispatcher\Event;
+use NubecuLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 createMacro('commons', function () {
@@ -251,6 +251,7 @@ createMacro('commons', function () {
             $this->component->on($this->eventName, $this->listener = function (Event $event) {
                 $this->executedListener = true;
                 $this->assertSame($event, $this->event);
+                $this->assertSame($this->component, $event->getSource());
             });
         });
 
