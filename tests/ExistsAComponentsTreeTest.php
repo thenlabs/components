@@ -102,6 +102,13 @@ testCase('ExistsAComponentsTree.php', function () {
             $this->assertEquals($this->child413, $childs[1]);
         });
 
+        test('$component->getOrder() === ["child1", "child2", "child3", "child4"]', function () {
+            $this->assertEquals(
+                ['child1', 'child2', 'child3', 'child4'],
+                $this->component->getOrder()
+            );
+        });
+
         testCase('getTopData() looks up the nearest data', function () {
             test(function () {
                 $this->assertEquals($this->value2, $this->child32->getTopData($this->key));

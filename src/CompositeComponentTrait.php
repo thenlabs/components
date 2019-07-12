@@ -307,4 +307,12 @@ trait CompositeComponentTrait
 
         return $event->getDependencies();
     }
+
+    /**
+     * @see CompositeComponentInterface::getOrder()
+     */
+    public function getOrder(): array
+    {
+        return array_keys($this->childs);
+    }
 }

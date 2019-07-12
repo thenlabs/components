@@ -156,4 +156,11 @@ interface CompositeComponentInterface extends ComponentInterface
      * @param  boolean  $capture  Indicates if event is for capturing or not.
      */
     public function off(string $eventName, callable $listener, bool $capture = false): void;
+
+    /**
+     * Returns an array of string with the ordered component names.
+     *
+     * @return string[]
+     */
+    public function getOrder(): array;
 }
