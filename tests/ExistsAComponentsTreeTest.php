@@ -102,10 +102,10 @@ testCase('ExistsAComponentsTree.php', function () {
             $this->assertEquals($this->child413, $childs[1]);
         });
 
-        test('$component->getOrder() === ["child1", "child2", "child3", "child4"]', function () {
+        test('$component->getChildOrder() === ["child1", "child2", "child3", "child4"]', function () {
             $this->assertEquals(
                 ['child1', 'child2', 'child3', 'child4'],
-                $this->component->getOrder()
+                $this->component->getChildOrder()
             );
         });
 

@@ -311,7 +311,7 @@ trait CompositeComponentTrait
     /**
      * @see CompositeComponentInterface::getOrder()
      */
-    public function getOrder(): array
+    public function getChildOrder(): array
     {
         return array_keys($this->childs);
     }

@@ -162,5 +162,5 @@ interface CompositeComponentInterface extends ComponentInterface
      *
      * @return string[]
      */
-    public function getOrder(): array;
+    public function getChildOrder(): array;
 }

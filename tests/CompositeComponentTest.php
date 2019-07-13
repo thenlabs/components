@@ -55,6 +55,10 @@ testCase('CompositeComponentTest.php', function () {
             $this->assertNull($this->component->getChild($id));
         });
 
+        test("\$component->getChildOrder() === []", function () use ($id) {
+            $this->assertEquals([], $this->component->getChildOrder());
+        });
+
         createMacro('commons for when the component adds a child', function () {
             testCase('it is invoked to $component->validateChild($child)', function () {
                 createMethod('addTheChild', function () {
