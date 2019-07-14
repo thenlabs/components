@@ -303,7 +303,8 @@ trait CompositeComponentTrait
         );
 
         $event = new FilterDependenciesEvent($this, $dependencies);
-        $this->dispatchEvent(FilterDependenciesEvent::class, $event);
+        $eventName = FilterDependenciesEvent::class . "_{$this->getId()}";
+        $this->dispatchEvent($eventName, $event);
 
         return $event->getDependencies();
     }
