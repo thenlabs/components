@@ -316,4 +316,11 @@ trait CompositeComponentTrait
     {
         return array_keys($this->childs);
     }
+
+    /**
+     * @param string[] $order
+     */
+    public function setChildOrder(array $order): void
+    {
+    }
 }

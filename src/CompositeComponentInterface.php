@@ -163,4 +163,9 @@ interface CompositeComponentInterface extends ComponentInterface
      * @return string[]
      */
     public function getChildOrder(): array;
+
+    /**
+     * @param string[] $order
+     */
+    public function setChildOrder(array $order): void;
 }
