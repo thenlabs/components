@@ -11,53 +11,11 @@
 
     composer require nubeculabs/components dev-master
 
-## Creando tipos de componentes.
+## Introducción.
 
 Del patrón [Composite](https://es.wikipedia.org/wiki/Composite_(patr%C3%B3n_de_dise%C3%B1o)), es sabido que básicamente existen dos tipos de componentes, los simples y los compuestos. La única diferencia entre ambos está en que los compuestos pueden contener a otros componentes, mientras que los simples solo pueden ser contenidos.
 
 Por tanto, a la hora de crear un nuevo tipo de componente se tienen ambas opciones y en dependencia de las necesidades que se tenga es que se debe elegir la alternativa.
-
-El procedimiento para crear un nuevo tipo de componente es común tanto para los simples como para los compuestos. En ambos casos consiste en crear una clase que implemente una interfaz y use un *trait*.
-
-##### Ejemplo: Creando un componente simple.
-
-```php
-
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\ComponentTrait;
-
-class SimpleComponent implements ComponentInterface
-{
-    use ComponentTrait;
-}
-```
-
-##### Ejemplo: Creando un componente compuesto.
-
-```php
-
-use NubecuLabs\Components\CompositeComponentInterface;
-use NubecuLabs\Components\CompositeComponentTrait;
-
-class CompositeComponent extends SimpleComponent implements CompositeComponentInterface
-{
-    use CompositeComponentTrait;
-}
-```
-
-En el caso del ejemplo anterior, el componente compuesto hereda del componente simple. Esto es algo totalmente opcional y dependerá de las necesidades que se tengan para el diseño del mismo.
-
-A la clase del nuevo componente se le podrán especificar todos los datos y métodos que se necesiten, pero es importante tener en cuenta que en el respectivo *trait* se incluye la implementación básica del componente la cual no debe ser alterada en la clase.
-
-## Conociendo las características de los componentes.
-
-Todos los componentes presentan una serie de propiedades comunes que vamos a comentar seguidamente.
-
-Primeramente vamos a mencionar al *identificador único* la cual es una propiedad de solo lectura y permite que el componente pueda ser referenciado de manera segura. Su valor se asigna internamente y consiste en una cadena de caracteres aleatoria.
-
-Otra propiedad que sirve para referenciar al componente es el *nombre* pero en este caso es un valor especificado por el usuario por lo que implica un riesgo de que dos o más componentes se puedan llamar igual.
-
-Todos los componentes pueden
 
 Un componente compuesto constituye el nodo raíz de un árbol, ya que el mismo puede tener varios hijos que a su vez pueden contener otros hijos tal y como se muestra en el siguiente diagrama.
 
@@ -80,6 +38,96 @@ $component (C)
     |               |____$child413 (S)
 ```
 C: Compuesto, S: Simple
+
+## Creando tipos de componentes.
+
+El procedimiento para crear un nuevo tipo de componente es común tanto para los simples como para los compuestos. En ambos casos consiste en crear una clase que implemente una interfaz y use un *trait*.
+
+### Ejemplo: Creando un componente simple.
+
+```php
+
+use NubecuLabs\Components\ComponentInterface;
+use NubecuLabs\Components\ComponentTrait;
+
+class SimpleComponent implements ComponentInterface
+{
+    use ComponentTrait;
+}
+```
+
+### Ejemplo: Creando un componente compuesto.
+
+```php
+
+use NubecuLabs\Components\CompositeComponentInterface;
+use NubecuLabs\Components\CompositeComponentTrait;
+
+class CompositeComponent extends SimpleComponent implements CompositeComponentInterface
+{
+    use CompositeComponentTrait;
+}
+```
+
+En el caso del ejemplo anterior, el componente compuesto hereda del componente simple. Esto es algo totalmente opcional y dependerá de las necesidades que se tengan para el diseño del mismo.
+
+A la clase del nuevo componente se le podrán especificar todos los datos y métodos que se necesiten, pero es importante tener en cuenta que en el respectivo *trait* se incluye la implementación básica del componente la cual no debe ser alterada en la clase.
+
+### Trabajando con las dependencias.
+
+Por lo general los componentes son entidades que tienen ciertos tipos de dependencias donde en el caso de los compuestos también tendrán las dependencias de sus hijos.
+
+Las dependencias de un componente se obtienen a través del método `getDependencies()`.
+
+Para definir las dependencias que tendrá un componente, se deberá implementar en la clase el método `getOwnDependencies()` el cual debe devolver un *array* con las dependencias de este tipo de componente.
+
+Se considera una dependencia a una entidad cuya clase implemente la interfaz `NubecuLabs\Components\DependencyInterface`.
+
+A la hora de utilizar un componente con un fin específico, en la mayoría de los casos será necesario darle un tratamiento determinado a sus dependencias lo cual puede resultar complejo dado que muchas veces estas dependencias presentan conflictos entre sí. En muchos casos esos conflictos pueden ser resueltos de manera automática pero en otros solo pueden ser resueltos por los usuarios.
+
+## Conociendo las características de los componentes.
+
+Todos los componentes presentan una serie de propiedades comunes que vamos a comentar seguidamente.
+
+Primeramente vamos a mencionar al **identificador único** la cual es una propiedad de solo lectura y permite que el componente pueda ser referenciado de manera segura. Su valor se asigna internamente y consiste en una cadena de caracteres aleatoria.
+
+Otra propiedad que sirve para referenciar al componente es el **nombre** pero en este caso es un valor especificado por el usuario por lo que puede ocurrir que dos componentes o más se puedan llamar igual.
+
+Otra propiedad a tener en cuenta es el **componente padre** cuyo valor puede ser nulo o un componente compuesto.
+
+También existirá un **despachador de eventos** el cual será una instancia de `Symfony\Component\EventDispatcher\EventDispatcherInterface` creada internamente pero que también puede ser especificada por el usuario.
+
+Para que los componentes puedan contener datos personalizados es que existe la propiedad **datos** cuyo valor no es más que un *array* asociativo.
+
+En el caso de los componentes compuestos tendrán además un par de propiedades adicionales las cuales se corresponden con un *array* de **hijos** y el **despachador de eventos de captura**. Más adelante hablaremos de este último concepto.
+
+## Trabajando con los componentes.
+
+### Componentes simples.
+
+#### Iterando sobre cada padre.
+
+En el siguiente ejemplo el orden de iteración será: $child41, $child4 y $component.
+
+```php
+foreach ($child411->parents() as $parent) {
+    # code...
+}
+```
+
+>El método `getParents()` devuelve un *array* con todos los padres del componente.
+
+### Componentes compuestos.
+
+#### Iterando sobre cada hijo.
+
+```php
+foreach ($child4->children() as $component) {
+    # code...
+}
+```
+
+En el ejemplo anterior el orden de iteración sería: $child4, $child411, $child412 y $child413.
 
 ## TEMP.
 
