@@ -47,6 +47,18 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 
 En el caso del ejemplo anterior, el componente compuesto hereda del componente simple. Esto es algo totalmente opcional y dependerá de las necesidades que se tengan para el diseño del mismo.
 
+A la clase del nuevo componente se le podrán especificar todos los datos y métodos que se necesiten, pero es importante tener en cuenta que en el respectivo *trait* se incluye la implementación básica del componente la cual no debe ser alterada en la clase.
+
+## Conociendo las características de los componentes.
+
+Todos los componentes presentan una serie de propiedades comunes que vamos a comentar seguidamente.
+
+Primeramente vamos a mencionar al *identificador único* la cual es una propiedad de solo lectura y permite que el componente pueda ser referenciado de manera segura. Su valor se asigna internamente y consiste en una cadena de caracteres aleatoria.
+
+Otra propiedad que sirve para referenciar al componente es el *nombre* pero en este caso es un valor especificado por el usuario por lo que implica un riesgo de que dos o más componentes se puedan llamar igual.
+
+Todos los componentes pueden
+
 Un componente compuesto constituye el nodo raíz de un árbol, ya que el mismo puede tener varios hijos que a su vez pueden contener otros hijos tal y como se muestra en el siguiente diagrama.
 
 ```

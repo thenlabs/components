@@ -122,6 +122,19 @@ testCase('ExistsAComponentsTree.php', function () {
             });
         });
 
+        testCase("\$child3->setChildOrder(['child33', 'child31', 'child32']) // same order", function () {
+            setUp(function () {
+                $this->child3->setChildOrder(['child33', 'child31', 'child32']);
+            });
+
+            test("\$child3->getChildOrder() === ['child33', 'child31', 'child32']", function () {
+                $this->assertEquals(
+                    ['child33', 'child31', 'child32'],
+                    $this->child3->getChildOrder()
+                );
+            });
+        });
+
         testCase('getTopData() looks up the nearest data', function () {
             test(function () {
                 $this->assertEquals($this->value2, $this->child32->getTopData($this->key));
