@@ -158,14 +158,14 @@ interface CompositeComponentInterface extends ComponentInterface
     public function off(string $eventName, callable $listener, bool $capture = false): void;
 
     /**
-     * Returns an array of string with the ordered component names.
+     * Returns an array of string with the ordered component identifiers.
      *
      * @return string[]
      */
-    public function getChildOrder(): array;
+    public function getChildrenOrder(): array;
 
     /**
      * @param string[] $order
      */
-    public function setChildOrder(array $order): void;
+    public function setChildrenOrder(array $order): void;
 }

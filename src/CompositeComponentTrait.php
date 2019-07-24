@@ -312,7 +312,7 @@ trait CompositeComponentTrait
     /**
      * @see CompositeComponentInterface::getOrder()
      */
-    public function getChildOrder(): array
+    public function getChildrenOrder(): array
     {
         return array_keys($this->childs);
     }
@@ -320,7 +320,18 @@ trait CompositeComponentTrait
     /**
      * @param string[] $order
      */
-    public function setChildOrder(array $order): void
+    public function setChildrenOrder(array $order): void
     {
+        if (count(array_diff(array_keys($this->childs), $order))) {
+            throw new Exception\InvalidOrderException;
+        }
+
+        $newChildsArray = [];
+
+        foreach ($order as $componentId) {
+            $newChildsArray[$componentId] = $this->childs[$componentId];
+        }
+
+        $this->childs = $newChildsArray;
     }
 }

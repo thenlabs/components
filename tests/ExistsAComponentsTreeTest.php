@@ -1,6 +1,7 @@
 <?php
 
 use NubecuLabs\Components\ComponentInterface;
+use NubecuLabs\Components\Exception\InvalidOrderException;
 use NubecuLabs\Components\Tests\Entity\Component;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
@@ -32,7 +33,7 @@ testCase('ExistsAComponentsTree.php', function () {
          *     |               |____$child412 (C)
          *     |               |____$child413 (C)
          */
-        setUpBeforeClassOnce(function () {
+        setUpBeforeClass(function () {
             $component = new CompositeComponent('component');
             $child1 = new Component('child1');
             $child2 = new Component('child2');
@@ -102,36 +103,50 @@ testCase('ExistsAComponentsTree.php', function () {
             $this->assertEquals($this->child413, $childs[1]);
         });
 
-        test('$component->getChildOrder() === ["child1", "child2", "child3", "child4"]', function () {
+        test('$component->getChildrenOrder() === ["child1", "child2", "child3", "child4"]', function () {
             $this->assertEquals(
                 ['child1', 'child2', 'child3', 'child4'],
-                $this->component->getChildOrder()
+                $this->component->getChildrenOrder()
             );
         });
 
-        testCase("\$child3->setChildOrder(['child31', 'child32', 'child33']) // same order", function () {
+        testCase("\$child3->setChildrenOrder(['child31', 'child32', 'child33']) // same order", function () {
             setUp(function () {
-                $this->child3->setChildOrder(['child31', 'child32', 'child33']);
+                $this->child3->setChildrenOrder(['child31', 'child32', 'child33']);
             });
 
-            test("\$child3->getChildOrder() === ['child31', 'child32', 'child33']", function () {
+            test("\$child3->getChildrenOrder() === ['child31', 'child32', 'child33']", function () {
                 $this->assertEquals(
                     ['child31', 'child32', 'child33'],
-                    $this->child3->getChildOrder()
+                    $this->child3->getChildrenOrder()
                 );
             });
         });
 
-        testCase("\$child3->setChildOrder(['child33', 'child31', 'child32']) // same order", function () {
+        testCase("\$child3->setChildrenOrder(['child33', 'child31', 'child32'])", function () {
             setUp(function () {
-                $this->child3->setChildOrder(['child33', 'child31', 'child32']);
+                $this->child3->setChildrenOrder(['child33', 'child31', 'child32']);
             });
 
-            test("\$child3->getChildOrder() === ['child33', 'child31', 'child32']", function () {
+            test("\$child3->getChildrenOrder() === ['child33', 'child31', 'child32']", function () {
                 $this->assertEquals(
                     ['child33', 'child31', 'child32'],
-                    $this->child3->getChildOrder()
+                    $this->child3->getChildrenOrder()
                 );
+            });
+        });
+
+        testCase('setChildrenOrder() throws an InvalidOrderException', function () {
+            setUp(function () {
+                $this->expectException(InvalidOrderException::class);
+            });
+
+            test('when refers to unexistent components', function () {
+                $this->child3->setChildrenOrder(['child33', 'child35', 'child32']);
+            });
+
+            test('when order array has not the same length', function () {
+                $this->child3->setChildrenOrder(['child33']);
             });
         });
 
