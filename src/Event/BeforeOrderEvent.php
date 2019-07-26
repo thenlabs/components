@@ -6,6 +6,7 @@ namespace NubecuLabs\Components\Event;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class BeforeInsertionTreeEvent extends CancellableTreeEvent
+class BeforeOrderEvent extends Event implements CancellableInterface
 {
+    use CancellableTrait;
 }

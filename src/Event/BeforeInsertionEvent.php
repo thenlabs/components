@@ -6,6 +6,7 @@ namespace NubecuLabs\Components\Event;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class AfterInsertionTreeEvent extends TreeEvent
+class BeforeInsertionEvent extends Event implements ParentChildInterface, CancellableInterface
 {
+    use ParentChildTrait, CancellableTrait;
 }

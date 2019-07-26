@@ -6,6 +6,7 @@ namespace NubecuLabs\Components\Event;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class AfterDeletionTreeEvent extends TreeEvent
+class BeforeDeletionEvent extends Event implements ParentChildInterface, CancellableInterface
 {
+    use ParentChildTrait, CancellableTrait;
 }

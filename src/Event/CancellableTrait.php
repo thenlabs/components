@@ -6,7 +6,7 @@ namespace NubecuLabs\Components\Event;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class CancellableTreeEvent extends TreeEvent
+trait CancellableTrait
 {
     /**
      * Indicate if operation should be cancelled or not.

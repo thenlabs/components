@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
-use NubecuLabs\Components\Event\TreeEvent;
-use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
-use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
-use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
-use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
+use NubecuLabs\Components\Event\AfterInsertionEvent;
+use NubecuLabs\Components\Event\AfterDeletionEvent;
+use NubecuLabs\Components\Event\BeforeInsertionEvent;
+use NubecuLabs\Components\Event\BeforeDeletionEvent;
 use NubecuLabs\Components\Event\FilterDependenciesEvent;
 use NubecuLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -120,8 +119,11 @@ trait ComponentTrait
     {
         if ($this->parent instanceof CompositeComponentInterface) {
             if ($dispatchEvents) {
-                $beforeDeletionEvent = new BeforeDeletionTreeEvent($this, $this->parent);
-                $this->parent->dispatchEvent(BeforeDeletionTreeEvent::class, $beforeDeletionEvent);
+                $beforeDeletionEvent = new BeforeDeletionEvent;
+                $beforeDeletionEvent->setChild($this);
+                $beforeDeletionEvent->setParent($this->parent);
+
+                $this->parent->dispatchEvent(BeforeDeletionEvent::class, $beforeDeletionEvent);
 
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;
@@ -132,14 +134,20 @@ trait ComponentTrait
             $this->parent->dropChild($this, false, false);
 
             if ($oldParent instanceof CompositeComponentInterface && $dispatchEvents) {
-                $afterDeletionEvent = new AfterDeletionTreeEvent($this, $oldParent);
-                $oldParent->dispatchEvent(AfterDeletionTreeEvent::class, $afterDeletionEvent);
+                $afterDeletionEvent = new AfterDeletionEvent;
+                $afterDeletionEvent->setChild($this);
+                $afterDeletionEvent->setParent($oldParent);
+
+                $oldParent->dispatchEvent(AfterDeletionEvent::class, $afterDeletionEvent);
             }
         }
 
         if ($parent instanceof CompositeComponentInterface && $dispatchEvents) {
-            $beforeInsertionEvent = new BeforeInsertionTreeEvent($this, $parent);
-            $parent->dispatchEvent(BeforeInsertionTreeEvent::class, $beforeInsertionEvent);
+            $beforeInsertionEvent = new BeforeInsertionEvent;
+            $beforeInsertionEvent->setChild($this);
+            $beforeInsertionEvent->setParent($parent);
+
+            $parent->dispatchEvent(BeforeInsertionEvent::class, $beforeInsertionEvent);
 
             if ($beforeInsertionEvent->isCancelled()) {
                 return;
@@ -152,8 +160,11 @@ trait ComponentTrait
             $this->parent->addChild($this, false, false);
 
             if ($parent instanceof CompositeComponentInterface && $dispatchEvents) {
-                $afterInsertionEvent = new AfterInsertionTreeEvent($this, $parent);
-                $parent->dispatchEvent(AfterInsertionTreeEvent::class, $afterInsertionEvent);
+                $afterInsertionEvent = new AfterInsertionEvent;
+                $afterInsertionEvent->setChild($this);
+                $afterInsertionEvent->setParent($parent);
+
+                $parent->dispatchEvent(AfterInsertionEvent::class, $afterInsertionEvent);
             }
         }
     }

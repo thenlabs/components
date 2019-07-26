@@ -151,21 +151,21 @@ testCase('ExistsAComponentsTree.php', function () {
             });
         });
 
-        testCase('add a listener for BeforeOrderTreeEvent', function () {
-            test(function () {
-                $this->child3->on(BeforeOrderTreeEvent::class, function (BeforeOrderTreeEvent $event) {
-                    $this->assertFalse($event->isCancelled());
-                    $this->assertEquals(['child33', 'child31', 'child32'], $event->getNewOrder());
-                    $this->assertEquals(['child31', 'child32', 'child33'], $event->getOldOrder());
-                    $this->assertSame($this->child3, $event->getSource());
-                    $this->executedListener = true;
-                });
+        // testCase('add a listener for BeforeOrderTreeEvent', function () {
+        //     test(function () {
+        //         $this->child3->on(BeforeOrderTreeEvent::class, function (BeforeOrderTreeEvent $event) {
+        //             $this->assertFalse($event->isCancelled());
+        //             $this->assertEquals(['child33', 'child31', 'child32'], $event->getNewOrder());
+        //             $this->assertEquals(['child31', 'child32', 'child33'], $event->getOldOrder());
+        //             $this->assertSame($this->child3, $event->getSource());
+        //             $this->executedListener = true;
+        //         });
 
-                $this->child3->setChildrenOrder(['child33', 'child31', 'child32']);
+        //         $this->child3->setChildrenOrder(['child33', 'child31', 'child32']);
 
-                $this->assertTrue($this->executedListener);
-            });
-        });
+        //         $this->assertTrue($this->executedListener);
+        //     });
+        // });
 
         testCase('getTopData() looks up the nearest data', function () {
             test(function () {

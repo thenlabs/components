@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace NubecuLabs\Components;
 
-use NubecuLabs\Components\Event\TreeEvent;
-use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
-use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
-use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
-use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
-use NubecuLabs\Components\Event\BeforeOrderTreeEvent;
+use NubecuLabs\Components\Event\AfterInsertionEvent;
+use NubecuLabs\Components\Event\AfterDeletionEvent;
+use NubecuLabs\Components\Event\BeforeInsertionEvent;
+use NubecuLabs\Components\Event\BeforeDeletionEvent;
+use NubecuLabs\Components\Event\BeforeOrderEvent;
 use NubecuLabs\Components\Event\FilterDependenciesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -70,8 +69,11 @@ trait CompositeComponentTrait
         }
 
         if ($dispatchEvents) {
-            $beforeInsertionEvent = new BeforeInsertionTreeEvent($child, $this);
-            $this->dispatchEvent(BeforeInsertionTreeEvent::class, $beforeInsertionEvent);
+            $beforeInsertionEvent = new BeforeInsertionEvent;
+            $beforeInsertionEvent->setChild($child);
+            $beforeInsertionEvent->setParent($this);
+
+            $this->dispatchEvent(BeforeInsertionEvent::class, $beforeInsertionEvent);
 
             if ($beforeInsertionEvent->isCancelled()) {
                 return;
@@ -85,8 +87,11 @@ trait CompositeComponentTrait
         }
 
         if ($dispatchEvents) {
-            $afterInsertionEvent = new AfterInsertionTreeEvent($child, $this);
-            $this->dispatchEvent(AfterInsertionTreeEvent::class, $afterInsertionEvent);
+            $afterInsertionEvent = new AfterInsertionEvent;
+            $afterInsertionEvent->setChild($child);
+            $afterInsertionEvent->setParent($this);
+
+            $this->dispatchEvent(AfterInsertionEvent::class, $afterInsertionEvent);
         }
     }
 
@@ -117,8 +122,11 @@ trait CompositeComponentTrait
             isset($this->childs[$obj->getId()])
         ) {
             if ($dispatchEvents) {
-                $beforeDeletionEvent = new BeforeDeletionTreeEvent($obj, $this);
-                $this->dispatchEvent(BeforeDeletionTreeEvent::class, $beforeDeletionEvent);
+                $beforeDeletionEvent = new BeforeDeletionEvent;
+                $beforeDeletionEvent->setChild($obj);
+                $beforeDeletionEvent->setParent($this);
+
+                $this->dispatchEvent(BeforeDeletionEvent::class, $beforeDeletionEvent);
 
                 if ($beforeDeletionEvent->isCancelled()) {
                     return;
@@ -129,8 +137,11 @@ trait CompositeComponentTrait
             $obj->setParent(null, false, false);
 
             if ($dispatchEvents) {
-                $afterDeletionEvent = new AfterDeletionTreeEvent($obj, $this);
-                $this->dispatchEvent(AfterDeletionTreeEvent::class, $afterDeletionEvent);
+                $afterDeletionEvent = new AfterDeletionEvent;
+                $afterDeletionEvent->setChild($obj);
+                $afterDeletionEvent->setParent($this);
+
+                $this->dispatchEvent(AfterDeletionEvent::class, $afterDeletionEvent);
             }
         }
     }
@@ -327,12 +338,12 @@ trait CompositeComponentTrait
             throw new Exception\InvalidOrderException;
         }
 
-        $beforeEvent = new BeforeOrderTreeEvent;
-        $beforeEvent->setSource($this);
-        $beforeEvent->setOldOrder($this->getChildrenOrder());
-        $beforeEvent->setNewOrder($order);
+        // $beforeEvent = new BeforeOrderEvent;
+        // $beforeEvent->setSource($this);
+        // $beforeEvent->setOldOrder($this->getChildrenOrder());
+        // $beforeEvent->setNewOrder($order);
 
-        $this->dispatchEvent(BeforeOrderTreeEvent::class, $beforeEvent);
+        // $this->dispatchEvent(BeforeOrderEvent::class, $beforeEvent);
 
         $newChildsArray = [];
 
