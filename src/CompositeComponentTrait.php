@@ -8,6 +8,7 @@ use NubecuLabs\Components\Event\AfterInsertionTreeEvent;
 use NubecuLabs\Components\Event\AfterDeletionTreeEvent;
 use NubecuLabs\Components\Event\BeforeInsertionTreeEvent;
 use NubecuLabs\Components\Event\BeforeDeletionTreeEvent;
+use NubecuLabs\Components\Event\BeforeOrderTreeEvent;
 use NubecuLabs\Components\Event\FilterDependenciesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -325,6 +326,13 @@ trait CompositeComponentTrait
         if (count(array_diff(array_keys($this->childs), $order))) {
             throw new Exception\InvalidOrderException;
         }
+
+        $beforeEvent = new BeforeOrderTreeEvent;
+        $beforeEvent->setSource($this);
+        $beforeEvent->setOldOrder($this->getChildrenOrder());
+        $beforeEvent->setNewOrder($order);
+
+        $this->dispatchEvent(BeforeOrderTreeEvent::class, $beforeEvent);
 
         $newChildsArray = [];
 

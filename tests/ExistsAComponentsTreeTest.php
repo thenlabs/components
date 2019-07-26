@@ -2,6 +2,7 @@
 
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\Exception\InvalidOrderException;
+use NubecuLabs\Components\Event\BeforeOrderTreeEvent;
 use NubecuLabs\Components\Tests\Entity\Component;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
@@ -147,6 +148,22 @@ testCase('ExistsAComponentsTree.php', function () {
 
             test('when order array has not the same length', function () {
                 $this->child3->setChildrenOrder(['child33']);
+            });
+        });
+
+        testCase('add a listener for BeforeOrderTreeEvent', function () {
+            test(function () {
+                $this->child3->on(BeforeOrderTreeEvent::class, function (BeforeOrderTreeEvent $event) {
+                    $this->assertFalse($event->isCancelled());
+                    $this->assertEquals(['child33', 'child31', 'child32'], $event->getNewOrder());
+                    $this->assertEquals(['child31', 'child32', 'child33'], $event->getOldOrder());
+                    $this->assertSame($this->child3, $event->getSource());
+                    $this->executedListener = true;
+                });
+
+                $this->child3->setChildrenOrder(['child33', 'child31', 'child32']);
+
+                $this->assertTrue($this->executedListener);
             });
         });
 
