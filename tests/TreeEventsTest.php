@@ -1,6 +1,5 @@
 <?php
 
-use NubecuLabs\Components\Event\Event;
 use NubecuLabs\Components\Event\AfterInsertionEvent;
 use NubecuLabs\Components\Event\AfterDeletionEvent;
 use NubecuLabs\Components\Event\BeforeInsertionEvent;

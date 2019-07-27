@@ -8,6 +8,7 @@ use NubecuLabs\Components\Event\AfterDeletionEvent;
 use NubecuLabs\Components\Event\BeforeInsertionEvent;
 use NubecuLabs\Components\Event\BeforeDeletionEvent;
 use NubecuLabs\Components\Event\BeforeOrderEvent;
+use NubecuLabs\Components\Event\AfterOrderEvent;
 use NubecuLabs\Components\Event\FilterDependenciesEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -338,12 +339,18 @@ trait CompositeComponentTrait
             throw new Exception\InvalidOrderException;
         }
 
-        // $beforeEvent = new BeforeOrderEvent;
-        // $beforeEvent->setSource($this);
-        // $beforeEvent->setOldOrder($this->getChildrenOrder());
-        // $beforeEvent->setNewOrder($order);
+        $oldOrder = $this->getChildrenOrder();
 
-        // $this->dispatchEvent(BeforeOrderEvent::class, $beforeEvent);
+        $beforeEvent = new BeforeOrderEvent;
+        $beforeEvent->setSource($this);
+        $beforeEvent->setOldOrder($oldOrder);
+        $beforeEvent->setNewOrder($order);
+
+        $this->dispatchEvent(BeforeOrderEvent::class, $beforeEvent);
+
+        if ($beforeEvent->isCancelled()) {
+            return;
+        }
 
         $newChildsArray = [];
 
@@ -352,5 +359,12 @@ trait CompositeComponentTrait
         }
 
         $this->childs = $newChildsArray;
+
+        $afterEvent = new AfterOrderEvent;
+        $afterEvent->setSource($this);
+        $afterEvent->setOldOrder($oldOrder);
+        $afterEvent->setNewOrder($order);
+
+        $this->dispatchEvent(AfterOrderEvent::class, $afterEvent);
     }
 }

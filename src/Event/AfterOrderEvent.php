@@ -6,8 +6,7 @@ namespace NubecuLabs\Components\Event;
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class BeforeOrderEvent extends Event implements CancellableInterface
+class AfterOrderEvent extends Event
 {
-    use CancellableTrait;
     use OrderEventTrait;
 }

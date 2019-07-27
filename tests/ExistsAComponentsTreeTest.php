@@ -2,7 +2,8 @@
 
 use NubecuLabs\Components\ComponentInterface;
 use NubecuLabs\Components\Exception\InvalidOrderException;
-use NubecuLabs\Components\Event\BeforeOrderTreeEvent;
+use NubecuLabs\Components\Event\BeforeOrderEvent;
+use NubecuLabs\Components\Event\AfterOrderEvent;
 use NubecuLabs\Components\Tests\Entity\Component;
 use NubecuLabs\Components\Tests\Entity\CompositeComponent;
 use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
@@ -34,53 +35,31 @@ testCase('ExistsAComponentsTree.php', function () {
          *     |               |____$child412 (C)
          *     |               |____$child413 (C)
          */
-        setUpBeforeClass(function () {
-            $component = new CompositeComponent('component');
-            $child1 = new Component('child1');
-            $child2 = new Component('child2');
-            $child3 = new CompositeComponent('child3');
-            $child31 = new CompositeComponent('child31');
-            $child32 = new Component('child32');
-            $child33 = new Component('child33');
-            $child4 = new CompositeComponent('child4');
-            $child41 = new CompositeComponent('child41');
-            $child411 = new CompositeComponent('child411');
-            $child412 = new Component('child412');
-            $child413 = new Component('child3');
-
-            $component->addChilds($child1, $child2, $child3, $child4);
-            $child3->addChilds($child31, $child32, $child33);
-            $child4->addChilds($child41);
-            $child41->addChilds($child411, $child412, $child413);
-
-            $key = uniqid('data');
-            $value1 = uniqid('val');
-            $value2 = uniqid('val');
-
-            $component->setData($key, $value1);
-            $child3->setData($key, $value2);
-
-            static::addVars(compact(
-                'component',
-                'child1',
-                'child2',
-                'child3',
-                'child31',
-                'child32',
-                'child33',
-                'child4',
-                'child41',
-                'child411',
-                'child412',
-                'child413',
-                'key',
-                'value1',
-                'value2'
-            ));
-        });
-
         setUp(function () {
-            $this->injectVars();
+            $this->component = new CompositeComponent('component');
+            $this->child1 = new Component('child1');
+            $this->child2 = new Component('child2');
+            $this->child3 = new CompositeComponent('child3');
+            $this->child31 = new CompositeComponent('child31');
+            $this->child32 = new Component('child32');
+            $this->child33 = new Component('child33');
+            $this->child4 = new CompositeComponent('child4');
+            $this->child41 = new CompositeComponent('child41');
+            $this->child411 = new CompositeComponent('child411');
+            $this->child412 = new Component('child412');
+            $this->child413 = new Component('child3');
+
+            $this->component->addChilds($this->child1, $this->child2, $this->child3, $this->child4);
+            $this->child3->addChilds($this->child31, $this->child32, $this->child33);
+            $this->child4->addChilds($this->child41);
+            $this->child41->addChilds($this->child411, $this->child412, $this->child413);
+
+            $this->key = uniqid('data');
+            $this->value1 = uniqid('val');
+            $this->value2 = uniqid('val');
+
+            $this->component->setData($this->key, $this->value1);
+            $this->child3->setData($this->key, $this->value2);
         });
 
         $id = uniqid('comp');
@@ -151,21 +130,53 @@ testCase('ExistsAComponentsTree.php', function () {
             });
         });
 
-        // testCase('add a listener for BeforeOrderTreeEvent', function () {
-        //     test(function () {
-        //         $this->child3->on(BeforeOrderTreeEvent::class, function (BeforeOrderTreeEvent $event) {
-        //             $this->assertFalse($event->isCancelled());
-        //             $this->assertEquals(['child33', 'child31', 'child32'], $event->getNewOrder());
-        //             $this->assertEquals(['child31', 'child32', 'child33'], $event->getOldOrder());
-        //             $this->assertSame($this->child3, $event->getSource());
-        //             $this->executedListener = true;
-        //         });
+        testCase('add a listener for BeforeOrderEvent', function () {
+            test('the event is dispatched', function () {
+                $this->child3->on(BeforeOrderEvent::class, function (BeforeOrderEvent $event) {
+                    $this->assertFalse($event->isCancelled());
+                    $this->assertEquals(['child33', 'child31', 'child32'], $event->getNewOrder());
+                    $this->assertEquals(['child31', 'child32', 'child33'], $event->getOldOrder());
+                    $this->assertSame($this->child3, $event->getSource());
+                    $this->executedListener = true;
+                });
 
-        //         $this->child3->setChildrenOrder(['child33', 'child31', 'child32']);
+                $this->child3->setChildrenOrder(['child33', 'child31', 'child32']);
 
-        //         $this->assertTrue($this->executedListener);
-        //     });
-        // });
+                $this->assertTrue($this->executedListener);
+                $this->assertEquals(['child33', 'child31', 'child32'], $this->child3->getChildrenOrder());
+            });
+
+            test('the event can be cancelled', function () {
+                $this->child3->on(BeforeOrderEvent::class, function (BeforeOrderEvent $event) {
+                    $event->cancel();
+                    $this->executedListener = true;
+                });
+
+                $this->child3->setChildrenOrder(['child33', 'child31', 'child32']);
+
+                $this->assertTrue($this->executedListener);
+                $this->assertEquals(
+                    ['child31', 'child32', 'child33'],
+                    $this->child3->getChildrenOrder()
+                );
+            });
+        });
+
+        testCase('add a listener for AfterOrderEvent', function () {
+            test('the event is dispatched', function () {
+                $this->child3->on(AfterOrderEvent::class, function (AfterOrderEvent $event) {
+                    $this->assertEquals(['child33', 'child31', 'child32'], $event->getNewOrder());
+                    $this->assertEquals(['child31', 'child32', 'child33'], $event->getOldOrder());
+                    $this->assertSame($this->child3, $event->getSource());
+                    $this->executedListener = true;
+                });
+
+                $this->child3->setChildrenOrder(['child33', 'child31', 'child32']);
+
+                $this->assertTrue($this->executedListener);
+                $this->assertEquals(['child33', 'child31', 'child32'], $this->child3->getChildrenOrder());
+            });
+        });
 
         testCase('getTopData() looks up the nearest data', function () {
             test(function () {
@@ -196,62 +207,29 @@ testCase('ExistsAComponentsTree.php', function () {
         });
 
         testCase('$iterator = $component->children();', function () {
-            setUpBeforeClassOnce(function () {
-                $component = static::getVar('component');
-                static::setVar('iterator', $component->children());
-            });
+            test('the iterator has the expected items', function () {
+                $this->iterator = $this->component->children();
 
-            test('iteration #1: $iterator->current() === $child1', function () {
                 $this->assertSame($this->child1, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #2: $iterator->current() === $child2', function () {
                 $this->assertSame($this->child2, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #3: $iterator->current() === $child3', function () {
                 $this->assertSame($this->child3, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #4: $iterator->current() === $child31', function () {
                 $this->assertSame($this->child31, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #5: $iterator->current() === $child32', function () {
                 $this->assertSame($this->child32, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #6: $iterator->current() === $child33', function () {
                 $this->assertSame($this->child33, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #7: $iterator->current() === $child4', function () {
                 $this->assertSame($this->child4, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #8: $iterator->current() === $child41', function () {
                 $this->assertSame($this->child41, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #9: $iterator->current() === $child411', function () {
                 $this->assertSame($this->child411, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #10: $iterator->current() === $child412', function () {
                 $this->assertSame($this->child412, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #11 (End): $iterator->current() === $child413', function () {
                 $this->assertSame($this->child413, $this->iterator->current());
                 $this->iterator->next();
                 $this->assertNull($this->iterator->current());
@@ -259,27 +237,15 @@ testCase('ExistsAComponentsTree.php', function () {
         });
 
         testCase('$iterator = $component->children(false);', function () {
-            setUpBeforeClassOnce(function () {
-                $component = static::getVar('component');
-                static::setVar('iterator', $component->children(false));
-            });
+            test('the iterator has the expected items', function () {
+                $this->iterator = $this->component->children(false);
 
-            test('iteration #1: $iterator->current() === $child1', function () {
                 $this->assertSame($this->child1, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #2: $iterator->current() === $child2', function () {
                 $this->assertSame($this->child2, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #3 (End): $iterator->current() === $child3', function () {
                 $this->assertSame($this->child3, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #3 (End): $iterator->current() === $child4', function () {
                 $this->assertSame($this->child4, $this->iterator->current());
                 $this->iterator->next();
                 $this->assertNull($this->iterator->current());
@@ -431,17 +397,11 @@ testCase('ExistsAComponentsTree.php', function () {
         });
 
         testCase('$iterator = $child32->parents();', function () {
-            setUpBeforeClassOnce(function () {
-                $child32 = static::getVar('child32');
-                static::setVar('iterator', $child32->parents());
-            });
+            test('the iterator has the expected items', function () {
+                $this->iterator = $this->child32->parents();
 
-            test('iteration #1: $iterator->current() === $child3', function () {
                 $this->assertSame($this->child3, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #2: $iterator->current() === $component', function () {
                 $this->assertSame($this->component, $this->iterator->current());
                 $this->iterator->next();
                 $this->assertNull($this->iterator->current());
@@ -449,22 +409,13 @@ testCase('ExistsAComponentsTree.php', function () {
         });
 
         testCase('$iterator = $child412->parents();', function () {
-            setUpBeforeClassOnce(function () {
-                $child412 = static::getVar('child412');
-                static::setVar('iterator', $child412->parents());
-            });
+            test('the iterator has the expected items', function () {
+                $this->iterator = $this->child412->parents();
 
-            test('iteration #1: $iterator->current() === $child41', function () {
                 $this->assertSame($this->child41, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #2: $iterator->current() === $child4', function () {
                 $this->assertSame($this->child4, $this->iterator->current());
                 $this->iterator->next();
-            });
-
-            test('iteration #3: $iterator->current() === $component', function () {
                 $this->assertSame($this->component, $this->iterator->current());
                 $this->iterator->next();
                 $this->assertNull($this->iterator->current());
