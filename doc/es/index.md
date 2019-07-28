@@ -3,7 +3,7 @@
 
 *Components* es un paquete PHP que ofrece unas implementaciones genéricas y reutilizables para la creación de tipos de componentes personalizados. Dichas implementaciones cubren una serie de funcionalidades comunes en las estructuras formadas por componentes como es el caso de la propagación de eventos en árboles y la gestión de dependencias.
 
->Components es básicamente una implementación del patrón [Composite](https://es.wikipedia.org/wiki/Composite_(patr%C3%B3n_de_dise%C3%B1o)) por lo que es muy recomendable conocer el mismo para una mejor comprensión del proyecto.
+>*Components* es básicamente una implementación del patrón [Composite](https://es.wikipedia.org/wiki/Composite_(patr%C3%B3n_de_dise%C3%B1o)) por lo que es muy recomendable conocer el mismo para una mejor comprensión del proyecto.
 
 ## Instalación.
 
@@ -71,19 +71,60 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 
 >En el caso del ejemplo anterior, el componente compuesto hereda del componente simple. Esto es algo totalmente opcional y dependerá de las necesidades que se tengan para el diseño del mismo.
 
-A la clase del nuevo componente se le podrán especificar todos los datos y métodos que se necesiten, pero es importante tener en cuenta que en el respectivo *trait* se incluye la implementación básica del componente la cual no debe ser alterada en la clase.
+A la clase del nuevo componente se le podrá especificar todos los datos y métodos que se necesiten, pero es importante tener en cuenta que en el respectivo *trait* se incluye la implementación básica del componente la cual no debe ser alterada en la clase.
 
 ### Trabajando con las dependencias.
 
-Por lo general los componentes son entidades que tienen ciertos tipos de dependencias donde en el caso de los compuestos también tendrán las dependencias de sus hijos.
+Por lo general los componentes son entidades que tienen ciertos tipos de dependencias las cuales se pueden clasificar en tres tipos. Por una parte van a existir las **dependencias propias** que no son más que las que tiene el tipo de componente en cuestión. Por otra parte, existirán las **dependencias adicionales** de las cuales hablaremos más adelante, y en el caso de los componentes compuestos tendrán también las **dependencias de sus hijos**.
 
-Las dependencias de un componente se obtienen a través del método `getDependencies()`.
+Todas las dependencias se obtienen a través del método `getDependencies()` el cual "intentará" devolver de manera ordenada todos los tipos de dependencias antes mencionadas. Decimos "intentará" porque la tarea de organizarlas muchas veces no puede ser resuelta de manera automática y en esos casos se requiere intervención manual.
 
-Para definir las dependencias que tendrá un componente, se deberá implementar en la clase el método `getOwnDependencies()` el cual debe devolver un *array* con las dependencias de este tipo de componente.
+#### Creando un tipo de dependencia.
 
-Se considera una dependencia a una entidad cuya clase implemente la interfaz `NubecuLabs\Components\DependencyInterface`.
+Una dependencia es una instancia cuya clase implementa la interfaz `NubecuLabs\Components\DependencyInterface` la cual contiene cuatro métodos que deberán ser implementados en la clase.
 
-A la hora de utilizar un componente con un fin específico, en la mayoría de los casos será necesario darle un tratamiento determinado a sus dependencias lo cual puede resultar complejo dado que muchas veces estas dependencias presentan conflictos entre sí. En muchos casos esos conflictos pueden ser resueltos de manera automática pero en otros solo pueden ser resueltos por los usuarios.
+El siguiente fragmento muestra un ejemplo sobre como crear un nuevo tipo de dependencia. El método `getName()` se explica por si solo, no obstante debemos
+
+```php
+
+use NubecuLabs\Components\DependencyInterface;
+
+class ScriptAsset implements DependencyInterface
+{
+    protected $name;
+    protected $version;
+    protected $incompatibleVersions;
+    protected $includedDependencies;
+
+    public function __construct(string $name, string $version, string $incompatibleVersions = '', array $includedDependencies = [])
+    {
+        $this->name = $name;
+        $this->version = $version;
+        $this->incompatibleVersions = $incompatibleVersions;
+        $this->includedDependencies = $includedDependencies;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
+    public function getIncompatibleVersions(): string
+    {
+        return $this->incompatibleVersions;
+    }
+
+    public function getIncludedDependencies(): string
+    {
+        return $this->includedDependencies;
+    }
+}
+```
 
 ## Conociendo las características de los componentes.
 
