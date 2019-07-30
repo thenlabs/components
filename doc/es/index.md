@@ -75,7 +75,7 @@ A la clase del nuevo componente se le podrá especificar todos los datos y méto
 
 ### Trabajando con las dependencias.
 
-Por lo general los componentes son entidades que tienen ciertos tipos de dependencias las cuales se pueden clasificar en tres tipos. Por una parte van a existir las **dependencias propias** que no son más que las que tiene el tipo de componente en cuestión. Por otra parte, existirán las **dependencias adicionales** de las cuales hablaremos más adelante, y en el caso de los componentes compuestos tendrán también las **dependencias de sus hijos**.
+Por lo general los componentes son entidades que tienen ciertos tipos de dependencias las cuales clasificamos en tres tipos. Por una parte van a existir las **dependencias propias** que no son más que las que tiene el tipo de componente en cuestión. Por otra parte, existirán las **dependencias adicionales** de las cuales hablaremos más adelante, y en el caso de los componentes compuestos tendrán también las **dependencias de sus hijos**.
 
 Todas las dependencias se obtienen a través del método `getDependencies()` el cual "intentará" devolver de manera ordenada todos los tipos de dependencias antes mencionadas. Decimos "intentará" porque la tarea de organizarlas muchas veces no puede ser resuelta de manera automática y en esos casos se requiere intervención manual.
 
@@ -83,7 +83,7 @@ Todas las dependencias se obtienen a través del método `getDependencies()` el 
 
 Una dependencia es una instancia cuya clase implementa la interfaz `NubecuLabs\Components\DependencyInterface` la cual contiene cuatro métodos que deberán ser implementados en la clase.
 
-El siguiente fragmento muestra un ejemplo sobre como crear un nuevo tipo de dependencia. El método `getName()` se explica por si solo, no obstante debemos
+El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de los cuatro métodos.
 
 ```php
 
@@ -125,6 +125,14 @@ class ScriptAsset implements DependencyInterface
     }
 }
 ```
+
+En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades.
+
+El método `getName()` se explica por sí solo. Cuando se está procesando un grupo de dependencias y se encuentran dos con igual nombre, entonces se compararán los valores de los métodos `getVersion()` y `getIncompatibleVersions()` para determinar cual de las dos instancias se incluirá en el resultado.
+
+El método `getVersion()` debe devolver un [valor de versión exacta](https://getcomposer.org/doc/articles/versions.md#exact-version-constraint).
+
+Por otra parte el método `getIncompatibleVersions()` debe devolver un [rango de versiones](https://getcomposer.org/doc/articles/versions.md#version-range). Este valor se usará para determinar si dos dependencias con igual nombre y diferentes versiones pueden ser compatibles entre sí. Por ejemplo, si se
 
 ## Conociendo las características de los componentes.
 
