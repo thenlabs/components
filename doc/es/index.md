@@ -75,15 +75,15 @@ A la clase del nuevo componente se le podrá especificar todos los datos y méto
 
 ### Trabajando con las dependencias.
 
-Por lo general los componentes son entidades que tienen ciertos tipos de dependencias las cuales clasificamos en tres tipos. Por una parte van a existir las **dependencias propias** que no son más que las que tiene el tipo de componente en cuestión. Por otra parte, existirán las **dependencias adicionales** de las cuales hablaremos más adelante, y en el caso de los componentes compuestos tendrán también las **dependencias de sus hijos**.
+Por lo general los componentes son entidades que tienen ciertos tipos de dependencias las cuales clasificamos en tres tipos. Por una parte van a existir las **dependencias propias** que no son más que las que tiene el tipo de componente en cuestión. Además, existirán las **dependencias adicionales** de las cuales hablaremos más adelante, y en el caso de los componentes compuestos tendrán también las **dependencias de sus hijos**.
 
-Todas las dependencias se obtienen a través del método `getDependencies()` el cual "intentará" devolver de manera ordenada todos los tipos de dependencias antes mencionadas. Decimos "intentará" porque la tarea de organizarlas muchas veces no puede ser resuelta de manera automática y en esos casos se requiere intervención manual.
+Todas las dependencias se obtienen a través del método `getDependencies()` el cual "intentará" devolver de manera ordenada todos los tipos antes mencionados. Decimos "intentará" porque la tarea de organizarlas muchas veces no puede ser resuelta de manera automática y en esos casos se requiere intervención manual.
 
 #### Creando un tipo de dependencia.
 
 Una dependencia es una instancia cuya clase implementa la interfaz `NubecuLabs\Components\DependencyInterface` la cual contiene cuatro métodos que deberán ser implementados en la clase.
 
-El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de los cuatro métodos.
+El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de los cuatro métodos. También se han implementado unos métodos *getters* y *setters* para la propiedad *uri*.
 
 ```php
 
@@ -95,8 +95,9 @@ class ScriptAsset implements DependencyInterface
     protected $version;
     protected $incompatibleVersions;
     protected $includedDependencies;
+    protected $uri;
 
-    public function __construct(string $name, string $version, string $incompatibleVersions = '', array $includedDependencies = [])
+    public function __construct(string $name, ?string $version, ?string $incompatibleVersions = null, array $includedDependencies = [])
     {
         $this->name = $name;
         $this->version = $version;
@@ -109,30 +110,75 @@ class ScriptAsset implements DependencyInterface
         return $this->name;
     }
 
-    public function getVersion(): string
+    public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    public function getIncompatibleVersions(): string
+    public function getIncompatibleVersions(): ?string
     {
         return $this->incompatibleVersions;
     }
 
-    public function getIncludedDependencies(): string
+    public function getIncludedDependencies(): array
     {
         return $this->includedDependencies;
+    }
+
+    public function setUri(string $uri): void
+    {
+        $this->uri = $uri;
+    }
+
+    public function getUri(string $uri): string
+    {
+        return $this->uri;
     }
 }
 ```
 
 En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades.
 
-El método `getName()` se explica por sí solo. Cuando se está procesando un grupo de dependencias y se encuentran dos con igual nombre, entonces se compararán los valores de los métodos `getVersion()` y `getIncompatibleVersions()` para determinar cual de las dos instancias se incluirá en el resultado.
+El método `getName()` se explica por sí solo. Cuando se está procesando un grupo de dependencias y se encuentran dos con igual nombre, entonces se compararán los valores de los métodos `getVersion()` y `getIncompatibleVersions()` para determinar cual de las dos instancias será la que se incluirá en el resultado.
 
-El método `getVersion()` debe devolver un [valor de versión exacta](https://getcomposer.org/doc/articles/versions.md#exact-version-constraint).
+El método `getVersion()` debe devolver un [valor de versión exacta](https://getcomposer.org/doc/articles/versions.md#exact-version-constraint). Cuando se tienen dos dependencias de igual nombre y diferentes versiones, por defecto se tomará la de mayor versión.
 
-Por otra parte el método `getIncompatibleVersions()` debe devolver un [rango de versiones](https://getcomposer.org/doc/articles/versions.md#version-range). Este valor se usará para determinar si dos dependencias con igual nombre y diferentes versiones pueden ser compatibles entre sí. Por ejemplo, si se
+Por otra parte el método `getIncompatibleVersions()` debe devolver un [rango de versiones](https://getcomposer.org/doc/articles/versions.md#version-range). Este valor se usa para determinar qué versiones son incompatibles con una dependencia. Por ejemplo, suponga hipotéticamente que se tienen dos dependencias de nombre 'jquery' cuyas versiones son 1.11.1 y 2.2.22 respectivamente y en el caso de la segunda, su método `getIncompatibleVersions()` devuelve el valor `<2.0`. En ese caso se producirá una excepción del tipo `NubecuLabs\Components\Exception\IncompatibilityException` ya que una dependencia indica explícitamente que es incompatible con la otra.
+
+Por último, el método `getIncludedDependencies()` debe devolver en un *array* todas las otras dependencias que están incluidas dentro de la actual. Por ejemplo, suponga que existe un componente compuesto que tiene una dependencia llamada 'bootstrap-js' la cual incluye a otra dependencia de nombre 'modal-js', y dicho componente tiene un hijo que depende de 'modal-js'. Cuando en el componente padre se llame al método `getDependencies()`, el resultado contendrá solamente la dependencia 'bootstrap-js' dado que 'modal-js' se encuentra implítica en la primera.
+
+#### Declarando las dependencias de los componentes.
+
+Para declarar las dependencias de un componente, es preciso implementar en su clase el método `getOwnDependencies()` el cual debe devolver en un *array* todas las instancias de las dependencias tal y como se muestra en el siguiente ejemplo:
+
+```php
+
+use NubecuLabs\Components\CompositeComponentInterface;
+use NubecuLabs\Components\CompositeComponentTrait;
+
+class CompositeComponent extends SimpleComponent implements CompositeComponentInterface
+{
+    use CompositeComponentTrait;
+
+    // ...
+
+    public function getOwnDependencies(): array
+    {
+        $jquery = new ScriptAsset('jquery', '1.12.1');
+        $jquery->setUri('https://code.jquery.com/ui/1.12.1/jquery-ui.min.js');
+
+        return [$jquery];
+    }
+
+    // ...
+}
+```
+
+#### Declarando las dependencias adicionales.
+
+En ocasiones, es necesario contar con ciertas dependencias que se determinan de alguna manera especial. Es ahí donde entra el concepto de las dependencias adicionales las cuales se definen en la clase del componente implementando el método `getAdditionalDependencies()` el cual también debe devolver un *array* con las instancias de las dependencias.
+
+Es muy común que existan componentes que colaboren con otros donde en esos casos por lo general se necesita que el componente también tenga las dependencias que tiene el componente con el cual tiene la colaboración.
 
 ## Conociendo las características de los componentes.
 

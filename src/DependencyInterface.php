@@ -24,7 +24,7 @@ interface DependencyInterface extends DependentInterface
      *
      * @return string
      */
-    public function getVersion(): string;
+    public function getVersion(): ?string;
 
     /**
      * Returns the version constraint for which there are incompatibilities
@@ -34,7 +34,7 @@ interface DependencyInterface extends DependentInterface
      *
      * @return string  Composer constraint.
      */
-    public function getIncompatibleVersions(): string;
+    public function getIncompatibleVersions(): ?string;
 
     /**
      * Returns all dependencies that are inside this dependency.
