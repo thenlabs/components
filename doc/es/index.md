@@ -73,7 +73,7 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 
 A la clase del nuevo componente se le podrá especificar todos los datos y métodos que se necesiten, pero es importante tener en cuenta que en el respectivo *trait* se incluye la implementación básica del componente la cual no debe ser alterada en la clase.
 
-### Trabajando con las dependencias.
+### Introducción a las dependencias.
 
 Por lo general los componentes son entidades que tienen ciertos tipos de dependencias las cuales clasificamos en tres tipos. Por una parte van a existir las **dependencias propias** que no son más que las que tiene el tipo de componente en cuestión. Además, existirán las **dependencias adicionales** de las cuales hablaremos más adelante, y en el caso de los componentes compuestos tendrán también las **dependencias de sus hijos**.
 
@@ -83,7 +83,7 @@ Todas las dependencias se obtienen a través del método `getDependencies()` el 
 
 Una dependencia es una instancia cuya clase implementa la interfaz `NubecuLabs\Components\DependencyInterface` la cual contiene cuatro métodos que deberán ser implementados en la clase.
 
-El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de los cuatro métodos. También se han implementado unos métodos *getters* y *setters* para la propiedad *uri*.
+El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de los cuatro métodos. También se han implementado un método *getter* y uno *setter* para la propiedad *uri* de la clase.
 
 ```php
 
@@ -178,7 +178,42 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 
 En ocasiones, es necesario contar con ciertas dependencias que se determinan de alguna manera especial. Es ahí donde entra el concepto de las dependencias adicionales las cuales se definen en la clase del componente implementando el método `getAdditionalDependencies()` el cual también debe devolver un *array* con las instancias de las dependencias.
 
-Es muy común que existan componentes que colaboren con otros donde en esos casos por lo general se necesita que el componente también tenga las dependencias que tiene el componente con el cual tiene la colaboración.
+Dado que es muy común que ciertos componentes colaboren con otros, y en cuyos casos por lo general se necesita que dicho componente también tenga las dependencias de esos otros componentes, existe implementada una funcionalidad que permite mediante una anotación, indicar que el componente también incluya esas otras dependencias.
+
+Para ello, basta con especificar una anotación del tipo `NubecuLabs\Components\Annotation\Component` sobre las propiedades donde puedan existir componentes, y se debe usar el *trait* `NubecuLabs\Components\AdditionalDependenciesFromAnnotationsTrait` en la clase tal y como se muestra en el siguiente ejemplo.
+
+```php
+
+use NubecuLabs\Components\ComponentInterface;
+use NubecuLabs\Components\ComponentTrait;
+use NubecuLabs\Components\AdditionalDependenciesFromAnnotationsTrait;
+use NubecuLabs\Components\Annotation\Component;
+
+class SimpleComponent implements ComponentInterface
+{
+    use ComponentTrait;
+    use AdditionalDependenciesFromAnnotationsTrait;
+
+    /**
+     * @Component
+     */
+    protected $otherComponent;
+
+    public function getOtherComponent(): ?ComponentInterface
+    {
+        return $this->otherComponent;
+    }
+
+    public function setOtherComponent(?ComponentInterface $otherComponent): void
+    {
+        $this->otherComponent = $otherComponent;
+    }
+
+    // ...
+}
+```
+
+De esta manera, cuando al componente se le llame a su método `getDependencies()` también incluirá las dependencias del componente que exista en la propiedad `otherComponent`. Como es de suponer, si dicha propiedad no contiene ninguna instancia de componente no se incluirá nada.
 
 ## Conociendo las características de los componentes.
 
