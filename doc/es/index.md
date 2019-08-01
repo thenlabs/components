@@ -83,7 +83,7 @@ Todas las dependencias se obtienen a través del método `getDependencies()` el 
 
 Una dependencia es una instancia cuya clase implementa la interfaz `NubecuLabs\Components\DependencyInterface` la cual contiene cuatro métodos que deberán ser implementados en la clase.
 
-El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de los cuatro métodos. También se han implementado un método *getter* y uno *setter* para la propiedad *uri* de la clase.
+El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de los cuatro métodos. Adicionalmente se ha implementado un método *getter* y uno *setter* para la propiedad *uri* de la clase.
 
 ```php
 
@@ -137,15 +137,15 @@ class ScriptAsset implements DependencyInterface
 }
 ```
 
-En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades.
+En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades ya que solo con que implemente la interfaz `NubecuLabs\Components\DependencyInterface` basta para que se considere una dependencia.
 
 El método `getName()` se explica por sí solo. Cuando se está procesando un grupo de dependencias y se encuentran dos con igual nombre, entonces se compararán los valores de los métodos `getVersion()` y `getIncompatibleVersions()` para determinar cual de las dos instancias será la que se incluirá en el resultado.
 
 El método `getVersion()` debe devolver un [valor de versión exacta](https://getcomposer.org/doc/articles/versions.md#exact-version-constraint). Cuando se tienen dos dependencias de igual nombre y diferentes versiones, por defecto se tomará la de mayor versión.
 
-Por otra parte el método `getIncompatibleVersions()` debe devolver un [rango de versiones](https://getcomposer.org/doc/articles/versions.md#version-range). Este valor se usa para determinar qué versiones son incompatibles con una dependencia. Por ejemplo, suponga hipotéticamente que se tienen dos dependencias de nombre 'jquery' cuyas versiones son 1.11.1 y 2.2.22 respectivamente y en el caso de la segunda, su método `getIncompatibleVersions()` devuelve el valor `<2.0`. En ese caso se producirá una excepción del tipo `NubecuLabs\Components\Exception\IncompatibilityException` ya que una dependencia indica explícitamente que es incompatible con la otra.
+Por otra parte, el método `getIncompatibleVersions()` debe devolver un [rango de versiones](https://getcomposer.org/doc/articles/versions.md#version-range). Este valor se usa para determinar qué versiones son incompatibles con una dependencia. Por ejemplo, suponga hipotéticamente que se tienen dos dependencias de nombre 'jquery' cuyas versiones son 1.11.1 y 2.2.22 respectivamente y en el caso de la segunda, su método `getIncompatibleVersions()` devuelve el valor `<2.0`. En ese caso se producirá una excepción del tipo `NubecuLabs\Components\Exception\IncompatibilityException` ya que una dependencia indica explícitamente que es incompatible con la otra.
 
-Por último, el método `getIncludedDependencies()` debe devolver en un *array* todas las otras dependencias que están incluidas dentro de la actual. Por ejemplo, suponga que existe un componente compuesto que tiene una dependencia llamada 'bootstrap-js' la cual incluye a otra dependencia de nombre 'modal-js', y dicho componente tiene un hijo que depende de 'modal-js'. Cuando en el componente padre se llame al método `getDependencies()`, el resultado contendrá solamente la dependencia 'bootstrap-js' dado que 'modal-js' se encuentra implítica en la primera.
+Por último, el método `getIncludedDependencies()` debe devolver en un *array* todas las otras dependencias que están incluidas dentro de la actual. Por ejemplo, suponga que existe un componente compuesto que tiene una dependencia llamada "bootstrap-js" la cual incluye a otra dependencia de nombre "modal-js", y dicho componente tiene un hijo que depende de "modal-js". Cuando en el componente padre se llame al método `getDependencies()`, el resultado contendrá solamente la dependencia "bootstrap-js" dado que "modal-js" se encuentra implítica en la primera.
 
 #### Declarando las dependencias de los componentes.
 
@@ -231,6 +231,8 @@ Para que los componentes puedan contener datos personalizados es que existe la p
 
 En el caso de los componentes compuestos tendrán además un par de propiedades adicionales las cuales se corresponden con un *array* de **hijos** y el **despachador de eventos de captura**. Más adelante hablaremos de este último concepto.
 
+Otra de las características más importantes que presentan estos componentes es que pueden reaccionar a eventos. Cuando en un componente hijo se produce un determinado evento entonces se va a producir lo que se conoce como propagación del evento.
+
 ## Trabajando con los componentes.
 
 ### Componentes simples.
@@ -258,13 +260,3 @@ foreach ($child4->children() as $component) {
 ```
 
 En el ejemplo anterior el orden de iteración sería: $child4, $child411, $child412 y $child413.
-
-## TEMP.
-
-Del patrón [Composite](https://es.wikipedia.org/wiki/Composite_(patr%C3%B3n_de_dise%C3%B1o)), es sabido que básicamente existen dos tipos de componentes, los simples y los compuestos. La única diferencia entre ambos está en que los compuestos pueden contener a otros componentes, mientras que los simples solo pueden ser contenidos.
-
-Por lo general los componentes son entidades que tienen ciertos tipos de dependencias donde en el caso de los compuestos también dependerán de las dependencias que tengan sus hijos.
-
-A la hora de utilizar un componente con un fin específico, en la mayoría de los casos será necesario darle un tratamiento determinado a sus dependencias lo cual puede resultar complejo dado que muchas veces estas dependencias presentan conflictos entre sí. En muchos casos esos conflictos pueden ser resueltos de manera automática pero en otros solo pueden ser resueltos por los usuarios.
-
-Otra de las características más importantes que presentan estos componentes es que pueden reaccionar a eventos. Cuando en un componente hijo se produce un determinado evento entonces se va a producir lo que se conoce como propagación del evento.
