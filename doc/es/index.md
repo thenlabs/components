@@ -77,7 +77,7 @@ A la clase del nuevo componente se le podrá especificar todos los datos y méto
 
 Por lo general los componentes son entidades que tienen ciertos tipos de dependencias las cuales clasificamos en tres tipos. Por una parte van a existir las **dependencias propias** que no son más que las que tiene el tipo de componente en cuestión. Además, existirán las **dependencias adicionales** de las cuales hablaremos más adelante, y en el caso de los componentes compuestos tendrán también las **dependencias de sus hijos**.
 
-Todas las dependencias se obtienen a través del método `getDependencies()` el cual "intentará" devolver de manera ordenada todos los tipos antes mencionados. Decimos "intentará" porque la tarea de organizarlas muchas veces no puede ser resuelta de manera automática y en esos casos se requiere intervención manual.
+Todas las dependencias se obtienen a través del método `getDependencies()` el cual "intentará" devolver de manera ordenada todos los tipos antes mencionados. Decimos "intentará" porque la tarea de organizarlas muchas veces no puede ser resuelta de manera automática y en esos casos se requerirá intervención manual la cual será abordada más adelante.
 
 #### Creando un tipo de dependencia.
 
@@ -137,7 +137,7 @@ class ScriptAsset implements DependencyInterface
 }
 ```
 
-En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades ya que solo con que implemente la interfaz `NubecuLabs\Components\DependencyInterface` basta para que se considere una dependencia.
+En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades ya que solo con que implemente la interfaz `NubecuLabs\Components\DependencyInterface` basta para que sus instancias se consideren dependencias.
 
 El método `getName()` se explica por sí solo. Cuando se está procesando un grupo de dependencias y se encuentran dos con igual nombre, entonces se compararán los valores de los métodos `getVersion()` y `getIncompatibleVersions()` para determinar cual de las dos instancias será la que se incluirá en el resultado.
 
@@ -227,11 +227,65 @@ Otra propiedad a tener en cuenta es el **componente padre** cuyo valor puede ser
 
 También existirá un **despachador de eventos** el cual será una instancia de `Symfony\Component\EventDispatcher\EventDispatcherInterface` creada internamente pero que también puede ser especificada por el usuario.
 
-Para que los componentes puedan contener datos personalizados es que existe la propiedad **datos** cuyo valor no es más que un *array* asociativo.
+Para que los componentes puedan contener datos personalizados es que existe la propiedad **datos** la cual no es más que un *array* asociativo.
 
 En el caso de los componentes compuestos tendrán además un par de propiedades adicionales las cuales se corresponden con un *array* de **hijos** y el **despachador de eventos de captura**. Más adelante hablaremos de este último concepto.
 
-Otra de las características más importantes que presentan estos componentes es que pueden reaccionar a eventos. Cuando en un componente hijo se produce un determinado evento entonces se va a producir lo que se conoce como propagación del evento.
+## Trabajando con eventos.
+
+Una de las características más importantes que presentan estos componentes es que pueden reaccionar a eventos. Cuando en un componente hijo se produce un determinado evento, se va a producir por la respectiva rama del árbol lo que se conoce como propagación del evento, cuyo concepto es tomado del [DOM](https://es.wikipedia.org/wiki/Document_Object_Model) presente en los navegadores web.
+
+La propagación de los eventos tiene lugar en tres etapas diferentes denominadas *captura*, *ejecución* y *burbujeo*. Dar una explicación detallada sobre estos conceptos no es objetivo de esta guía, no obstante, en [este enlace](https://www.tutorialrepublic.com/javascript-tutorial/javascript-event-propagation.php) puede encontrarse documentación al respecto.
+
+### Registrando manejadores de eventos.
+
+A través del método `on()` se puede vincular un nombre de evento con un manejador tal y como se muestra en el siguiente fragmento.
+
+```php
+$component->on('click', function ($event) {
+    // ...
+});
+```
+
+Como puede verse, el primer argumento de la función se corresponde con el nombre del evento mientras que el segundo con un *callback* que será ejecutado una vez que sobre el componente se produzca dicho evento. Puede verse que este *callback* recibe un único argumento cuyo valor será una instancia de la clase `NubecuLabs\Components\Event\Event` la cual contendrá información del respectivo evento en curso.
+
+Solo los componentes compuestos pueden reaccionar a eventos en la etapa de la captura. Para hacer esto basta con especificar `true` como tercer argumento de la función `on()`.
+
+```php
+// listener for capture.
+$component->on('click', function ($event) {
+    // ...
+}, true);
+```
+
+>Con el método `off()` es posible desvincular manejadores de evento que han ya han sido vinculados.
+
+### Disparando eventos.
+
+Para disparar un evento sobre un componente se debe llamar al método `dispatchEvent()`. A este método se le debe indicar el nombre del evento así como una instancia de la clase `NubecuLabs\Components\Event\Event` la cual deberá contener la información del mismo.
+
+Seguidamente se muestra un ejemplo donde solo se pasa como información el componente donde se produce el evento.
+
+```php
+use NubecuLabs\Components\Event\Event;
+
+// ...
+
+$event = new Event;
+$event->setSource($component);
+
+$component->dispatchEvent('myevent', $event);
+```
+
+>Cuando se necesite pasar información personalizada, se debe crear una clase que extienda de `NubecuLabs\Components\Event\Event` y pasar una instancia de la misma.
+
+Cuando se llama al método `dispatchEvent()` de la manera antes mostrada, se producirá sobre el árbol la propagación del evento tal y como lo hemos comentado antes. Este método acepta un par de argumentos más que sirven para indicar si se debe efectuar la *captura* y/o el *burbujeo* del evento.
+
+En el siguiente ejemplo solo se producirá la *captura* pero no el *burbujeo*.
+
+```php
+$component->dispatchEvent('myevent', $event, true, false);
+```
 
 ## Trabajando con los componentes.
 
@@ -239,7 +293,7 @@ Otra de las características más importantes que presentan estos componentes es
 
 #### Iterando sobre cada padre.
 
-En el siguiente ejemplo el orden de iteración será: $child41, $child4 y $component.
+En el siguiente ejemplo el orden de iteración será: `$child41`, `$child4` y `$component`.
 
 ```php
 foreach ($child411->parents() as $parent) {
@@ -259,4 +313,4 @@ foreach ($child4->children() as $component) {
 }
 ```
 
-En el ejemplo anterior el orden de iteración sería: $child4, $child411, $child412 y $child413.
+En el ejemplo anterior el orden de iteración sería: `$child4`, `$child411`, `$child412` y `$child413`.
