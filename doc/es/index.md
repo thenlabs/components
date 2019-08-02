@@ -77,7 +77,7 @@ A la clase del nuevo componente se le podrá especificar todos los datos y méto
 
 Por lo general los componentes son entidades que tienen ciertos tipos de dependencias las cuales clasificamos en tres tipos. Por una parte van a existir las **dependencias propias** que no son más que las que tiene el tipo de componente en cuestión. Además, existirán las **dependencias adicionales** de las cuales hablaremos más adelante, y en el caso de los componentes compuestos tendrán también las **dependencias de sus hijos**.
 
-Todas las dependencias se obtienen a través del método `getDependencies()` el cual "intentará" devolver de manera ordenada todos los tipos antes mencionados. Decimos "intentará" porque la tarea de organizarlas muchas veces no puede ser resuelta de manera automática y en esos casos se requerirá intervención manual la cual será abordada más adelante.
+Todas las dependencias se obtienen a través del método `getDependencies()` el cual "intentará" devolver de manera ordenada todos los tipos antes mencionados. Decimos "intentará" porque la tarea de organizarlas muchas veces no puede ser resuelta de manera automática y en esos casos se requerirá intervención manual cuyo tema será abordado más adelante.
 
 #### Creando un tipo de dependencia.
 
@@ -176,7 +176,7 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 
 #### Declarando las dependencias adicionales.
 
-En ocasiones, es necesario contar con ciertas dependencias que se determinan de alguna manera especial. Es ahí donde entra el concepto de las dependencias adicionales las cuales se definen en la clase del componente implementando el método `getAdditionalDependencies()` el cual también debe devolver un *array* con las instancias de las dependencias.
+En ocasiones, es necesario contar con ciertas dependencias que se determinan de alguna manera especial. Es ahí donde entra el concepto de las dependencias adicionales las cuales se definen en la clase del componente implementando el método `getAdditionalDependencies()` el cual también debe devolver un *array* de dependencias.
 
 Dado que es muy común que ciertos componentes colaboren con otros, y en cuyos casos por lo general se necesita que dicho componente también tenga las dependencias de esos otros componentes, existe implementada una funcionalidad que permite mediante una anotación, indicar que el componente también incluya esas otras dependencias.
 
@@ -281,7 +281,7 @@ $component->dispatchEvent('myevent', $event);
 
 Cuando se llama al método `dispatchEvent()` de la manera antes mostrada, se producirá sobre el árbol la propagación del evento tal y como lo hemos comentado antes. Este método acepta un par de argumentos más que sirven para indicar si se debe efectuar la *captura* y/o el *burbujeo* del evento.
 
-En el siguiente ejemplo solo se producirá la *captura* pero no el *burbujeo*.
+En el siguiente ejemplo solo se producirá la *captura* pero no el *burbujeo* del evento.
 
 ```php
 $component->dispatchEvent('myevent', $event, true, false);
