@@ -3,7 +3,7 @@
 
 *Components* es un paquete PHP que ofrece unas implementaciones genéricas y reutilizables para la creación de tipos de componentes personalizados. Dichas implementaciones cubren una serie de funcionalidades comunes en las estructuras formadas por componentes como es el caso de la propagación de eventos en árboles y la gestión de dependencias.
 
->*Components* es básicamente una implementación del patrón [Composite](https://es.wikipedia.org/wiki/Composite_(patr%C3%B3n_de_dise%C3%B1o)) por lo que es muy recomendable conocer el mismo para una mejor comprensión del proyecto.
+>*Components* es básicamente una implementación del patrón [Composite](https://es.wikipedia.org/wiki/Composite_(patr%C3%B3n_de_dise%C3%B1o)) por lo que es muy recomendable conocer el mismo para una mejor comprensión de este proyecto.
 
 ## Instalación.
 
@@ -71,7 +71,7 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 
 >En el caso del ejemplo anterior, el componente compuesto hereda del componente simple. Esto es algo totalmente opcional y dependerá de las necesidades que se tengan para el diseño del mismo.
 
-A la clase del nuevo componente se le podrá especificar todos los datos y métodos que se necesiten, pero es importante tener en cuenta que en el respectivo *trait* se incluye la implementación básica del componente la cual no debe ser alterada en la clase.
+A la clase del nuevo componente se le podrán especificar todos los datos y métodos que se necesiten, pero es importante tener en cuenta que en el respectivo *trait* se incluye la implementación básica del componente la cual no debería ser alterada en la clase.
 
 ### Introducción a las dependencias.
 
@@ -83,7 +83,7 @@ Todas las dependencias se obtienen a través del método `getDependencies()` el 
 
 Una dependencia es una instancia cuya clase implementa la interfaz `NubecuLabs\Components\DependencyInterface` la cual contiene cuatro métodos que deberán ser implementados en la clase.
 
-El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de los cuatro métodos. Adicionalmente se ha implementado un método *getter* y uno *setter* para la propiedad *uri* de la clase.
+El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de esos cuatro métodos. Adicionalmente se ha implementado un método *getter* y uno *setter* para la propiedad *uri* de la clase.
 
 ```php
 
@@ -137,7 +137,7 @@ class ScriptAsset implements DependencyInterface
 }
 ```
 
-En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades ya que solo con que implemente la interfaz `NubecuLabs\Components\DependencyInterface` basta para que sus instancias se consideren dependencias.
+En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades ya que solo con que implemente la interfaz `NubecuLabs\Components\DependencyInterface` bastará para que sus instancias sean consideradas como dependencias.
 
 El método `getName()` se explica por sí solo. Cuando se está procesando un grupo de dependencias y se encuentran dos con igual nombre, entonces se compararán los valores de los métodos `getVersion()` y `getIncompatibleVersions()` para determinar cual de las dos instancias será la que se incluirá en el resultado.
 
@@ -176,11 +176,11 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 
 #### Declarando las dependencias adicionales.
 
-En ocasiones, es necesario contar con ciertas dependencias que se determinan de alguna manera especial. Es ahí donde entra el concepto de las dependencias adicionales las cuales se definen en la clase del componente implementando el método `getAdditionalDependencies()` el cual también debe devolver un *array* de dependencias.
+En ocasiones, es necesario contar con ciertas dependencias que se determinan de alguna manera especial. Es ahí donde entra el concepto de las dependencias adicionales las cuales se definen implementando el método `getAdditionalDependencies()` en la clase del componente.
 
-Dado que es muy común que ciertos componentes colaboren con otros, y en cuyos casos por lo general se necesita que dicho componente también tenga las dependencias de esos otros componentes, existe implementada una funcionalidad que permite mediante una anotación, indicar que el componente también incluya esas otras dependencias.
+Dado que es muy común que ciertos componentes colaboren con otros, y en cuyos casos por lo general se necesita que dicho componente también tenga las dependencias de esos otros componentes, existe implementada una funcionalidad que posibilita de manera muy sencilla, indicar que el componente también incluya esas otras dependencias.
 
-Para ello, basta con especificar una anotación del tipo `NubecuLabs\Components\Annotation\Component` sobre las propiedades donde puedan existir componentes, y se debe usar el *trait* `NubecuLabs\Components\AdditionalDependenciesFromAnnotationsTrait` en la clase tal y como se muestra en el siguiente ejemplo.
+Para ello, basta con especificar una anotación del tipo `NubecuLabs\Components\Annotation\Component` sobre los atributos de la clase donde se van a referenciar componentes. Adicionalmente, se deberá usar el *trait* `NubecuLabs\Components\AdditionalDependenciesFromAnnotationsTrait` en la clase tal y como se muestra en el siguiente ejemplo.
 
 ```php
 
@@ -213,23 +213,23 @@ class SimpleComponent implements ComponentInterface
 }
 ```
 
-De esta manera, cuando al componente se le llame a su método `getDependencies()` también incluirá las dependencias del componente que exista en la propiedad `otherComponent`. Como es de suponer, si dicha propiedad no contiene ninguna instancia de componente no se incluirá nada.
+De esta manera, cuando a un componente del tipo `SimpleComponent` se le llame a su método `getDependencies()` también incluirá las dependencias del componente que exista referenciado en el atributo `otherComponent`.
 
 ## Conociendo las características de los componentes.
 
-Todos los componentes presentan una serie de propiedades comunes que vamos a comentar seguidamente.
+Todos los componentes presentan una serie de propiedades comunes que seguidamente vamos a comentar solo de manera general y más adelante serán abordadas con ejemplos.
 
-Primeramente vamos a mencionar al **identificador único** la cual es una propiedad de solo lectura y permite que el componente pueda ser referenciado de manera segura. Su valor se asigna internamente y consiste en una cadena de caracteres aleatoria.
+Primeramente vamos a mencionar al **identificador único** la cual es una propiedad de solo lectura y permite que un componente pueda ser referenciado de manera segura. Su valor se asigna internamente y consiste en una cadena de caracteres aleatoria.
 
-Otra propiedad que sirve para referenciar al componente es el **nombre** pero en este caso es un valor especificado por el usuario por lo que puede ocurrir que dos componentes o más se puedan llamar igual.
+Otra propiedad que sirve para referenciar a los componentes es el **nombre** pero en este caso es un valor especificado por el usuario por lo que puede ocurrir que dos componentes o más se puedan llamar igual.
 
-Otra propiedad a tener en cuenta es el **componente padre** cuyo valor puede ser nulo o un componente compuesto.
+Otra propiedad a tener en cuenta es el **componente padre** cuyo valor puede ser nulo o algún componente compuesto.
 
-También existirá un **despachador de eventos** el cual será una instancia de `Symfony\Component\EventDispatcher\EventDispatcherInterface` creada internamente pero que también puede ser especificada por el usuario.
+También existirá un **despachador de eventos** el cual será una instancia de la clase `Symfony\Component\EventDispatcher\EventDispatcherInterface` creada internamente aunque también puede ser especificada por el usuario.
 
-Para que los componentes puedan contener datos personalizados es que existe la propiedad **datos** la cual no es más que un *array* asociativo.
+Para que a los componentes se les pueda especificar datos personalizados es que existe la propiedad **datos** la cual no es más que un *array* asociativo.
 
-En el caso de los componentes compuestos tendrán además un par de propiedades adicionales las cuales se corresponden con un *array* de **hijos** y el **despachador de eventos de captura**. Más adelante hablaremos de este último concepto.
+En el caso de los componentes compuestos tendrán además un par de propiedades adicionales las cuales se corresponden con un *array* para referenciar a los componentes **hijos** y un **despachador de eventos de captura**. Más adelante hablaremos de este último concepto.
 
 ## Trabajando con eventos.
 
@@ -247,24 +247,22 @@ $component->on('click', function ($event) {
 });
 ```
 
-Como puede verse, el primer argumento de la función se corresponde con el nombre del evento mientras que el segundo con un *callback* que será ejecutado una vez que sobre el componente se produzca dicho evento. Puede verse que este *callback* recibe un único argumento cuyo valor será una instancia de la clase `NubecuLabs\Components\Event\Event` la cual contendrá información del respectivo evento en curso.
+Como puede verse, el primer argumento de la función se corresponde con el nombre del evento mientras que el segundo con algún tipo de *callback* que será ejecutado una vez que sobre el componente se produzca un evento de igual nombre. Puede verse que este *callback* recibe un único argumento cuyo valor será una instancia de la clase `NubecuLabs\Components\Event\Event` la cual contendrá información del respectivo evento en curso.
 
 Solo los componentes compuestos pueden reaccionar a eventos en la etapa de la captura. Para hacer esto basta con especificar `true` como tercer argumento de la función `on()`.
 
 ```php
-// listener for capture.
+// listening for the event capture.
 $component->on('click', function ($event) {
     // ...
 }, true);
 ```
 
->Con el método `off()` es posible desvincular manejadores de evento que han ya han sido vinculados.
+>Con el método `off()` es posible desvincular manejadores que antes hayan sido vinculados.
 
 ### Disparando eventos.
 
-Para disparar un evento sobre un componente se debe llamar al método `dispatchEvent()`. A este método se le debe indicar el nombre del evento así como una instancia de la clase `NubecuLabs\Components\Event\Event` la cual deberá contener la información del mismo.
-
-Seguidamente se muestra un ejemplo donde solo se pasa como información el componente donde se produce el evento.
+Para disparar un evento sobre un componente se debe llamar al método `dispatchEvent()`. A este se le debe indicar el nombre del evento así como una instancia de la clase `NubecuLabs\Components\Event\Event` la cual contendrá información útil sobre el respectivo evento.
 
 ```php
 use NubecuLabs\Components\Event\Event;
@@ -277,11 +275,11 @@ $event->setSource($component);
 $component->dispatchEvent('myevent', $event);
 ```
 
->Cuando se necesite pasar información personalizada, se debe crear una clase que extienda de `NubecuLabs\Components\Event\Event` y pasar una instancia de la misma.
+>Para crear un tipo de evento personalizado se debe crear una clase que extienda `NubecuLabs\Components\Event\Event`.
 
 Cuando se llama al método `dispatchEvent()` de la manera antes mostrada, se producirá sobre el árbol la propagación del evento tal y como lo hemos comentado antes. Este método acepta un par de argumentos más que sirven para indicar si se debe efectuar la *captura* y/o el *burbujeo* del evento.
 
-En el siguiente ejemplo solo se producirá la *captura* pero no el *burbujeo* del evento.
+El siguiente ejemplo muestra como producir la *captura* pero no el *burbujeo*.
 
 ```php
 $component->dispatchEvent('myevent', $event, true, false);
