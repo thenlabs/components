@@ -382,7 +382,9 @@ Desde un componente compuesto se puede insertar uno o varios hijos a través de 
 
 Varias de las operaciones que hemos mostrado anteriormente provocan que internamente se lancen ciertos eventos sobre determinados componentes los cuales vamos a comentar seguidamente.
 
->Para conocer los datos que almacenan cada tipo de evento se debe mirar la API de la respectiva clase.
+>La mayoría de los nombres de los eventos internos se corresponden con el nombre de su respectiva clase.
+
+>Para conocer los datos que almacena cada tipo de evento se debe mirar la API de la respectiva clase.
 
 Por defecto cuando a un componente compuesto se le añade un nuevo hijo se produce sobre dicho componente un evento de tipo `NubecuLabs\Components\Event\BeforeInsertionEvent` el cual tiene lugar antes de que la inserción se haya efectuado, y otro de tipo `NubecuLabs\Components\Event\AfterInsertionEvent` después de que la misma fue llevada a cabo.
 
@@ -400,7 +402,35 @@ $child4->setChildrenOrder([$id413, $id411, $id412]);
 
 Al realizar esta operación se producirían un par de eventos de tipo `BeforeOrderEvent` y `AfterOrderEvent`.
 
-Por otra parte, cuando sobre un componente se le llama a su método `getDependencies()` se produce sobre el mismo un evento del tipo `NubecuLabs\Components\Event\FilterDependenciesEvent` después de que las dependencias fueron organizadas internamente y justo antes de devolver el resultado final. Este evento puede ser usado para modificar de manera dinámica las dependencias que tiene un componente.
+>Los eventos de tipo *before* pueden cancelar la operación.
+
+Por otra parte, cuando sobre un componente se le llama a su método `getDependencies()` se produce sobre el mismo un evento del tipo `NubecuLabs\Components\Event\FilterDependenciesEvent` después de que las dependencias fueron organizadas internamente y justo antes de devolver el resultado. Este evento puede ser usado para modificar de manera dinámica las dependencias de un determinado componente. El nombre de este evento tiene la forma "NubecuLabs\Components\Event\FilterDependenciesEvent_{$component->getId()}".
+
+Tal y como comentamos anteriormente, en ocasiones las dependencias de los componentes presentan conflictos entre sí donde muchas veces esos conflictos necesitan ser resueltos manualmente. Cuando se produce un conflicto de este tipo, se lanza en el componente un evento del tipo `NubecuLabs\Components\Event\DependencyConflictEvent` cuyo objetivo consiste en que a través del objeto del evento se especifique la solución del conflicto.
+
+>Cuando un conflicto de dependencias no es resuelto se lanzará una exceptión del tipo `NubecuLabs\Components\Exception\UnresolvedDependencyConflictException`.
+
+El siguiente ejemplo, muestra como tomar la dependencia de menor versión cuando en el componente `$child4` se produzca un conflicto.
+
+```php
+use NubecuLabs\Components\Event\DependencyConflictEvent;
+use Composer\Semver\Comparator;
+
+// ...
+
+$child4->on(DependencyConflictEvent::class, function (DependencyConflictEvent $event) {
+    $dependency1 = $event->getDependency1();
+    $dependency2 = $event->getDependency2();
+    $version1 = $dependency1->getVersion();
+    $version2 = $dependency2->getVersion();
+
+    if (Comparator::lessThan($version1, $version2)) {
+        $event->setSolution($version1);
+    } else {
+        $event->setSolution($version2);
+    }
+});
+```
 
 ### Datos personalizados.
 
