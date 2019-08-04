@@ -33,9 +33,11 @@ $component (C)
     |____$child4 (C)
     |       |
     |       |____$child41 (C)
-    |               |____$child411 (C)
-    |               |____$child412 (S)
-    |               |____$child413 (S)
+    |       |        |____$child411 (C)
+    |       |        |____$child412 (S)
+    |       |        |____$child413 (S)
+    |       |
+    |       |____$child42 (S)
 ```
 C: Compuesto, S: Simple
 
@@ -287,11 +289,9 @@ $component->dispatchEvent('myevent', $event, true, false);
 
 ## Trabajando con los componentes.
 
-### Componentes simples.
+### Iterando sobre cada padre.
 
-#### Iterando sobre cada padre.
-
-En el siguiente ejemplo el orden de iteración será: `$child41`, `$child4` y `$component`.
+El método `parents()` puede ser usado para iterar sobre cada padre. En el siguiente ejemplo el orden de iteración será: `$child41`, `$child4` y `$component`.
 
 ```php
 foreach ($child411->parents() as $parent) {
@@ -301,9 +301,9 @@ foreach ($child411->parents() as $parent) {
 
 >El método `getParents()` devuelve un *array* con todos los padres del componente.
 
-### Componentes compuestos.
+### Iterando sobre cada hijo.
 
-#### Iterando sobre cada hijo.
+En el caso de los componentes compuestos, con el método `children()` es posible hacer una iteración en profundidad sobre el árbol.
 
 ```php
 foreach ($child4->children() as $component) {
