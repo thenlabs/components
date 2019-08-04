@@ -323,7 +323,7 @@ foreach ($child4->children() as $component) {
 }
 ```
 
-### Haciendo búsquedas en los árboles.
+### Haciendo búsquedas en árboles.
 
 Hacer búsquedas en el árbol que representa un componente compuesto es sencillo gracias a los métodos `findChild()` y `findChilds()`. En ambos casos se les debe pasar un *callback* que será usado como criterio de búsqueda. En el caso del primer método se usará para buscar un solo componente por lo que la búsqueda finalizará con la primera coincidencia, mientras que en el caso del segundo deberá ser usado cuando se necesite buscar a más de un componente.
 
@@ -345,3 +345,34 @@ $component->findChilds($callback) === [$child3, $child31, $child4, $child41, $ch
 Existe implementado un método llamado `findChildById(string $id)` que sirve para buscar un componente por su identificador único.
 
 Para hacer búsquedas por nombre existen los métodos `findChildByName(string $name)` y `findChildsByName(string $name)`. Tal y como podrá suponer, en el caso del primero devolverá el primer componente cuyo nombre coincida con el argumento, mientras que en el caso del segundo devolverá en un *array* todas las coincidencias.
+
+### Validando los tipos de los hijos.
+
+Un componente compuesto por defecto acepta cualquier instancia de la interfaz `NubecuLabs\Components\ComponentInterface` como un hijo, pero en ciertas ocasiones se desea restringir que solo ciertos tipos sean aceptados.
+
+Para implementar esta resricción se debe implementar en la clase el método `validateChild()` tal y como se muestra en el siguiente ejemplo:
+
+```php
+use NubecuLabs\Components\ComponentInterface;
+use NubecuLabs\Components\CompositeComponentInterface;
+use NubecuLabs\Components\CompositeComponentTrait;
+
+class CompositeComponent extends SimpleComponent implements CompositeComponentInterface
+{
+    // ...
+
+    public function validateChild(ComponentInterface $child): bool
+    {
+        if ($child instanceof SimpleComponent) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+```
+
+En el ejemplo anterior, el componente solo aceptará como hijo a los que sean del tipo `SimpleComponent`.
+
+Desde un componente compuesto se puede insertar uno o varios hijos a través de los métodos `addChild($child)` y `addChilds($child1, $child2, ...)` respectivamente. Además de esto la llamada al método `setParent($parent)` de cualquier componente provoca que el padre registre al hijo automáticamente. Siempre que haya alguna inserción de un componente hijo primeramente se llamará al método `validateChild($child)` sobre el padre y si el resultado es `true` la inserción se llevará a cabo normalmente. En caso contrario, se producirá una excepción del tipo `NubecuLabs\Components\Exception\InvalidChildException`.
+
