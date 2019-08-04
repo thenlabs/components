@@ -291,7 +291,11 @@ $component->dispatchEvent('myevent', $event, true, false);
 
 ### Iterando sobre cada padre.
 
-El método `parents()` puede ser usado para iterar sobre cada padre. En el siguiente ejemplo el orden de iteración será: `$child41`, `$child4` y `$component`.
+El método `parents()` puede ser usado para iterar sobre cada padre de un componente. En el siguiente ejemplo el orden de iteración sería:
+
+1. $child41
+2. $child4
+3. $component
 
 ```php
 foreach ($child411->parents() as $parent) {
@@ -303,7 +307,15 @@ foreach ($child411->parents() as $parent) {
 
 ### Iterando sobre cada hijo.
 
-En el caso de los componentes compuestos, con el método `children()` es posible hacer una iteración en profundidad sobre el árbol.
+En el caso de los componentes compuestos, a través del método `children()` es posible hacer una recorrido en profundidad sobre el árbol que estos representan.
+
+En el siguiente ejemplo el orden de iteración sería:
+
+1. $child41
+2. $child411
+3. $child412
+4. $child413
+5. $child42
 
 ```php
 foreach ($child4->children() as $component) {
@@ -311,4 +323,25 @@ foreach ($child4->children() as $component) {
 }
 ```
 
-En el ejemplo anterior el orden de iteración sería: `$child4`, `$child411`, `$child412` y `$child413`.
+### Haciendo búsquedas en los árboles.
+
+Hacer búsquedas en el árbol que representa un componente compuesto es sencillo gracias a los métodos `findChild()` y `findChilds()`. En ambos casos se les debe pasar un *callback* que será usado como criterio de búsqueda. En el caso del primer método se usará para buscar un solo componente por lo que la búsqueda finalizará con la primera coincidencia, mientras que en el caso del segundo deberá ser usado cuando se necesite buscar a más de un componente.
+
+El *closure* del siguiente ejemplo sirve para determinar si un componente es compuesto o no. Vea a través de las expresiones los resultados de cada caso.
+
+```php
+$callback = function ($child) {
+    if ($child instanceof CompositeComponentInterface) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+$component->findChild($callback) === $child3; // true
+$component->findChilds($callback) === [$child3, $child31, $child4, $child41, $child411];     // true
+```
+
+Existe implementado un método llamado `findChildById(string $id)` que sirve para buscar un componente por su identificador único.
+
+Para hacer búsquedas por nombre existen los métodos `findChildByName(string $name)` y `findChildsByName(string $name)`. Tal y como podrá suponer, en el caso del primero devolverá el primer componente cuyo nombre coincida con el argumento, mientras que en el caso del segundo devolverá en un *array* todas las coincidencias.
