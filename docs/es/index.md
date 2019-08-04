@@ -251,6 +251,8 @@ $component->on('click', function ($event) {
 
 Como puede verse, el primer argumento de la función se corresponde con el nombre del evento mientras que el segundo con algún tipo de *callback* que será ejecutado una vez que sobre el componente se produzca un evento de igual nombre. Puede verse que este *callback* recibe un único argumento cuyo valor será una instancia de la clase `NubecuLabs\Components\Event\Event` la cual contendrá información del respectivo evento en curso.
 
+>La clase `NubecuLabs\Components\Event\Event` hereda de `Symfony\Component\EventDispatcher\Event`.
+
 Solo los componentes compuestos pueden reaccionar a eventos en la etapa de la captura. Para hacer esto basta con especificar `true` como tercer argumento de la función `on()`.
 
 ```php
@@ -376,3 +378,43 @@ En el ejemplo anterior, el componente solo aceptará como hijo a los que sean de
 
 Desde un componente compuesto se puede insertar uno o varios hijos a través de los métodos `addChild($child)` y `addChilds($child1, $child2, ...)` respectivamente. Además de esto la llamada al método `setParent($parent)` de cualquier componente provoca que el padre registre al hijo automáticamente. Siempre que haya alguna inserción de un componente hijo primeramente se llamará al método `validateChild($child)` sobre el padre y si el resultado es `true` la inserción se llevará a cabo normalmente. En caso contrario, se producirá una excepción del tipo `NubecuLabs\Components\Exception\InvalidChildException`.
 
+### Conociendo los eventos internos.
+
+Varias de las operaciones que hemos mostrado anteriormente provocan que internamente se lancen ciertos eventos sobre determinados componentes los cuales vamos a comentar seguidamente.
+
+>Para conocer los datos que almacenan cada tipo de evento se debe mirar la API de la respectiva clase.
+
+Por defecto cuando a un componente compuesto se le añade un nuevo hijo se produce sobre dicho componente un evento de tipo `NubecuLabs\Components\Event\BeforeInsertionEvent` el cual tiene lugar antes de que la inserción se haya efectuado, y otro de tipo `NubecuLabs\Components\Event\AfterInsertionEvent` después de que la misma fue llevada a cabo.
+
+De manera similar ocurre cuando un hijo es separado del árbol, donde en esos casos los eventos que se producen son de tipo `NubecuLabs\Components\Event\BeforeDeletionEvent` y `NubecuLabs\Components\Event\AfterDeletionEvent` respectivamente.
+
+Una funcionalidad que presentan los componentes compuestos es que se les puede especificar el orden de sus hijos a través del método `setChildrenOrder(array $order)` el cual recibirá un *array* de cadenas cuyos valores deben ser los identificadores únicos de los hijos en el orden deseado. Ejemplo:
+
+```php
+$id411 = $child411->getId();
+$id412 = $child412->getId();
+$id413 = $child413->getId();
+
+$child4->setChildrenOrder([$id413, $id411, $id412]);
+```
+
+Al realizar esta operación se producirían un par de eventos de tipo `BeforeOrderEvent` y `AfterOrderEvent`.
+
+Por otra parte, cuando sobre un componente se le llama a su método `getDependencies()` se produce sobre el mismo un evento del tipo `NubecuLabs\Components\Event\FilterDependenciesEvent` después de que las dependencias fueron organizadas internamente y justo antes de devolver el resultado final. Este evento puede ser usado para modificar de manera dinámica las dependencias que tiene un componente.
+
+### Datos personalizados.
+
+Gracias al método `setData(string $key, $value)` es posible asignar un determinado dato a un componente, mientras que con `getData(string $key)` es posible obtenerlo.
+
+Dada la estructura de árbol que forman los componentes, a veces se necesita que un determinado hijo tome cierta información de la rama a la que pertenece. Gracias a la función `getTopData(string $key)` esto puede ser posible de una manera sencilla tal y como se muestra en el siguiente ejemplo.
+
+```php
+$key = 'mydata';
+
+$component->setData($key, 10);
+$child4->setData($key, 20);
+
+$child411->getTopData($key) === 20; // true
+```
+
+El ejemplo anterior muestra como el respectivo dato es buscado por cada padre del componente.
