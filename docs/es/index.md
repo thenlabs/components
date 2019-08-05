@@ -310,7 +310,7 @@ El método `parents()` puede ser usado para iterar sobre cada padre de un compon
 
 ```php
 foreach ($child411->parents() as $parent) {
-    # code...
+    // ...
 }
 ```
 
@@ -330,7 +330,7 @@ En el siguiente ejemplo el orden de iteración sería:
 
 ```php
 foreach ($child4->children() as $component) {
-    # code...
+    // ...
 }
 ```
 
