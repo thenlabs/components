@@ -341,7 +341,7 @@ $callback = function ($child) {
 };
 
 $component->findChild($callback) === $child3; // true
-$component->findChilds($callback) === [$child3, $child31, $child4, $child41, $child411];     // true
+$component->findChilds($callback) === [$child3, $child31, $child4, $child41, $child411]; // true
 ```
 
 Existe implementado un método llamado `findChildById(string $id)` que sirve para buscar un componente por su identificador único.
@@ -352,7 +352,7 @@ Para hacer búsquedas por nombre existen los métodos `findChildByName(string $n
 
 Un componente compuesto por defecto acepta cualquier instancia de la interfaz `NubecuLabs\Components\ComponentInterface` como un hijo, pero en ciertas ocasiones se desea restringir que solo ciertos tipos sean aceptados.
 
-Para implementar esta resricción se debe implementar en la clase el método `validateChild()` tal y como se muestra en el siguiente ejemplo:
+Para implementar esta restricción se debe implementar en la clase el método `validateChild()` tal y como se muestra en el siguiente ejemplo:
 
 ```php
 use NubecuLabs\Components\ComponentInterface;
