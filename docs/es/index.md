@@ -145,7 +145,7 @@ El método `getName()` se explica por sí solo. Cuando se está procesando un gr
 
 El método `getVersion()` debe devolver un [valor de versión exacta](https://getcomposer.org/doc/articles/versions.md#exact-version-constraint). Cuando se tienen dos dependencias de igual nombre y diferentes versiones, por defecto se tomará la de mayor versión.
 
-Por otra parte, el método `getIncompatibleVersions()` debe devolver un [rango de versiones](https://getcomposer.org/doc/articles/versions.md#version-range). Este valor se usa para determinar qué versiones son incompatibles con una dependencia. Por ejemplo, suponga hipotéticamente que se tienen dos dependencias de nombre 'jquery' cuyas versiones son 1.11.1 y 2.2.22 respectivamente y en el caso de la segunda, su método `getIncompatibleVersions()` devuelve el valor `<2.0`. En ese caso se producirá una excepción del tipo `NubecuLabs\Components\Exception\IncompatibilityException` ya que una dependencia indica explícitamente que es incompatible con la otra.
+Por otra parte, el método `getIncompatibleVersions()` debe devolver un [rango de versiones](https://getcomposer.org/doc/articles/versions.md#version-range). Este valor se usa para determinar qué versiones son incompatibles con una dependencia. Por ejemplo, suponga hipotéticamente que se tienen dos dependencias de nombre 'jquery' cuyas versiones son `1.11.1` y `2.2.22` respectivamente y en el caso de la segunda, su método `getIncompatibleVersions()` devuelve el valor `<2.0`. En ese caso se producirá una excepción del tipo `NubecuLabs\Components\Exception\IncompatibilityException` ya que una dependencia indica explícitamente que es incompatible con la otra.
 
 Por último, el método `getIncludedDependencies()` debe devolver en un *array* todas las otras dependencias que están incluidas dentro de la actual. Por ejemplo, suponga que existe un componente compuesto que tiene una dependencia llamada "bootstrap-js" la cual incluye a otra dependencia de nombre "modal-js", y dicho componente tiene un hijo que depende de "modal-js". Cuando en el componente padre se llame al método `getDependencies()`, el resultado contendrá solamente la dependencia "bootstrap-js" dado que "modal-js" se encuentra implítica en la primera.
 
@@ -160,8 +160,6 @@ use NubecuLabs\Components\CompositeComponentTrait;
 
 class CompositeComponent extends SimpleComponent implements CompositeComponentInterface
 {
-    use CompositeComponentTrait;
-
     // ...
 
     public function getOwnDependencies(): array
@@ -171,8 +169,6 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 
         return [$jquery];
     }
-
-    // ...
 }
 ```
 
@@ -201,16 +197,6 @@ class SimpleComponent implements ComponentInterface
      */
     protected $otherComponent;
 
-    public function getOtherComponent(): ?ComponentInterface
-    {
-        return $this->otherComponent;
-    }
-
-    public function setOtherComponent(?ComponentInterface $otherComponent): void
-    {
-        $this->otherComponent = $otherComponent;
-    }
-
     // ...
 }
 ```
@@ -223,7 +209,7 @@ Todos los componentes presentan una serie de propiedades comunes que seguidament
 
 Primeramente vamos a mencionar al **identificador único** la cual es una propiedad de solo lectura y permite que un componente pueda ser referenciado de manera segura. Su valor se asigna internamente y consiste en una cadena de caracteres aleatoria.
 
-Otra propiedad que sirve para referenciar a los componentes es el **nombre** pero en este caso es un valor especificado por el usuario por lo que puede ocurrir que dos componentes o más se puedan llamar igual.
+Otra propiedad que sirve para referenciar a los componentes es el **nombre** pero en este caso es un valor especificado por el usuario por lo que puede ocurrir que dos componentes o más se puedan llamar de igual manera.
 
 Otra propiedad a tener en cuenta es el **componente padre** cuyo valor puede ser nulo o algún componente compuesto.
 
@@ -256,11 +242,32 @@ Como puede verse, el primer argumento de la función se corresponde con el nombr
 Solo los componentes compuestos pueden reaccionar a eventos en la etapa de la captura. Para hacer esto basta con especificar `true` como tercer argumento de la función `on()`.
 
 ```php
-// listening for the event capture.
-$component->on('click', function ($event) {
+// listening for event capture
+$component->on('myevent', function ($event) {
     // ...
 }, true);
+
+// listening for event capture
+$child4->on('myevent', function ($event) {
+    // ...
+}, true);
+
+$child4->on('myevent', function ($event) {
+    // ...
+});
+
+// listening for event bubbling
+$child4->on('myevent', function ($event) {
+    // ...
+});
+
+// listening for event bubbling
+$component->on('myevent', function ($event) {
+    // ...
+});
 ```
+
+El ejemplo anterior se muestra el orden de ejecución de los manejadores de evento cuando sobre `$child4` se dispara el evento de nombre 'myevent'. Puede verse como desde la raíz del árbol comienza a desencadenarse la captura hasta llegar a la ejecución en el propio componente, donde más tarde se regresa a la raíz en la etapa del burbujeo. Es importante aclarar que sobre los padres, los manejadores que se ejecutan en la etapa de captura no son los mismos que los que se ejecutan durante el burbujeo.
 
 >Con el método `off()` es posible desvincular manejadores que antes hayan sido vinculados.
 
@@ -281,7 +288,7 @@ $component->dispatchEvent('myevent', $event);
 
 >Para crear un tipo de evento personalizado se debe crear una clase que extienda `NubecuLabs\Components\Event\Event`.
 
-Cuando se llama al método `dispatchEvent()` de la manera antes mostrada, se producirá sobre el árbol la propagación del evento tal y como lo hemos comentado antes. Este método acepta un par de argumentos más que sirven para indicar si se debe efectuar la *captura* y/o el *burbujeo* del evento.
+Cuando se llama al método `dispatchEvent()` de la manera antes mostrada, se producirá sobre el árbol la propagación del evento tal y como lo hemos comentado antes. Este método acepta un par de argumentos más que sirven para indicar si se debe efectuar la *captura* y/o el *burbujeo*.
 
 El siguiente ejemplo muestra como producir la *captura* pero no el *burbujeo*.
 
@@ -290,6 +297,8 @@ $component->dispatchEvent('myevent', $event, true, false);
 ```
 
 ## Trabajando con los componentes.
+
+Seguidamente mostraremos algunos de los aspectos más específicos para el trabajo con los componentes. En los *traits* de los componentes existen varios métodos que no mencionamos aquí pero que por razones obvias se puede deducir su existencia. Recomendamos mirar las implementaciones de esos *traits* para un mayor conocimiento de la API.
 
 ### Iterando sobre cada padre.
 
@@ -400,11 +409,11 @@ $id413 = $child413->getId();
 $child4->setChildrenOrder([$id413, $id411, $id412]);
 ```
 
-Al realizar esta operación se producirían un par de eventos de tipo `BeforeOrderEvent` y `AfterOrderEvent`.
+Al realizar esta operación se producirán un par de eventos de tipo `BeforeOrderEvent` y `AfterOrderEvent`.
 
 >Los eventos de tipo *before* pueden cancelar la operación.
 
-Por otra parte, cuando sobre un componente se le llama a su método `getDependencies()` se produce sobre el mismo un evento del tipo `NubecuLabs\Components\Event\FilterDependenciesEvent` después de que las dependencias fueron organizadas internamente y justo antes de devolver el resultado. Este evento puede ser usado para modificar de manera dinámica las dependencias de un determinado componente. El nombre de este evento tiene la forma "NubecuLabs\Components\Event\FilterDependenciesEvent_{$component->getId()}".
+Por otra parte, cuando sobre un componente se le llama a su método `getDependencies()` se produce sobre el mismo un evento del tipo `NubecuLabs\Components\Event\FilterDependenciesEvent` después de que las dependencias fueron organizadas internamente y justo antes de devolver el resultado final. Este evento puede ser usado para modificar de manera dinámica las dependencias de un determinado componente. El nombre de este evento tiene la forma `NubecuLabs\Components\Event\FilterDependenciesEvent_{$component->getId()}`.
 
 Tal y como comentamos anteriormente, en ocasiones las dependencias de los componentes presentan conflictos entre sí donde muchas veces esos conflictos necesitan ser resueltos manualmente. Cuando se produce un conflicto de este tipo, se lanza en el componente un evento del tipo `NubecuLabs\Components\Event\DependencyConflictEvent` cuyo objetivo consiste en que a través del objeto del evento se especifique la solución del conflicto.
 
@@ -431,6 +440,8 @@ $child4->on(DependencyConflictEvent::class, function (DependencyConflictEvent $e
     }
 });
 ```
+
+Tenga en cuenta que gracias a la captura y burbujeo de los eventos, los conflictos podrían ser resueltos desde cualquier padre en alguna de estas etapas.
 
 ### Datos personalizados.
 
