@@ -305,7 +305,7 @@ trait ComponentTrait
         $list = $this->getParents();
 
         if ($currentFirst) {
-            $list = array_merge([$this], $list);
+            array_unshift($list, $this);
         }
 
         foreach ($list as $item) {
