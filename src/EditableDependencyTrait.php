@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace NubecuLabs\Components;
 
 /**
+ * The class that use this trait should implements DependencyInterface.
+ *
+ * This trait contains methods for edit each dependency data.
+ *
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
 trait EditableDependencyTrait
@@ -54,6 +58,11 @@ trait EditableDependencyTrait
         $this->dependencies = $dependencies;
     }
 
+    public function addDependency(DependencyInterface $dependency): void
+    {
+        $this->dependencies[] = $dependency;
+    }
+
     public function getIncludedDependencies(): array
     {
         return $this->includedDependencies;
@@ -62,5 +71,10 @@ trait EditableDependencyTrait
     public function setIncludedDependencies(array $includedDependencies): void
     {
         $this->includedDependencies = $includedDependencies;
+    }
+
+    public function addIncludedDependency(DependencyInterface $dependency): void
+    {
+        $this->includedDependencies[] = $dependency;
     }
 }

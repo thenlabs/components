@@ -71,4 +71,30 @@ testCase('EditableDependencyTraitTest.php', function () {
 
         $this->assertEquals($includedDependencies, $this->instance->getIncludedDependencies());
     });
+
+    test('testing addDependency() method', function () {
+        $dependency1 = $this->createMock(DependencyInterface::class);
+        $dependency2 = $this->createMock(DependencyInterface::class);
+
+        $this->instance->addDependency($dependency1);
+        $this->instance->addDependency($dependency2);
+
+        $dependencies = $this->instance->getDependencies();
+
+        $this->assertSame($dependency1, $dependencies[0]);
+        $this->assertSame($dependency2, $dependencies[1]);
+    });
+
+    test('testing addIncludedDependency() method', function () {
+        $dependency1 = $this->createMock(DependencyInterface::class);
+        $dependency2 = $this->createMock(DependencyInterface::class);
+
+        $this->instance->addIncludedDependency($dependency1);
+        $this->instance->addIncludedDependency($dependency2);
+
+        $includedDependencies = $this->instance->getIncludedDependencies();
+
+        $this->assertSame($dependency1, $includedDependencies[0]);
+        $this->assertSame($dependency2, $includedDependencies[1]);
+    });
 });
