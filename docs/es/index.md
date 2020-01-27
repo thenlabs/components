@@ -139,6 +139,8 @@ class ScriptAsset implements DependencyInterface
 }
 ```
 
+>El *trait* `NubecuLabs\Components\EditableDependencyTrait` brinda una implementación genérica que contiene métodos *getters* y *setters* para cada una de las propiedades de una dependencia.
+
 En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades ya que solo con que implemente la interfaz `NubecuLabs\Components\DependencyInterface` bastará para que sus instancias sean consideradas como dependencias.
 
 El método `getName()` se explica por sí solo. Cuando se está procesando un grupo de dependencias y se encuentran dos con igual nombre, entonces se compararán los valores de los métodos `getVersion()` y `getIncompatibleVersions()` para determinar cual de las dos instancias será la que se incluirá en el resultado.
