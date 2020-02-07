@@ -1,14 +1,14 @@
 <?php
 
-use NubecuLabs\Components\Event\AfterInsertionEvent;
-use NubecuLabs\Components\Event\AfterDeletionEvent;
-use NubecuLabs\Components\Event\BeforeInsertionEvent;
-use NubecuLabs\Components\Event\BeforeDeletionEvent;
-use NubecuLabs\Components\Tests\Entity\Component;
-use NubecuLabs\Components\Tests\Entity\CompositeComponent;
+use ThenLabs\Components\Event\AfterInsertionEvent;
+use ThenLabs\Components\Event\AfterDeletionEvent;
+use ThenLabs\Components\Event\BeforeInsertionEvent;
+use ThenLabs\Components\Event\BeforeDeletionEvent;
+use ThenLabs\Components\Tests\Entity\Component;
+use ThenLabs\Components\Tests\Entity\CompositeComponent;
 
-setTestCaseNamespace('NubecuLabs\Components\Tests');
-setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
+setTestCaseNamespace('ThenLabs\Components\Tests');
+setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
 testCase('EventsTest.php', function () {
     createMacro('testing events in the parent and child relationship', function () {

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components;
+namespace ThenLabs\Components;
 
-use NubecuLabs\Components\Event\AfterInsertionEvent;
-use NubecuLabs\Components\Event\AfterDeletionEvent;
-use NubecuLabs\Components\Event\BeforeInsertionEvent;
-use NubecuLabs\Components\Event\BeforeDeletionEvent;
-use NubecuLabs\Components\Event\FilterDependenciesEvent;
-use NubecuLabs\Components\Event\Event;
+use ThenLabs\Components\Event\AfterInsertionEvent;
+use ThenLabs\Components\Event\AfterDeletionEvent;
+use ThenLabs\Components\Event\BeforeInsertionEvent;
+use ThenLabs\Components\Event\BeforeDeletionEvent;
+use ThenLabs\Components\Event\FilterDependenciesEvent;
+use ThenLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

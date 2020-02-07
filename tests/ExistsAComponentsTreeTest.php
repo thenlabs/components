@@ -1,16 +1,16 @@
 <?php
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\Exception\InvalidOrderException;
-use NubecuLabs\Components\Event\BeforeOrderEvent;
-use NubecuLabs\Components\Event\AfterOrderEvent;
-use NubecuLabs\Components\Tests\Entity\Component;
-use NubecuLabs\Components\Tests\Entity\CompositeComponent;
-use NubecuLabs\Components\Tests\Entity\CompositeComponentWithEvents;
-use NubecuLabs\Components\Event\Event;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\Exception\InvalidOrderException;
+use ThenLabs\Components\Event\BeforeOrderEvent;
+use ThenLabs\Components\Event\AfterOrderEvent;
+use ThenLabs\Components\Tests\Entity\Component;
+use ThenLabs\Components\Tests\Entity\CompositeComponent;
+use ThenLabs\Components\Tests\Entity\CompositeComponentWithEvents;
+use ThenLabs\Components\Event\Event;
 
-setTestCaseNamespace('NubecuLabs\Components\Tests');
-setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
+setTestCaseNamespace('ThenLabs\Components\Tests');
+setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
 testCase('ExistsAComponentsTree.php', function () {
     testCase('exists a tree of components (see sources)', function () {

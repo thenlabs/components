@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Event;
+namespace ThenLabs\Components\Event;
 
 use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
-use NubecuLabs\Components\ComponentInterface;
+use ThenLabs\Components\ComponentInterface;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

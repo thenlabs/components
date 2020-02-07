@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components;
+namespace ThenLabs\Components;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use NubecuLabs\Components\Event\DependencyConflictEvent;
+use ThenLabs\Components\Event\DependencyConflictEvent;
 use Composer\Semver\Comparator;
 use Composer\Semver\Semver;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace NubecuLabs\Components\Tests;
+namespace ThenLabs\Components\Tests;
 
-use NubecuLabs\Components\Tests\TestCase;
-use NubecuLabs\Components\EditableDependencyTrait;
-use NubecuLabs\Components\DependencyInterface;
+use ThenLabs\Components\Tests\TestCase;
+use ThenLabs\Components\EditableDependencyTrait;
+use ThenLabs\Components\DependencyInterface;
 
 setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);

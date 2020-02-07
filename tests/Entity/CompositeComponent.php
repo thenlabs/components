@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Tests\Entity;
+namespace ThenLabs\Components\Tests\Entity;
 
-use NubecuLabs\Components\CompositeComponentInterface;
-use NubecuLabs\Components\CompositeComponentTrait;
+use ThenLabs\Components\CompositeComponentInterface;
+use ThenLabs\Components\CompositeComponentTrait;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

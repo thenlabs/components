@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Exception;
+namespace ThenLabs\Components\Exception;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use NubecuLabs\Components\ComponentInterface;
+use ThenLabs\Components\ComponentInterface;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

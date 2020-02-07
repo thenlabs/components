@@ -1,5 +1,5 @@
 {
-    "name": "nubeculabs/components",
+    "name": "thenlabs/components",
     "license": "MIT",
     "authors": [
         {
@@ -7,7 +7,7 @@
             "email": "andaniel05@gmail.com"
         },
         {
-            "name": "NubecuLabs Community"
+            "name": "ThenLabs Community"
         }
     ],
     "platform": {
@@ -25,12 +25,12 @@
     },
     "autoload": {
         "psr-4": {
-            "NubecuLabs\\Components\\": "src/"
+            "ThenLabs\\Components\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "NubecuLabs\\Components\\Tests\\": "tests/"
+            "ThenLabs\\Components\\Tests\\": "tests/"
         }
     }
 }

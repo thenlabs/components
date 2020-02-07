@@ -1,22 +1,22 @@
 <?php
 
-use NubecuLabs\Components\Helper;
-use NubecuLabs\Components\Event\DependencyConflictEvent;
-use NubecuLabs\Components\DependencyInterface;
-use NubecuLabs\Components\Exception\InvalidConflictDispatcherException;
-use NubecuLabs\Components\Exception\IncompatibilityException;
-use NubecuLabs\Components\Exception\UnresolvedDependencyConflictException;
-use NubecuLabs\Components\Tests\Entity\Component;
+use ThenLabs\Components\Helper;
+use ThenLabs\Components\Event\DependencyConflictEvent;
+use ThenLabs\Components\DependencyInterface;
+use ThenLabs\Components\Exception\InvalidConflictDispatcherException;
+use ThenLabs\Components\Exception\IncompatibilityException;
+use ThenLabs\Components\Exception\UnresolvedDependencyConflictException;
+use ThenLabs\Components\Tests\Entity\Component;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-setTestCaseNamespace('NubecuLabs\Components\Tests');
-setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
+setTestCaseNamespace('ThenLabs\Components\Tests');
+setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
 testCase('HelperTest.php', function () {
     testCase('#sortDependencies()', function () {
         test(function () {
             $this->expectException(InvalidConflictDispatcherException::class);
-            $this->expectExceptionMessage('The conflict dispatcher may be only an instance of "Symfony\Component\EventDispatcher\EventDispatcherInterface" or "NubecuLabs\Components\ComponentInterface".');
+            $this->expectExceptionMessage('The conflict dispatcher may be only an instance of "Symfony\Component\EventDispatcher\EventDispatcherInterface" or "ThenLabs\Components\ComponentInterface".');
 
             Helper::sortDependencies([], uniqid());
         });

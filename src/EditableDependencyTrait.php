@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components;
+namespace ThenLabs\Components;
 
 /**
  * The class that use this trait should implements DependencyInterface.

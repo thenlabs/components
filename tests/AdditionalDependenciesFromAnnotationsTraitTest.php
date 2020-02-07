@@ -1,11 +1,11 @@
 <?php
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\Tests\Entity\ComponentWithAnnotatedProperties;
-use NubecuLabs\Components\Tests\Entity\CompositeComponentWithAnnotatedProperties;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\Tests\Entity\ComponentWithAnnotatedProperties;
+use ThenLabs\Components\Tests\Entity\CompositeComponentWithAnnotatedProperties;
 
-setTestCaseNamespace('NubecuLabs\Components\Tests');
-setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
+setTestCaseNamespace('ThenLabs\Components\Tests');
+setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
 testCase('AdditionalDependenciesFromAnnotationsTraitTest.php', function () {
     setUp(function () {

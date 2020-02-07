@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Annotation;
+namespace ThenLabs\Components\Annotation;
 
 /**
  * It's used for indicate that an attribute may contain a component.

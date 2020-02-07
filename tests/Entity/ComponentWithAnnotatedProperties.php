@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Tests\Entity;
+namespace ThenLabs\Components\Tests\Entity;
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\ComponentTrait;
-use NubecuLabs\Components\AdditionalDependenciesFromAnnotationsTrait;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\ComponentTrait;
+use ThenLabs\Components\AdditionalDependenciesFromAnnotationsTrait;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

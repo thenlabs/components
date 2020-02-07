@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Exception;
+namespace ThenLabs\Components\Exception;
 
 /**
  * This exception type is thrown when in a composite component adds a child

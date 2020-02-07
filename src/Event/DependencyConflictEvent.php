@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Event;
+namespace ThenLabs\Components\Event;
 
-use NubecuLabs\Components\DependencyInterface;
+use ThenLabs\Components\DependencyInterface;
 
 /**
  * This event type it's triggered when two component has two dependencies with equal name.

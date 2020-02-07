@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Event;
+namespace ThenLabs\Components\Event;
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\CompositeComponentInterface;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\CompositeComponentInterface;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

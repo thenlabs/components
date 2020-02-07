@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Tests\Entity;
+namespace ThenLabs\Components\Tests\Entity;
 
-use NubecuLabs\Components\Annotation\Component;
+use ThenLabs\Components\Annotation\Component;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

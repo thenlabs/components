@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components\Event;
+namespace ThenLabs\Components\Event;
 
-use NubecuLabs\Components\DependencyInterface;
-use NubecuLabs\Components\ComponentInterface;
+use ThenLabs\Components\DependencyInterface;
+use ThenLabs\Components\ComponentInterface;
 
 /**
  * This event type is throwns with the calls to the methods

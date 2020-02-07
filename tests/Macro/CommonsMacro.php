@@ -1,8 +1,8 @@
 <?php
 
-use NubecuLabs\Components\Event\FilterDependenciesEvent;
-use NubecuLabs\Components\Tests\Entity\CompositeComponent;
-use NubecuLabs\Components\Event\Event;
+use ThenLabs\Components\Event\FilterDependenciesEvent;
+use ThenLabs\Components\Tests\Entity\CompositeComponent;
+use ThenLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 createMacro('commons', function () {
@@ -173,7 +173,7 @@ createMacro('commons', function () {
             });
         });
 
-        testCase('$component->setParent($parent2 = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
+        testCase('$component->setParent($parent2 = new \ThenLabs\Components\Tests\Entity\CompositeComponent);', function () {
             setUp(function () {
                 $this->parent2 = new CompositeComponent;
                 $this->component->setParent($this->parent2);
@@ -183,7 +183,7 @@ createMacro('commons', function () {
         });
     });
 
-    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent);', function () {
+    testCase('$component->setParent($parent = new \ThenLabs\Components\Tests\Entity\CompositeComponent);', function () {
         setUp(function () {
             $this->parent = new CompositeComponent;
             $this->component->setParent($this->parent);
@@ -202,7 +202,7 @@ createMacro('commons', function () {
         });
     });
 
-    testCase('$component->setParent($parent = new \NubecuLabs\Components\Tests\Entity\CompositeComponent, false);', function () {
+    testCase('$component->setParent($parent = new \ThenLabs\Components\Tests\Entity\CompositeComponent, false);', function () {
         setUp(function () {
             $this->parent = new CompositeComponent;
             $this->component->setParent($this->parent, false);

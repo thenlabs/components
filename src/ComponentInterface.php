@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components;
+namespace ThenLabs\Components;
 
-use NubecuLabs\Components\Event\Event;
+use ThenLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

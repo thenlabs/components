@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace NubecuLabs\Components;
+namespace ThenLabs\Components;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use NubecuLabs\Components\Annotation\Component as ComponentAnnotation;
+use ThenLabs\Components\Annotation\Component as ComponentAnnotation;
 
 /**
  * Use this trait for get the additional dependencies of a component from attributes
@@ -15,7 +15,7 @@ use NubecuLabs\Components\Annotation\Component as ComponentAnnotation;
 trait AdditionalDependenciesFromAnnotationsTrait
 {
     /**
-     * @see     \NubecuLabs\Components\ComponentInterface::getAdditionalDependencies()
+     * @see     \ThenLabs\Components\ComponentInterface::getAdditionalDependencies()
      * @return  DependencyInterface[]
      */
     public function getAdditionalDependencies(): array

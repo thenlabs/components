@@ -1,13 +1,13 @@
 <?php
 
-use NubecuLabs\Components\Tests\Entity\CompositeComponent;
+use ThenLabs\Components\Tests\Entity\CompositeComponent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use NubecuLabs\Components\Tests\Entity\Component;
-use NubecuLabs\Components\Exception\InvalidChildException;
-use NubecuLabs\Components\ComponentInterface;
+use ThenLabs\Components\Tests\Entity\Component;
+use ThenLabs\Components\Exception\InvalidChildException;
+use ThenLabs\Components\ComponentInterface;
 
-setTestCaseNamespace('NubecuLabs\Components\Tests');
-setTestCaseClass('NubecuLabs\Components\Tests\TestCase');
+setTestCaseNamespace('ThenLabs\Components\Tests');
+setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
 testCase('CompositeComponentTest.php', function () {
     setUp(function () {
@@ -87,7 +87,7 @@ testCase('CompositeComponentTest.php', function () {
                 });
             });
 
-            testCase('it is triggered a "NubecuLabs\Components\Exception\InvalidChildException" when #validateChild() returns false', function () {
+            testCase('it is triggered a "ThenLabs\Components\Exception\InvalidChildException" when #validateChild() returns false', function () {
                 setUp(function () {
                     $this->component = $this->getMockBuilder($this->componentClass)
                         ->setMethods(['validateChild'])
