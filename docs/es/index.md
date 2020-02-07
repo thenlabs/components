@@ -49,8 +49,8 @@ El procedimiento para crear un nuevo tipo de componente es común tanto para los
 
 ```php
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\ComponentTrait;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\ComponentTrait;
 
 class SimpleComponent implements ComponentInterface
 {
@@ -62,8 +62,8 @@ class SimpleComponent implements ComponentInterface
 
 ```php
 
-use NubecuLabs\Components\CompositeComponentInterface;
-use NubecuLabs\Components\CompositeComponentTrait;
+use ThenLabs\Components\CompositeComponentInterface;
+use ThenLabs\Components\CompositeComponentTrait;
 
 class CompositeComponent extends SimpleComponent implements CompositeComponentInterface
 {
@@ -83,13 +83,13 @@ Todas las dependencias se obtienen a través del método `getDependencies()` el 
 
 #### Creando un tipo de dependencia.
 
-Una dependencia es una instancia cuya clase implementa la interfaz `NubecuLabs\Components\DependencyInterface` la cual contiene cuatro métodos que deberán ser implementados en la clase.
+Una dependencia es una instancia cuya clase implementa la interfaz `ThenLabs\Components\DependencyInterface` la cual contiene cuatro métodos que deberán ser implementados en la clase.
 
 El siguiente ejemplo muestra como crear un nuevo tipo de dependencia donde se muestra una implementación de esos cuatro métodos. Adicionalmente se ha implementado un método *getter* y uno *setter* para la propiedad *uri* de la clase.
 
 ```php
 
-use NubecuLabs\Components\DependencyInterface;
+use ThenLabs\Components\DependencyInterface;
 
 class ScriptAsset implements DependencyInterface
 {
@@ -139,15 +139,15 @@ class ScriptAsset implements DependencyInterface
 }
 ```
 
->El *trait* `NubecuLabs\Components\EditableDependencyTrait` brinda una implementación genérica que contiene métodos *getters* y *setters* para cada una de las propiedades de una dependencia.
+>El *trait* `ThenLabs\Components\EditableDependencyTrait` brinda una implementación genérica que contiene métodos *getters* y *setters* para cada una de las propiedades de una dependencia.
 
-En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades ya que solo con que implemente la interfaz `NubecuLabs\Components\DependencyInterface` bastará para que sus instancias sean consideradas como dependencias.
+En este caso, se ha creado un tipo de dependencia cuya clase es `ScriptAsset` donde a través del constructor se le puede especificar sus datos. Aclaramos que la implementación que se le de a la clase dependerá de sus necesidades ya que solo con que implemente la interfaz `ThenLabs\Components\DependencyInterface` bastará para que sus instancias sean consideradas como dependencias.
 
 El método `getName()` se explica por sí solo. Cuando se está procesando un grupo de dependencias y se encuentran dos con igual nombre, entonces se compararán los valores de los métodos `getVersion()` y `getIncompatibleVersions()` para determinar cual de las dos instancias será la que se incluirá en el resultado.
 
 El método `getVersion()` debe devolver un [valor de versión exacta](https://getcomposer.org/doc/articles/versions.md#exact-version-constraint). Cuando se tienen dos dependencias de igual nombre y diferentes versiones, por defecto se tomará la de mayor versión.
 
-Por otra parte, el método `getIncompatibleVersions()` debe devolver un [rango de versiones](https://getcomposer.org/doc/articles/versions.md#version-range). Este valor se usa para determinar qué versiones son incompatibles con una dependencia. Por ejemplo, suponga hipotéticamente que se tienen dos dependencias de nombre 'jquery' cuyas versiones son `1.11.1` y `2.2.22` respectivamente y en el caso de la segunda, su método `getIncompatibleVersions()` devuelve el valor `<2.0`. En ese caso se producirá una excepción del tipo `NubecuLabs\Components\Exception\IncompatibilityException` ya que una dependencia indica explícitamente que es incompatible con la otra.
+Por otra parte, el método `getIncompatibleVersions()` debe devolver un [rango de versiones](https://getcomposer.org/doc/articles/versions.md#version-range). Este valor se usa para determinar qué versiones son incompatibles con una dependencia. Por ejemplo, suponga hipotéticamente que se tienen dos dependencias de nombre 'jquery' cuyas versiones son `1.11.1` y `2.2.22` respectivamente y en el caso de la segunda, su método `getIncompatibleVersions()` devuelve el valor `<2.0`. En ese caso se producirá una excepción del tipo `ThenLabs\Components\Exception\IncompatibilityException` ya que una dependencia indica explícitamente que es incompatible con la otra.
 
 Por último, el método `getIncludedDependencies()` debe devolver en un *array* todas las otras dependencias que están incluidas dentro de la actual. Por ejemplo, suponga que existe un componente compuesto que tiene una dependencia llamada "bootstrap-js" la cual incluye a otra dependencia de nombre "modal-js", y dicho componente tiene un hijo que depende de "modal-js". Cuando en el componente padre se llame al método `getDependencies()`, el resultado contendrá solamente la dependencia "bootstrap-js" dado que "modal-js" se encuentra implítica en la primera.
 
@@ -157,8 +157,8 @@ Para declarar las dependencias de un componente, es preciso implementar en su cl
 
 ```php
 
-use NubecuLabs\Components\CompositeComponentInterface;
-use NubecuLabs\Components\CompositeComponentTrait;
+use ThenLabs\Components\CompositeComponentInterface;
+use ThenLabs\Components\CompositeComponentTrait;
 
 class CompositeComponent extends SimpleComponent implements CompositeComponentInterface
 {
@@ -180,14 +180,14 @@ En ocasiones, es necesario contar con ciertas dependencias que se determinan de 
 
 Dado que es muy común que ciertos componentes colaboren con otros, y en cuyos casos por lo general se necesita que dicho componente también tenga las dependencias de esos otros componentes, existe implementada una funcionalidad que posibilita de manera muy sencilla, indicar que el componente también incluya esas otras dependencias.
 
-Para ello, basta con especificar una anotación del tipo `NubecuLabs\Components\Annotation\Component` sobre los atributos de la clase donde se van a referenciar componentes. Adicionalmente, se deberá usar el *trait* `NubecuLabs\Components\AdditionalDependenciesFromAnnotationsTrait` en la clase tal y como se muestra en el siguiente ejemplo.
+Para ello, basta con especificar una anotación del tipo `ThenLabs\Components\Annotation\Component` sobre los atributos de la clase donde se van a referenciar componentes. Adicionalmente, se deberá usar el *trait* `ThenLabs\Components\AdditionalDependenciesFromAnnotationsTrait` en la clase tal y como se muestra en el siguiente ejemplo.
 
 ```php
 
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\ComponentTrait;
-use NubecuLabs\Components\AdditionalDependenciesFromAnnotationsTrait;
-use NubecuLabs\Components\Annotation\Component;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\ComponentTrait;
+use ThenLabs\Components\AdditionalDependenciesFromAnnotationsTrait;
+use ThenLabs\Components\Annotation\Component;
 
 class SimpleComponent implements ComponentInterface
 {
@@ -237,9 +237,9 @@ $component->on('click', function ($event) {
 });
 ```
 
-Como puede verse, el primer argumento de la función se corresponde con el nombre del evento mientras que el segundo con algún tipo de *callback* que será ejecutado una vez que sobre el componente se produzca un evento de igual nombre. Puede verse que este *callback* recibe un único argumento cuyo valor será una instancia de la clase `NubecuLabs\Components\Event\Event` la cual contendrá información del respectivo evento en curso.
+Como puede verse, el primer argumento de la función se corresponde con el nombre del evento mientras que el segundo con algún tipo de *callback* que será ejecutado una vez que sobre el componente se produzca un evento de igual nombre. Puede verse que este *callback* recibe un único argumento cuyo valor será una instancia de la clase `ThenLabs\Components\Event\Event` la cual contendrá información del respectivo evento en curso.
 
->La clase `NubecuLabs\Components\Event\Event` hereda de `Symfony\Component\EventDispatcher\Event`.
+>La clase `ThenLabs\Components\Event\Event` hereda de `Symfony\Component\EventDispatcher\Event`.
 
 Solo los componentes compuestos pueden reaccionar a eventos en la etapa de la captura. Para hacer esto basta con especificar `true` como tercer argumento de la función `on()`.
 
@@ -275,10 +275,10 @@ El ejemplo anterior se muestra el orden de ejecución de los manejadores de even
 
 ### Disparando eventos.
 
-Para disparar un evento sobre un componente se debe llamar al método `dispatchEvent()`. A este se le debe indicar el nombre del evento así como una instancia de la clase `NubecuLabs\Components\Event\Event` la cual contendrá información útil sobre el respectivo evento.
+Para disparar un evento sobre un componente se debe llamar al método `dispatchEvent()`. A este se le debe indicar el nombre del evento así como una instancia de la clase `ThenLabs\Components\Event\Event` la cual contendrá información útil sobre el respectivo evento.
 
 ```php
-use NubecuLabs\Components\Event\Event;
+use ThenLabs\Components\Event\Event;
 
 // ...
 
@@ -288,7 +288,7 @@ $event->setSource($component);
 $component->dispatchEvent('myevent', $event);
 ```
 
->Para crear un tipo de evento personalizado se debe crear una clase que extienda `NubecuLabs\Components\Event\Event`.
+>Para crear un tipo de evento personalizado se debe crear una clase que extienda `ThenLabs\Components\Event\Event`.
 
 Cuando se llama al método `dispatchEvent()` de la manera antes mostrada, se producirá sobre el árbol la propagación del evento tal y como lo hemos comentado antes. Este método acepta un par de argumentos más que sirven para indicar si se debe efectuar la *captura* y/o el *burbujeo*.
 
@@ -361,14 +361,14 @@ Para hacer búsquedas por nombre existen los métodos `findChildByName(string $n
 
 ### Validando los tipos de los hijos.
 
-Un componente compuesto por defecto acepta cualquier instancia de la interfaz `NubecuLabs\Components\ComponentInterface` como un hijo, pero en ciertas ocasiones se desea restringir que solo ciertos tipos sean aceptados.
+Un componente compuesto por defecto acepta cualquier instancia de la interfaz `ThenLabs\Components\ComponentInterface` como un hijo, pero en ciertas ocasiones se desea restringir que solo ciertos tipos sean aceptados.
 
 Para implementar esta restricción se debe implementar en la clase el método `validateChild()` tal y como se muestra en el siguiente ejemplo:
 
 ```php
-use NubecuLabs\Components\ComponentInterface;
-use NubecuLabs\Components\CompositeComponentInterface;
-use NubecuLabs\Components\CompositeComponentTrait;
+use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\CompositeComponentInterface;
+use ThenLabs\Components\CompositeComponentTrait;
 
 class CompositeComponent extends SimpleComponent implements CompositeComponentInterface
 {
@@ -387,7 +387,7 @@ class CompositeComponent extends SimpleComponent implements CompositeComponentIn
 
 En el ejemplo anterior, el componente solo aceptará como hijo a los que sean del tipo `SimpleComponent`.
 
-Desde un componente compuesto se puede insertar uno o varios hijos a través de los métodos `addChild($child)` y `addChilds($child1, $child2, ...)` respectivamente. Además de esto la llamada al método `setParent($parent)` de cualquier componente provoca que el padre registre al hijo automáticamente. Siempre que haya alguna inserción de un componente hijo primeramente se llamará al método `validateChild($child)` sobre el padre y si el resultado es `true` la inserción se llevará a cabo normalmente. En caso contrario, se producirá una excepción del tipo `NubecuLabs\Components\Exception\InvalidChildException`.
+Desde un componente compuesto se puede insertar uno o varios hijos a través de los métodos `addChild($child)` y `addChilds($child1, $child2, ...)` respectivamente. Además de esto la llamada al método `setParent($parent)` de cualquier componente provoca que el padre registre al hijo automáticamente. Siempre que haya alguna inserción de un componente hijo primeramente se llamará al método `validateChild($child)` sobre el padre y si el resultado es `true` la inserción se llevará a cabo normalmente. En caso contrario, se producirá una excepción del tipo `ThenLabs\Components\Exception\InvalidChildException`.
 
 ### Conociendo los eventos internos.
 
@@ -397,9 +397,9 @@ Varias de las operaciones que hemos mostrado anteriormente provocan que internam
 
 >Para conocer los datos que almacena cada tipo de evento se debe mirar la API de la respectiva clase.
 
-Por defecto cuando a un componente compuesto se le añade un nuevo hijo se produce sobre dicho componente un evento de tipo `NubecuLabs\Components\Event\BeforeInsertionEvent` el cual tiene lugar antes de que la inserción se haya efectuado, y otro de tipo `NubecuLabs\Components\Event\AfterInsertionEvent` después de que la misma fue llevada a cabo.
+Por defecto cuando a un componente compuesto se le añade un nuevo hijo se produce sobre dicho componente un evento de tipo `ThenLabs\Components\Event\BeforeInsertionEvent` el cual tiene lugar antes de que la inserción se haya efectuado, y otro de tipo `ThenLabs\Components\Event\AfterInsertionEvent` después de que la misma fue llevada a cabo.
 
-De manera similar ocurre cuando un hijo es separado del árbol, donde en esos casos los eventos que se producen son de tipo `NubecuLabs\Components\Event\BeforeDeletionEvent` y `NubecuLabs\Components\Event\AfterDeletionEvent` respectivamente.
+De manera similar ocurre cuando un hijo es separado del árbol, donde en esos casos los eventos que se producen son de tipo `ThenLabs\Components\Event\BeforeDeletionEvent` y `ThenLabs\Components\Event\AfterDeletionEvent` respectivamente.
 
 Una funcionalidad que presentan los componentes compuestos es que se les puede especificar el orden de sus hijos a través del método `setChildrenOrder(array $order)` el cual recibirá un *array* de cadenas cuyos valores deben ser los identificadores únicos de los hijos en el orden deseado. Ejemplo:
 
@@ -415,16 +415,16 @@ Al realizar esta operación se producirán un par de eventos de tipo `BeforeOrde
 
 >Los eventos de tipo *before* pueden cancelar la operación.
 
-Por otra parte, cuando sobre un componente se le llama a su método `getDependencies()` se produce sobre el mismo un evento del tipo `NubecuLabs\Components\Event\FilterDependenciesEvent` después de que las dependencias fueron organizadas internamente y justo antes de devolver el resultado final. Este evento puede ser usado para modificar de manera dinámica las dependencias de un determinado componente. El nombre de este evento tiene la forma `NubecuLabs\Components\Event\FilterDependenciesEvent_{$component->getId()}`.
+Por otra parte, cuando sobre un componente se le llama a su método `getDependencies()` se produce sobre el mismo un evento del tipo `ThenLabs\Components\Event\FilterDependenciesEvent` después de que las dependencias fueron organizadas internamente y justo antes de devolver el resultado final. Este evento puede ser usado para modificar de manera dinámica las dependencias de un determinado componente. El nombre de este evento tiene la forma `ThenLabs\Components\Event\FilterDependenciesEvent_{$component->getId()}`.
 
-Tal y como comentamos anteriormente, en ocasiones las dependencias de los componentes presentan conflictos entre sí donde muchas veces esos conflictos necesitan ser resueltos manualmente. Cuando se produce un conflicto de este tipo, se lanza en el componente un evento del tipo `NubecuLabs\Components\Event\DependencyConflictEvent` cuyo objetivo consiste en que a través del objeto del evento se especifique la solución del conflicto.
+Tal y como comentamos anteriormente, en ocasiones las dependencias de los componentes presentan conflictos entre sí donde muchas veces esos conflictos necesitan ser resueltos manualmente. Cuando se produce un conflicto de este tipo, se lanza en el componente un evento del tipo `ThenLabs\Components\Event\DependencyConflictEvent` cuyo objetivo consiste en que a través del objeto del evento se especifique la solución del conflicto.
 
->Cuando un conflicto de dependencias no es resuelto se lanzará una exceptión del tipo `NubecuLabs\Components\Exception\UnresolvedDependencyConflictException`.
+>Cuando un conflicto de dependencias no es resuelto se lanzará una exceptión del tipo `ThenLabs\Components\Exception\UnresolvedDependencyConflictException`.
 
 El siguiente ejemplo, muestra como tomar la dependencia de menor versión cuando en el componente `$child4` se produzca un conflicto.
 
 ```php
-use NubecuLabs\Components\Event\DependencyConflictEvent;
+use ThenLabs\Components\Event\DependencyConflictEvent;
 use Composer\Semver\Comparator;
 
 // ...
