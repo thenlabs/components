@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace ThenLabs\Components;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use ThenLabs\Components\Annotation\Component as ComponentAnnotation;
+
+AnnotationRegistry::registerFile(__DIR__.'/Annotation/Component.php');
 
 /**
  * Use this trait for get the additional dependencies of a component from attributes
@@ -22,9 +25,6 @@ trait AdditionalDependenciesFromAnnotationsTrait
     {
         $result = [];
         $reader = new AnnotationReader();
-
-        // Hack for load the annotation class. If is omitted it's throws a doctrine exception.
-        new ComponentAnnotation;
 
         $class = new \ReflectionClass($this);
         foreach ($class->getProperties() as $property) {
