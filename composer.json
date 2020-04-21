@@ -21,7 +21,7 @@
     "require-dev": {
         "phpunit/phpunit": "^7.0",
         "friendsofphp/php-cs-fixer": "^2.12",
-        "andaniel05/pyramidaltests": "dev-master"
+        "thenlabs/pyramidal-tests": "dev-master"
     },
     "autoload": {
         "psr-4": {

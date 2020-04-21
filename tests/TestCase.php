@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace ThenLabs\Components\Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Andaniel05\PyramidalTests\Utils\StaticVarsInjectionTrait;
+use ThenLabs\PyramidalTests\Utils\StaticVarsInjectionTrait;
 use ThenLabs\Components\ComponentInterface;
 
 /**
