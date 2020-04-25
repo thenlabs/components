@@ -9,7 +9,7 @@
 
 >Para hacer la instalación se requiere PHP >= 7.1
 
-    composer require thenlabs/components dev-master
+    composer require thenlabs/components
 
 ## Introducción.
 
