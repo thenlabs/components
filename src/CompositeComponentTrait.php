@@ -367,4 +367,20 @@ trait CompositeComponentTrait
 
         $this->dispatchEvent(AfterOrderEvent::class, $afterEvent);
     }
+
+    public function __sleep()
+    {
+        $result = parent::__sleep();
+
+        $sanatizeDispatcher = function () {
+            $this->sorted = [];
+            $this->optimized = null;
+        };
+
+        if ($this->captureEventDispatcher instanceof EventDispatcher) {
+            $sanatizeDispatcher->call($this->captureEventDispatcher);
+        }
+
+        return array_merge($result, ['childs', 'captureEventDispatcher']);
+    }
 }

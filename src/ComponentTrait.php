@@ -324,7 +324,9 @@ trait ComponentTrait
             $this->optimized = null;
         };
 
-        $sanatizeDispatcher->call($this->eventDispatcher);
+        if ($this->eventDispatcher instanceof EventDispatcher) {
+            $sanatizeDispatcher->call($this->eventDispatcher);
+        }
 
         return ['id', 'name', 'parent', 'eventDispatcher', 'data'];
     }
