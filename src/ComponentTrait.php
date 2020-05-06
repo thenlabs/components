@@ -319,6 +319,8 @@ trait ComponentTrait
 
     public function __sleep()
     {
+        $result = ['id', 'name', 'parent', 'eventDispatcher', 'data'];
+
         $sanatizeDispatcher = function () {
             $this->sorted = [];
             $this->optimized = null;
@@ -328,6 +330,14 @@ trait ComponentTrait
             $sanatizeDispatcher->call($this->eventDispatcher);
         }
 
-        return ['id', 'name', 'parent', 'eventDispatcher', 'data'];
+        if ($this instanceof CompositeComponentInterface) {
+            $result = array_merge($result, ['childs', 'captureEventDispatcher']);
+
+            if ($this->captureEventDispatcher instanceof EventDispatcher) {
+                $sanatizeDispatcher->call($this->captureEventDispatcher);
+            }
+        }
+
+        return $result;
     }
 }
