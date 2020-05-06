@@ -1,6 +1,7 @@
 <?php
 
 use ThenLabs\Components\Event\FilterDependenciesEvent;
+use ThenLabs\Components\Tests\Entity\Component as DummyComponent;
 use ThenLabs\Components\Tests\Entity\CompositeComponent;
 use ThenLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -274,6 +275,22 @@ createMacro('commons', function () {
             test('$listener was not executed', function () {
                 $this->assertFalse($this->executedListener);
             });
+        });
+    });
+
+    testCase('bugfix', function () {
+        test('the components may be serialized keeping the event listeners', function () {
+            $eventName = uniqid('event');
+
+            $this->component->on($eventName, [DummyComponent::class, 'listener']);
+            $this->component->dispatchEvent($eventName, new Event);
+
+            $newComponent = unserialize(serialize($this->component));
+
+            $event = new Event;
+            $newComponent->dispatchEvent($eventName, $event);
+
+            $this->assertNotEmpty($event->secret);
         });
     });
 });

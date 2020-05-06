@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ThenLabs\Components\Tests\Entity;
 
+use ThenLabs\Components\Event\Event;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
 
@@ -22,5 +23,10 @@ class Component implements ComponentInterface
             $this->id = $id;
             $this->name = $id;
         }
+    }
+
+    public static function listener(Event $event): void
+    {
+        $event->secret = uniqid();
     }
 }

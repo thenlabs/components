@@ -252,15 +252,15 @@ trait ComponentTrait
 
         if ($capture) {
             foreach (array_reverse($parents) as $parent) {
-                $parent->getCaptureEventDispatcher()->dispatch($eventName, $event);
+                $parent->getCaptureEventDispatcher()->dispatch($event, $eventName);
             }
         }
 
-        $this->getEventDispatcher()->dispatch($eventName, $event);
+        $this->getEventDispatcher()->dispatch($event, $eventName);
 
         if ($bubbles) {
             foreach ($parents as $parent) {
-                $parent->getEventDispatcher()->dispatch($eventName, $event);
+                $parent->getEventDispatcher()->dispatch($event, $eventName);
             }
         }
     }
@@ -315,5 +315,17 @@ trait ComponentTrait
         }
 
         return null;
+    }
+
+    public function __sleep()
+    {
+        $sanatizeDispatcher = function () {
+            $this->sorted = [];
+            $this->optimized = null;
+        };
+
+        $sanatizeDispatcher->call($this->eventDispatcher);
+
+        return ['id', 'name', 'parent', 'eventDispatcher', 'data'];
     }
 }
