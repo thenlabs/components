@@ -277,20 +277,4 @@ createMacro('commons', function () {
             });
         });
     });
-
-    testCase('bugfix', function () {
-        test('the components may be serialized keeping the event listeners', function () {
-            $eventName = uniqid('event');
-
-            $this->component->on($eventName, [DummyComponent::class, 'listener']);
-            $this->component->dispatchEvent($eventName, new Event);
-
-            $newComponent = unserialize(serialize($this->component));
-
-            $event = new Event;
-            $newComponent->dispatchEvent($eventName, $event);
-
-            $this->assertNotEmpty($event->secret);
-        });
-    });
 });

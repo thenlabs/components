@@ -316,28 +316,4 @@ trait ComponentTrait
 
         return null;
     }
-
-    public function __sleep()
-    {
-        $result = ['id', 'name', 'parent', 'eventDispatcher', 'data'];
-
-        $sanatizeDispatcher = function () {
-            $this->sorted = [];
-            $this->optimized = null;
-        };
-
-        if ($this->eventDispatcher instanceof EventDispatcher) {
-            $sanatizeDispatcher->call($this->eventDispatcher);
-        }
-
-        if ($this instanceof CompositeComponentInterface) {
-            $result = array_merge($result, ['childs', 'captureEventDispatcher']);
-
-            if ($this->captureEventDispatcher instanceof EventDispatcher) {
-                $sanatizeDispatcher->call($this->captureEventDispatcher);
-            }
-        }
-
-        return $result;
-    }
 }

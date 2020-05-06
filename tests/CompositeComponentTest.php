@@ -238,23 +238,6 @@ testCase('CompositeComponentTest.php', function () {
             });
 
             useMacro('commons for when the component adds a child');
-
-            test(function () {
-                $eventName = uniqid('event');
-
-                $this->component->on($eventName, [Component::class, 'listener'], true);
-
-                $this->child->dispatchEvent($eventName, new Event);
-
-                $newComponent = unserialize(serialize($this->component));
-                $newChilds = $newComponent->getChilds();
-                $newChild = array_shift($newChilds);
-
-                $event = new Event;
-                $newChild->dispatchEvent($eventName, $event);
-
-                $this->assertNotEmpty($event->secret);
-            });
         });
 
         testCase(sprintf('$component->addChild($child = new %s);', CompositeComponent::class), function () {
