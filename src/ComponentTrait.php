@@ -251,8 +251,13 @@ trait ComponentTrait
         $parents = $this->getParents();
 
         if ($capture) {
+            $captureEvent = clone $event;
+            $captureEvent->setTarget($this);
+
             foreach (array_reverse($parents) as $parent) {
-                $parent->getCaptureEventDispatcher()->dispatch($event, $eventName);
+                $captureEvent->setSource($parent);
+
+                $parent->getCaptureEventDispatcher()->dispatch($captureEvent, $eventName);
             }
         }
 
