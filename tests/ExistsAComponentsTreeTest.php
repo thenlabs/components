@@ -434,16 +434,22 @@ testCase('ExistsAComponentsTree.php', function () {
                 $this->momentBubble2 = null;
                 $this->momentBubble3 = null;
 
-                $this->component->on($this->eventName, $this->listenerCapture1 = function () {
+                $this->component->on($this->eventName, $this->listenerCapture1 = function ($event) {
                     $this->momentCapture1 = new DateTime;
+                    $this->assertSame($this->component, $event->getSource());
+                    $this->assertSame($this->child412, $event->getTarget());
                 }, true);
 
-                $this->child4->on($this->eventName, $this->listenerCapture2 = function () {
+                $this->child4->on($this->eventName, $this->listenerCapture2 = function ($event) {
                     $this->momentCapture2 = new DateTime;
+                    $this->assertSame($this->child4, $event->getSource());
+                    $this->assertSame($this->child412, $event->getTarget());
                 }, true);
 
-                $this->child41->on($this->eventName, $this->listenerCapture3 = function () {
+                $this->child41->on($this->eventName, $this->listenerCapture3 = function ($event) {
                     $this->momentCapture3 = new DateTime;
+                    $this->assertSame($this->child41, $event->getSource());
+                    $this->assertSame($this->child412, $event->getTarget());
                 }, true);
 
                 $this->child412->on($this->eventName, $this->listener1 = function () {

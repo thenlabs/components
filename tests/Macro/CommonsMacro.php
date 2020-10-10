@@ -1,6 +1,7 @@
 <?php
 
 use ThenLabs\Components\Event\FilterDependenciesEvent;
+use ThenLabs\Components\Tests\Entity\Component as DummyComponent;
 use ThenLabs\Components\Tests\Entity\CompositeComponent;
 use ThenLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;

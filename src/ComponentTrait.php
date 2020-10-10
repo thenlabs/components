@@ -251,16 +251,21 @@ trait ComponentTrait
         $parents = $this->getParents();
 
         if ($capture) {
+            $captureEvent = clone $event;
+            $captureEvent->setTarget($this);
+
             foreach (array_reverse($parents) as $parent) {
-                $parent->getCaptureEventDispatcher()->dispatch($eventName, $event);
+                $captureEvent->setSource($parent);
+
+                $parent->getCaptureEventDispatcher()->dispatch($captureEvent, $eventName);
             }
         }
 
-        $this->getEventDispatcher()->dispatch($eventName, $event);
+        $this->getEventDispatcher()->dispatch($event, $eventName);
 
         if ($bubbles) {
             foreach ($parents as $parent) {
-                $parent->getEventDispatcher()->dispatch($eventName, $event);
+                $parent->getEventDispatcher()->dispatch($event, $eventName);
             }
         }
     }
