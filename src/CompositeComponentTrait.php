@@ -333,7 +333,7 @@ trait CompositeComponentTrait
     /**
      * @param string[] $order
      */
-    public function setChildrenOrder(array $order): void
+    public function setChildrenOrder(array $order, bool $dispatchBeforeEvent = true, bool $dispatchAfterEvent = true): void
     {
         if (count(array_diff(array_keys($this->childs), $order))) {
             throw new Exception\InvalidOrderException;
@@ -341,15 +341,17 @@ trait CompositeComponentTrait
 
         $oldOrder = $this->getChildrenOrder();
 
-        $beforeEvent = new BeforeOrderEvent;
-        $beforeEvent->setSource($this);
-        $beforeEvent->setOldOrder($oldOrder);
-        $beforeEvent->setNewOrder($order);
+        if ($dispatchBeforeEvent) {
+            $beforeEvent = new BeforeOrderEvent;
+            $beforeEvent->setSource($this);
+            $beforeEvent->setOldOrder($oldOrder);
+            $beforeEvent->setNewOrder($order);
 
-        $this->dispatchEvent(BeforeOrderEvent::class, $beforeEvent);
+            $this->dispatchEvent(BeforeOrderEvent::class, $beforeEvent);
 
-        if ($beforeEvent->isCancelled()) {
-            return;
+            if ($beforeEvent->isCancelled()) {
+                return;
+            }
         }
 
         $newChildsArray = [];
@@ -360,11 +362,13 @@ trait CompositeComponentTrait
 
         $this->childs = $newChildsArray;
 
-        $afterEvent = new AfterOrderEvent;
-        $afterEvent->setSource($this);
-        $afterEvent->setOldOrder($oldOrder);
-        $afterEvent->setNewOrder($order);
+        if ($dispatchAfterEvent) {
+            $afterEvent = new AfterOrderEvent;
+            $afterEvent->setSource($this);
+            $afterEvent->setOldOrder($oldOrder);
+            $afterEvent->setNewOrder($order);
 
-        $this->dispatchEvent(AfterOrderEvent::class, $afterEvent);
+            $this->dispatchEvent(AfterOrderEvent::class, $afterEvent);
+        }
     }
 }

@@ -160,6 +160,20 @@ testCase('ExistsAComponentsTree.php', function () {
                     $this->child3->getChildrenOrder()
                 );
             });
+
+            test(function () {
+                $this->child3->on(BeforeOrderEvent::class, function (BeforeOrderEvent $event) {
+                    $this->executedListener = true;
+                });
+
+                $this->child3->setChildrenOrder(['child33', 'child31', 'child32'], false);
+
+                $this->assertFalse(isset($this->executedListener));
+                $this->assertEquals(
+                    ['child33', 'child31', 'child32'],
+                    $this->child3->getChildrenOrder()
+                );
+            });
         });
 
         testCase('add a listener for AfterOrderEvent', function () {
@@ -174,6 +188,17 @@ testCase('ExistsAComponentsTree.php', function () {
                 $this->child3->setChildrenOrder(['child33', 'child31', 'child32']);
 
                 $this->assertTrue($this->executedListener);
+                $this->assertEquals(['child33', 'child31', 'child32'], $this->child3->getChildrenOrder());
+            });
+
+            test(function () {
+                $this->child3->on(AfterOrderEvent::class, function (AfterOrderEvent $event) {
+                    $this->executedListener = true;
+                });
+
+                $this->child3->setChildrenOrder(['child33', 'child31', 'child32'], true, false);
+
+                $this->assertFalse(isset($this->executedListener));
                 $this->assertEquals(['child33', 'child31', 'child32'], $this->child3->getChildrenOrder());
             });
         });
