@@ -3,13 +3,18 @@ declare(strict_types=1);
 
 namespace ThenLabs\Components\Event;
 
-use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
 use ThenLabs\Components\ComponentInterface;
+
+if (class_exists('Symfony\Contracts\EventDispatcher\Event')) {
+    class BaseEvent extends \Symfony\Contracts\EventDispatcher\Event {}
+} else {
+    class BaseEvent extends \Symfony\Component\EventDispatcher\Event {}
+}
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
-class Event extends SymfonyEvent
+class Event extends BaseEvent
 {
     /**
      * @var ComponentInterface|null

@@ -9,7 +9,7 @@
     ],
     "require": {
         "composer/semver": "^1.5",
-        "symfony/event-dispatcher": "^4.2",
+        "symfony/event-dispatcher": ">=4.4",
         "doctrine/annotations": "^1.6"
     },
     "require-dev": {

@@ -129,7 +129,7 @@ abstract class Helper
         $conflictEvent = new DependencyConflictEvent($dependency1, $dependency2);
 
         if ($conflictDispatcher instanceof EventDispatcherInterface) {
-            $conflictDispatcher->dispatch(DependencyConflictEvent::class, $conflictEvent);
+            $conflictDispatcher->dispatch($conflictEvent);
         } elseif ($conflictDispatcher instanceof ComponentInterface) {
             $conflictDispatcher->dispatchEvent(DependencyConflictEvent::class, $conflictEvent);
         }
