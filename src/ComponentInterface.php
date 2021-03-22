@@ -40,7 +40,7 @@ interface ComponentInterface extends DependentInterface
      *
      * @param string $name
      */
-    public function setName(?string $name): void;
+    public function setName(?string $name);
 
     /**
      * Returns the direct parent of the component.
@@ -65,7 +65,7 @@ interface ComponentInterface extends DependentInterface
      * @param boolean                     $addChildToParent Indicates whether the component should be added as a child of the parent.
      * @param boolean                     $dispatchEvents   Indicates if the operation will trigger events.
      */
-    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true): void;
+    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true);
 
     /**
      * Use this method for iterate over each parent of the component.
@@ -115,7 +115,7 @@ interface ComponentInterface extends DependentInterface
      *
      * @param EventDispatcherInterface
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void;
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher);
 
     /**
      * Adds an event listener on the event dispatcher of the component.
@@ -125,7 +125,7 @@ interface ComponentInterface extends DependentInterface
      * @param  string   $eventName
      * @param  callable $listener
      */
-    public function on(string $eventName, callable $listener): void;
+    public function on(string $eventName, callable $listener);
 
     /**
      * Removes an event listener from the event dispatcher of the component.
@@ -135,7 +135,7 @@ interface ComponentInterface extends DependentInterface
      * @param  string   $eventName
      * @param  callable $listener
      */
-    public function off(string $eventName, callable $listener): void;
+    public function off(string $eventName, callable $listener);
 
     /**
      * Dispatches an event to all registered listeners.
@@ -149,7 +149,7 @@ interface ComponentInterface extends DependentInterface
      * @param  boolean  $capture   Indicates whether to capture the event.
      * @param  boolean  $bubbles   Indicates whether the event should be propagated.
      */
-    public function dispatchEvent(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void;
+    public function dispatchEvent(string $eventName, Event $event, bool $capture = true, bool $bubbles = true);
 
     /**
      * Returns all data assigned to the component.
@@ -164,7 +164,7 @@ interface ComponentInterface extends DependentInterface
      * @param string $key
      * @param mixed  $value
      */
-    public function setData(string $key, $value): void;
+    public function setData(string $key, $value);
 
     /**
      * Returns a data of the component.

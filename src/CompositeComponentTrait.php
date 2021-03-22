@@ -33,7 +33,7 @@ trait CompositeComponentTrait
     /**
      * @see CompositeComponentInterface::addChilds()
      */
-    public function addChilds(ComponentInterface ...$childs): void
+    public function addChilds(ComponentInterface ...$childs)
     {
         foreach ($childs as $child) {
             $this->addChild($child);
@@ -61,7 +61,7 @@ trait CompositeComponentTrait
     /**
      * @see CompositeComponentInterface::addChild()
      */
-    public function addChild(ComponentInterface $child, $setParentInChild = true, bool $dispatchEvents = true): void
+    public function addChild(ComponentInterface $child, $setParentInChild = true, bool $dispatchEvents = true)
     {
         if (! $this->validateChild($child)) {
             throw new Exception\InvalidChildException(
@@ -107,7 +107,7 @@ trait CompositeComponentTrait
     /**
      * @see CompositeComponentInterface::dropChild()
      */
-    public function dropChild($child, bool $dispatchEvents = true): void
+    public function dropChild($child, bool $dispatchEvents = true)
     {
         $obj = null;
 
@@ -256,7 +256,7 @@ trait CompositeComponentTrait
     /**
      * @see CompositeComponentInterface::setCaptureEventDispatcher()
      */
-    public function setCaptureEventDispatcher(EventDispatcherInterface $captureEventDispatcher): void
+    public function setCaptureEventDispatcher(EventDispatcherInterface $captureEventDispatcher)
     {
         $this->captureEventDispatcher = $captureEventDispatcher;
     }
@@ -264,7 +264,7 @@ trait CompositeComponentTrait
     /**
      * @see CompositeComponentInterface::on()
      */
-    public function on(string $eventName, callable $listener, bool $capture = false): void
+    public function on(string $eventName, callable $listener, bool $capture = false)
     {
         if ($capture) {
             $this->getCaptureEventDispatcher()->addListener($eventName, $listener);
@@ -276,7 +276,7 @@ trait CompositeComponentTrait
     /**
      * @see CompositeComponentInterface::off()
      */
-    public function off(string $eventName, callable $listener, bool $capture = false): void
+    public function off(string $eventName, callable $listener, bool $capture = false)
     {
         if ($capture) {
             $this->getCaptureEventDispatcher()->removeListener($eventName, $listener);
@@ -333,7 +333,7 @@ trait CompositeComponentTrait
     /**
      * @param string[] $order
      */
-    public function setChildrenOrder(array $order, bool $dispatchBeforeEvent = true, bool $dispatchAfterEvent = true): void
+    public function setChildrenOrder(array $order, bool $dispatchBeforeEvent = true, bool $dispatchAfterEvent = true)
     {
         if (count(array_diff(array_keys($this->childs), $order))) {
             throw new Exception\InvalidOrderException;

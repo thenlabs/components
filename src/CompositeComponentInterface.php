@@ -27,7 +27,7 @@ interface CompositeComponentInterface extends ComponentInterface
      *
      * @param ComponentInterface[] $childs
      */
-    public function addChilds(ComponentInterface ...$childs): void;
+    public function addChilds(ComponentInterface ...$childs);
 
     /**
      * Adds a direct child.
@@ -36,7 +36,7 @@ interface CompositeComponentInterface extends ComponentInterface
      * @param boolean            $setParentInChild Indicates whether this component should be established as the child's parent.
      * @param boolean            $dispatchEvents   Indicates if the operation will trigger events.
      */
-    public function addChild(ComponentInterface $child, $setParentInChild = true, bool $dispatchEvents = true): void;
+    public function addChild(ComponentInterface $child, $setParentInChild = true, bool $dispatchEvents = true);
 
     /**
      * Removes a direct child.
@@ -44,7 +44,7 @@ interface CompositeComponentInterface extends ComponentInterface
      * @param  ComponentInterface|string $child
      * @param  boolean                   $dispatchEvents  Indicates if the operation will trigger events.
      */
-    public function dropChild($child, bool $dispatchEvents = true): void;
+    public function dropChild($child, bool $dispatchEvents = true);
 
     /**
      * Returns a direct child.
@@ -137,7 +137,7 @@ interface CompositeComponentInterface extends ComponentInterface
      *
      * @param EventDispatcherInterface
      */
-    public function setCaptureEventDispatcher(EventDispatcherInterface $eventDispatcher): void;
+    public function setCaptureEventDispatcher(EventDispatcherInterface $eventDispatcher);
 
     /**
      * @see ComponentInterface::on()
@@ -146,7 +146,7 @@ interface CompositeComponentInterface extends ComponentInterface
      * @param  callable $listener
      * @param  boolean  $capture  Indicates if event is for capturing or not.
      */
-    public function on(string $eventName, callable $listener, bool $capture = false): void;
+    public function on(string $eventName, callable $listener, bool $capture = false);
 
     /**
      * @see ComponentInterface::off()
@@ -155,7 +155,7 @@ interface CompositeComponentInterface extends ComponentInterface
      * @param  callable $listener
      * @param  boolean  $capture  Indicates if event is for capturing or not.
      */
-    public function off(string $eventName, callable $listener, bool $capture = false): void;
+    public function off(string $eventName, callable $listener, bool $capture = false);
 
     /**
      * Returns an array of string with the ordered component identifiers.
@@ -167,5 +167,5 @@ interface CompositeComponentInterface extends ComponentInterface
     /**
      * @param string[] $order
      */
-    public function setChildrenOrder(array $order): void;
+    public function setChildrenOrder(array $order);
 }

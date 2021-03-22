@@ -65,7 +65,7 @@ trait ComponentTrait
     /**
      * @see ComponentInterface::setName()
      */
-    public function setName(?string $name): void
+    public function setName(?string $name)
     {
         $this->name = $name;
     }
@@ -115,7 +115,7 @@ trait ComponentTrait
     /**
      * @see ComponentInterface::setParent()
      */
-    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true): void
+    public function setParent(?CompositeComponentInterface $parent, bool $addChildToParent = true, bool $dispatchEvents = true)
     {
         if ($this->parent instanceof CompositeComponentInterface) {
             if ($dispatchEvents) {
@@ -220,7 +220,7 @@ trait ComponentTrait
     /**
      * @see ComponentInterface::setEventDispatcher()
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -228,7 +228,7 @@ trait ComponentTrait
     /**
      * @see ComponentInterface::on()
      */
-    public function on(string $eventName, callable $listener): void
+    public function on(string $eventName, callable $listener)
     {
         $this->getEventDispatcher()->addListener($eventName, $listener);
     }
@@ -236,7 +236,7 @@ trait ComponentTrait
     /**
      * @see ComponentInterface::off()
      */
-    public function off(string $eventName, callable $listener): void
+    public function off(string $eventName, callable $listener)
     {
         $this->getEventDispatcher()->removeListener($eventName, $listener);
     }
@@ -244,7 +244,7 @@ trait ComponentTrait
     /**
      * @see ComponentInterface::dispatchEvent()
      */
-    public function dispatchEvent(string $eventName, Event $event, bool $capture = true, bool $bubbles = true): void
+    public function dispatchEvent(string $eventName, Event $event, bool $capture = true, bool $bubbles = true)
     {
         $event->setSource($this);
 
@@ -281,7 +281,7 @@ trait ComponentTrait
     /**
      * @see ComponentInterface::setData()
      */
-    public function setData(string $key, $value): void
+    public function setData(string $key, $value)
     {
         $this->data[$key] = $value;
     }
