@@ -1,5 +1,6 @@
 
-![](https://img.shields.io/github/license/thenlabs/components)
+![](https://img.shields.io/github/license/thenlabs/components?style=for-the-badge)
+![]()
 
 <h1 align="center">Components</h1>
 <p align="center">Create custom component based PHP structures</p>
