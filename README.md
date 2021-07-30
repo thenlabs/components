@@ -1,5 +1,8 @@
 
-# Components
+![](https://img.shields.io/github/license/thenlabs/components)
+
+<h1 align="center">Components</h1>
+<p align="center">Create custom component based PHP structures</p>
 
 ## Documentation.
 
