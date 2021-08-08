@@ -14,7 +14,6 @@
         "doctrine/annotations": "^1.6"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0",
         "friendsofphp/php-cs-fixer": "^2.12",
         "thenlabs/pyramidal-tests": "^1.0"
     },
