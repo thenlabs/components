@@ -1,6 +1,6 @@
 
 <div align="center">
-    <a href="https://github.com/thenlabs/components/blob/1.0/LICENSE.txt" target="_blank">
+    <a href="https://github.com/thenlabs/components/blob/v1/LICENSE.txt" target="_blank">
         <img src="https://img.shields.io/github/license/thenlabs/components?style=for-the-badge">
     </a>
     <img src="https://img.shields.io/packagist/php-v/thenlabs/components?style=for-the-badge">
