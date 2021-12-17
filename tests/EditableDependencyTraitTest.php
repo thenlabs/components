@@ -2,9 +2,8 @@
 
 namespace ThenLabs\Components\Tests;
 
-use ThenLabs\Components\Tests\TestCase;
-use ThenLabs\Components\EditableDependencyTrait;
 use ThenLabs\Components\DependencyInterface;
+use ThenLabs\Components\EditableDependencyTrait;
 
 setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);

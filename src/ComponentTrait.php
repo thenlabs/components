@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace ThenLabs\Components;
 
-use ThenLabs\Components\Event\AfterInsertionEvent;
-use ThenLabs\Components\Event\AfterDeletionEvent;
-use ThenLabs\Components\Event\BeforeInsertionEvent;
-use ThenLabs\Components\Event\BeforeDeletionEvent;
-use ThenLabs\Components\Event\FilterDependenciesEvent;
-use ThenLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use ThenLabs\Components\Event\AfterDeletionEvent;
+use ThenLabs\Components\Event\AfterInsertionEvent;
+use ThenLabs\Components\Event\BeforeDeletionEvent;
+use ThenLabs\Components\Event\BeforeInsertionEvent;
+use ThenLabs\Components\Event\Event;
+use ThenLabs\Components\Event\FilterDependenciesEvent;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace ThenLabs\Components\Event;
 
-use ThenLabs\Components\DependencyInterface;
 use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\DependencyInterface;
 
 /**
  * This event type is throwns with the calls to the methods

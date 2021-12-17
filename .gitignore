@@ -4,3 +4,4 @@ vendor/
 !.gitignore
 !.php_cs.dist
 !.travis.yml
+!.php-cs-fixer.dist.php

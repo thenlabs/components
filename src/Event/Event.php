@@ -6,9 +6,13 @@ namespace ThenLabs\Components\Event;
 use ThenLabs\Components\ComponentInterface;
 
 if (class_exists('Symfony\Contracts\EventDispatcher\Event')) {
-    class BaseEvent extends \Symfony\Contracts\EventDispatcher\Event {}
+    class BaseEvent extends \Symfony\Contracts\EventDispatcher\Event
+    {
+    }
 } else {
-    class BaseEvent extends \Symfony\Component\EventDispatcher\Event {}
+    class BaseEvent extends \Symfony\Component\EventDispatcher\Event
+    {
+    }
 }
 
 /**

@@ -1,13 +1,13 @@
 <?php
 
-use ThenLabs\Components\Helper;
-use ThenLabs\Components\Event\DependencyConflictEvent;
-use ThenLabs\Components\DependencyInterface;
-use ThenLabs\Components\Exception\InvalidConflictDispatcherException;
-use ThenLabs\Components\Exception\IncompatibilityException;
-use ThenLabs\Components\Exception\UnresolvedDependencyConflictException;
-use ThenLabs\Components\Tests\Entity\Component;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use ThenLabs\Components\DependencyInterface;
+use ThenLabs\Components\Event\DependencyConflictEvent;
+use ThenLabs\Components\Exception\IncompatibilityException;
+use ThenLabs\Components\Exception\InvalidConflictDispatcherException;
+use ThenLabs\Components\Exception\UnresolvedDependencyConflictException;
+use ThenLabs\Components\Helper;
+use ThenLabs\Components\Tests\Entity\Component;
 
 setTestCaseNamespace('ThenLabs\Components\Tests');
 setTestCaseClass('ThenLabs\Components\Tests\TestCase');

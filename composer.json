@@ -14,7 +14,7 @@
         "doctrine/annotations": "^1.6"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.12",
+        "friendsofphp/php-cs-fixer": "^3.2",
         "thenlabs/pyramidal-tests": "^1.0"
     },
     "autoload": {
@@ -26,5 +26,8 @@
         "psr-4": {
             "ThenLabs\\Components\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "fix": "./vendor/bin/php-cs-fixer fix"
     }
 }

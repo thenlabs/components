@@ -1,11 +1,10 @@
 <?php
 
-use ThenLabs\Components\Tests\Entity\CompositeComponent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use ThenLabs\Components\Tests\Entity\Component;
-use ThenLabs\Components\Exception\InvalidChildException;
-use ThenLabs\Components\Event\Event;
 use ThenLabs\Components\ComponentInterface;
+use ThenLabs\Components\Exception\InvalidChildException;
+use ThenLabs\Components\Tests\Entity\Component;
+use ThenLabs\Components\Tests\Entity\CompositeComponent;
 
 setTestCaseNamespace('ThenLabs\Components\Tests');
 setTestCaseClass('ThenLabs\Components\Tests\TestCase');

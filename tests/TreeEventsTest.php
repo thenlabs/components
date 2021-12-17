@@ -1,9 +1,9 @@
 <?php
 
-use ThenLabs\Components\Event\AfterInsertionEvent;
 use ThenLabs\Components\Event\AfterDeletionEvent;
-use ThenLabs\Components\Event\BeforeInsertionEvent;
+use ThenLabs\Components\Event\AfterInsertionEvent;
 use ThenLabs\Components\Event\BeforeDeletionEvent;
+use ThenLabs\Components\Event\BeforeInsertionEvent;
 use ThenLabs\Components\Tests\Entity\Component;
 use ThenLabs\Components\Tests\Entity\CompositeComponent;
 

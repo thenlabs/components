@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace ThenLabs\Components;
 
-use ThenLabs\Components\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use ThenLabs\Components\Event\Event;
 
 /**
  * Base component contract.

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace ThenLabs\Components;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use ThenLabs\Components\Event\DependencyConflictEvent;
 use Composer\Semver\Comparator;
 use Composer\Semver\Semver;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use ThenLabs\Components\Event\DependencyConflictEvent;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>

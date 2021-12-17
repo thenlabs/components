@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace ThenLabs\Components\Tests\Entity;
 
-use ThenLabs\Components\Event\Event;
 use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\ComponentTrait;
+use ThenLabs\Components\Event\Event;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
