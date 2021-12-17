@@ -4,10 +4,9 @@ use ThenLabs\Components\ComponentInterface;
 use ThenLabs\Components\Tests\Entity\ComponentWithAnnotatedProperties;
 use ThenLabs\Components\Tests\Entity\CompositeComponentWithAnnotatedProperties;
 
-setTestCaseNamespace('ThenLabs\Components\Tests');
 setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
-testCase('AdditionalDependenciesFromAnnotationsTraitTest.php', function () {
+testCase('test-AdditionalDependenciesFromAnnotationsTrait.php', function () {
     setUp(function () {
         $this->dependencies1 = $this->getRandomArray('c1_');
         $this->dependencies2 = $this->getRandomArray('c2_');
@@ -23,7 +22,7 @@ testCase('AdditionalDependenciesFromAnnotationsTraitTest.php', function () {
         $this->component3->method('getDependencies')->willReturn($this->dependencies3);
     });
 
-    createMethod('assignPropertiesAndDoAsserts', function () {
+    method('assignPropertiesAndDoAsserts', function () {
         $this->component->setProperty1($this->component1);
         $this->component->setProperty2($this->component2);
         $this->component->property3 = $this->component3;

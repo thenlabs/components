@@ -9,10 +9,9 @@ use ThenLabs\Components\Exception\UnresolvedDependencyConflictException;
 use ThenLabs\Components\Helper;
 use ThenLabs\Components\Tests\Entity\Component;
 
-setTestCaseNamespace('ThenLabs\Components\Tests');
 setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
-testCase('HelperTest.php', function () {
+testCase('test-Helper.php', function () {
     testCase('#sortDependencies()', function () {
         test(function () {
             $this->expectException(InvalidConflictDispatcherException::class);

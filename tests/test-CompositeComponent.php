@@ -6,10 +6,9 @@ use ThenLabs\Components\Exception\InvalidChildException;
 use ThenLabs\Components\Tests\Entity\Component;
 use ThenLabs\Components\Tests\Entity\CompositeComponent;
 
-setTestCaseNamespace('ThenLabs\Components\Tests');
 setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
-testCase('CompositeComponentTest.php', function () {
+testCase('test-CompositeComponent.php', function () {
     setUp(function () {
         $this->componentClass = CompositeComponent::class;
     });
@@ -59,9 +58,9 @@ testCase('CompositeComponentTest.php', function () {
             $this->assertEquals([], $this->component->getChildrenOrder());
         });
 
-        createMacro('commons for when the component adds a child', function () {
+        macro('commons for when the component adds a child', function () {
             testCase('it is invoked to $component->validateChild($child)', function () {
-                createMethod('addTheChild', function () {
+                method('addTheChild', function () {
                     $component = $this->getMockBuilder($this->componentClass)
                         ->setMethods(['validateChild'])
                         ->getMock();
@@ -100,7 +99,7 @@ testCase('CompositeComponentTest.php', function () {
                     $this->expectException(InvalidChildException::class);
                 });
 
-                createMethod('addTheChild', function () {
+                method('addTheChild', function () {
                     $this->expectExceptionMessage("Invalid child with id equal to '{$this->child->getId()}'.");
 
                     $this->component->addChild($this->child);
@@ -135,7 +134,7 @@ testCase('CompositeComponentTest.php', function () {
                 $this->assertSame($this->child, $this->component->getChild($this->child->getId()));
             });
 
-            createMacro('tests for when the component adds other child', function () {
+            macro('tests for when the component adds other child', function () {
                 test('$component->hasChild($child2) === true', function () {
                     $this->assertTrue($this->component->hasChild($this->child2));
                 });
@@ -165,7 +164,7 @@ testCase('CompositeComponentTest.php', function () {
                         $this->assertSame($this->child2, $this->children[$this->child2->getId()]);
                     });
 
-                    createMacro('drop child tests', function () {
+                    macro('drop child tests', function () {
                         test('$child->getParent() === null', function () {
                             $this->assertNull($this->child->getParent());
                         });
@@ -248,7 +247,7 @@ testCase('CompositeComponentTest.php', function () {
             useMacro('commons for when the component adds a child');
         });
 
-        createMacro('commons for when the component adds a child without assign the parent', function () {
+        macro('commons for when the component adds a child without assign the parent', function () {
             test('$component->hasChild($child) === true', function () {
                 $this->assertTrue($this->component->hasChild($this->child));
             });

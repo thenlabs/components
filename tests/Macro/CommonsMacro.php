@@ -5,7 +5,7 @@ use ThenLabs\Components\Event\Event;
 use ThenLabs\Components\Event\FilterDependenciesEvent;
 use ThenLabs\Components\Tests\Entity\CompositeComponent;
 
-createMacro('commons', function () {
+macro('commons', function () {
     setUp(function () {
         $this->component = $this->getNewComponent();
     });
@@ -132,7 +132,7 @@ createMacro('commons', function () {
         });
     });
 
-    createMacro('tests for when the parent is assigned', function () {
+    macro('tests for when the parent is assigned', function () {
         test('$component->getParent() === $parent', function () {
             $this->assertEquals($this->parent, $this->component->getParent());
         });
@@ -141,7 +141,7 @@ createMacro('commons', function () {
             $this->assertTrue($this->parent->hasChild($this->component));
         });
 
-        createMacro('remove the parent tests', function () {
+        macro('remove the parent tests', function () {
             test('$component->getParent() === null', function () {
                 $this->assertNull($this->component->getParent());
             });
@@ -159,7 +159,7 @@ createMacro('commons', function () {
             useMacro('remove the parent tests');
         });
 
-        createMacro('tests for when a new parent is assigned', function () {
+        macro('tests for when a new parent is assigned', function () {
             test('$parent->hasChild($component) === false', function () {
                 $this->assertFalse($this->parent->hasChild($this->component));
             });
@@ -192,7 +192,7 @@ createMacro('commons', function () {
         useMacro('tests for when the parent is assigned');
     });
 
-    createMacro('tests for when the parent is assigned without add the child in the parent', function () {
+    macro('tests for when the parent is assigned without add the child in the parent', function () {
         test('$component->getParent() === $parent', function () {
             $this->assertEquals($this->parent, $this->component->getParent());
         });

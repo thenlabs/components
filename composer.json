@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.2",
-        "thenlabs/pyramidal-tests": "^1.0"
+        "thenlabs/pyramidal-tests": "2.0.x-dev"
     },
     "autoload": {
         "psr-4": {
@@ -35,6 +35,7 @@
         }
     },
     "scripts": {
-        "fix": "./vendor/bin/php-cs-fixer fix"
+        "fix": "./vendor/bin/php-cs-fixer fix",
+        "test": "./vendor/bin/pyramidal"
     }
 }

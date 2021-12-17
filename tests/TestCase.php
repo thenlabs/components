@@ -5,15 +5,12 @@ namespace ThenLabs\Components\Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use ThenLabs\Components\ComponentInterface;
-use ThenLabs\PyramidalTests\Utils\StaticVarsInjectionTrait;
 
 /**
  * @author Andy Daniel Navarro Taño <andaniel05@gmail.com>
  */
 class TestCase extends PHPUnitTestCase
 {
-    use StaticVarsInjectionTrait;
-
     public function getNewComponent(): ComponentInterface
     {
         return new $this->componentClass;

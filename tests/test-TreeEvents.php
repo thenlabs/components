@@ -7,11 +7,10 @@ use ThenLabs\Components\Event\BeforeInsertionEvent;
 use ThenLabs\Components\Tests\Entity\Component;
 use ThenLabs\Components\Tests\Entity\CompositeComponent;
 
-setTestCaseNamespace('ThenLabs\Components\Tests');
 setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
-testCase('EventsTest.php', function () {
-    createMacro('testing events in the parent and child relationship', function () {
+testCase('test-TreeEvents.php', function () {
+    macro('testing events in the parent and child relationship', function () {
         testCase(function () {
             setUp(function () {
                 $this->executedListenerBeforeInsertion1 = 0;
@@ -147,7 +146,7 @@ testCase('EventsTest.php', function () {
                 });
             });
 
-            createMacro('deletion tests', function () {
+            macro('deletion tests', function () {
                 test('when $parent->dropChild($child);', function () {
                     $this->parent->dropChild($this->child);
                 });
@@ -247,8 +246,8 @@ testCase('EventsTest.php', function () {
         });
 
         testCase('testing insertion events', function () {
-            createMacro('commons of insertion events', function () {
-                createMacro('tests', function () {
+            macro('commons of insertion events', function () {
+                macro('tests', function () {
                     test('listeners are executed in order', function () {
                         $this->assertGreaterThan($this->executedCaptureListener1, $this->executedCaptureListener2);
                         $this->assertGreaterThan($this->executedCaptureListener2, $this->executedListener);
@@ -354,8 +353,8 @@ testCase('EventsTest.php', function () {
         });
 
         testCase('testing deletion events', function () {
-            createMacro('commons of deletion events', function () {
-                createMacro('tests', function () {
+            macro('commons of deletion events', function () {
+                macro('tests', function () {
                     test('listeners are executed in order', function () {
                         $this->assertGreaterThan($this->executedCaptureListener1, $this->executedCaptureListener2);
                         $this->assertGreaterThan($this->executedCaptureListener2, $this->executedListener);

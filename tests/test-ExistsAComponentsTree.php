@@ -9,10 +9,9 @@ use ThenLabs\Components\Tests\Entity\Component;
 use ThenLabs\Components\Tests\Entity\CompositeComponent;
 use ThenLabs\Components\Tests\Entity\CompositeComponentWithEvents;
 
-setTestCaseNamespace('ThenLabs\Components\Tests');
 setTestCaseClass('ThenLabs\Components\Tests\TestCase');
 
-testCase('ExistsAComponentsTree.php', function () {
+testCase('test-ExistsAComponentsTree.php', function () {
     testCase('exists a tree of components (see sources)', function () {
         /**
          * C:    Component

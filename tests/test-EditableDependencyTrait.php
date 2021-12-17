@@ -5,10 +5,9 @@ namespace ThenLabs\Components\Tests;
 use ThenLabs\Components\DependencyInterface;
 use ThenLabs\Components\EditableDependencyTrait;
 
-setTestCaseNamespace(__NAMESPACE__);
 setTestCaseClass(TestCase::class);
 
-testCase('EditableDependencyTraitTest.php', function () {
+testCase('test-EditableDependencyTrait.php', function () {
     setUp(function () {
         $this->instance = new class implements DependencyInterface {
             use EditableDependencyTrait;
