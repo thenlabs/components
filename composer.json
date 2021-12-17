@@ -1,5 +1,12 @@
 {
     "name": "thenlabs/components",
+    "description": "A custom implementation of the Composite pattern in PHP for create component types with useful functionalities.",
+    "keywords": [
+        "composite",
+        "composite-pattern",
+        "component-architecture",
+        "component-based"
+    ],
     "license": "MIT",
     "authors": [
         {
