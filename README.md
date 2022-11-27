@@ -22,7 +22,7 @@ A custom implementation of the Composite pattern in PHP for create component typ
 ## Documentation.
 
 1. English (Pending)
-2. [Español](https://thenlabs.org/es/doc/components/master/index.html)
+2. [Español](https://github.com/thenlabs/doc/blob/master/components/1.0/en/index.md)
 
 ## Development.
 
